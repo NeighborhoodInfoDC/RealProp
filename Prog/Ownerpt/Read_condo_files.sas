@@ -12,8 +12,7 @@
  Modifications:
 **************************************************************************/
 
-/**%include "L:\SAS\Inc\StdLocal.sas";**/
-%include "C:\DCData\SAS\Inc\StdLocal.sas";
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -22,7 +21,7 @@
 
 %macro Read( file );
 
-  filename fimport "C:\DCData\Libraries\RealProp\Raw\Test 01-08-16\&file..csv" lrecl=2000;
+  filename fimport "&_dcdata_r_path\RealProp\Raw\Test 01-08-16\&file..csv" lrecl=2000;
 
   proc import out=RealProp.&file.
       datafile=fimport
@@ -46,7 +45,7 @@
 %Read( Condo_Approval_Lots )
 
 
-filename fimport "C:\DCData\Libraries\RealProp\Raw\Test 01-08-16\Condo_Relate_Table.csv" lrecl=2000;
+filename fimport "&_dcdata_r_path\RealProp\Raw\Test 01-08-16\Condo_Relate_Table.csv" lrecl=2000;
 
 data RealProp.Condo_Relate_Table;
 

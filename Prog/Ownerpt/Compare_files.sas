@@ -12,8 +12,7 @@
  Modifications:
 **************************************************************************/
 
-/**%include "L:\SAS\Inc\StdLocal.sas";**/
-%include "C:\DCData\SAS\Inc\StdLocal.sas";
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -33,7 +32,7 @@ ods listing close;
     owner_points owner_points__all_fields owner_polygons_common_ownership 
     property_sale_points 
     Condo_Approval_Lots Condo_Relate_Table,
-  csv_out="&_dcdata_l_path\RealProp\Raw\Test 01-08-16\Compare_files.csv"
+  csv_out="&_dcdata_l_path\RealProp\Prog\Ownerpt\Compare_files.csv"
   )
 
 run;
