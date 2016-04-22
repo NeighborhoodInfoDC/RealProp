@@ -18,9 +18,63 @@
 %DCData_lib( RealProp )
 
 
-*options obs=1000;
+*options obs=1000 ;
 
-data RealProp.OwnerPly_OwnerPt;
+proc sort data = RealProp.owner_polygons_common_ownership out = owner_polygons_common_ownership_; by ssl; run;
+proc sort data = Realprop.Condo_approval_lots out = Condo_approval_lots_; by ssl; run;
+proc sort data = Realprop.Condo_relate_table out = Condo_relate_table_; by ssl; run;
+
+
+
+/* Fix char/num issues */
+data Condo_approval_lots_in;
+	set Condo_approval_lots_;
+	%macro makechar (var,l);
+	fix_&var.=put(&var.,&l.);
+	drop &var.;
+	rename fix_&var.=&var.;
+	%mend makechar;
+	%makechar (gis_id,8.);
+	%makechar (square,32.);
+	%makechar (lot,10.);
+	%makechar (ssl,18.);
+run;
+
+
+/* Fix char/num issues */
+data Condo_relate_table_in;
+	set Condo_relate_table_;
+
+	%macro makechar (var,l);
+	fix_&var.=put(&var.,&l.);
+	drop &var.;
+	rename fix_&var.=&var.;
+	%mend makechar;
+	%makechar (square,32.);
+	%makechar (lot,10.);
+	%makechar (address_id,10.);
+	%makechar (assessment,10.);
+	%makechar (oldtotal,9.);
+	%makechar (newtotal,10.);
+	%makechar (landarea,8.);
+	%makechar (hstdcode,1.);
+	%makechar (capcurr,13.);
+	%makechar (phaseland,9.);
+	%makechar (phasebuild,9.);
+	%makechar (capprop,10.);
+	%makechar (newland,9.);
+	%makechar (newimpr,9.);
+	%makechar (saleprice,11.);
+	%makechar (saledate,10.);
+	%makechar (ssl,18.);
+
+
+run;
+
+
+
+/*Combine condo files with owner_polygons_common_ownership */
+data ply_condos;
 
   length class3ex_num 3 del_code landarea_num 8 lottype $ 1 
   mix1bldval_num mix1lndval_num mix2bldval_num mix2lndval_num 6
@@ -32,12 +86,15 @@ data RealProp.OwnerPly_OwnerPt;
   saledate_num saleprice_num 8 
   saletype_new $ 1
   square $ 4
-  ssl $ 17
+  ssl $ 18;
 
-;
 
-  set RealProp.owner_polygons_common_ownership;
-  
+  merge 
+		owner_polygons_common_ownership_
+	 	Condo_approval_lots_in
+	  	Condo_relate_table_in;
+  by ssl;
+  /*
   %Acceptcode_old()
   
   class3ex_num = input( class3ex, best32. );
@@ -115,89 +172,90 @@ data RealProp.OwnerPly_OwnerPt;
           subnbhd = sub_nbhd
       taxrate = tax_rate
 
-  ;
-  
-  keep 
-  ssl premiseadd
-  abtlotcode
-acceptcode
-acceptcode_old
-address1
-address2
-annualtax
-arn
-careofname
-class3
-class3ex_num
-cy1cr
-cy2cr
-del_code
-ownerpt_extractdat 
-hstdcode
-instno
-landarea_num
-lottype
-highnumber lownumber
+  ;*/
 
-mix1bldpct
-mix1bldval_num
-mix1class
-mix1lndpct
-mix1lndval_num
-mix1rate
-mix1txtype
-mix2bldpct
-mix2bldval_num
-mix2class
-mix2lndpct
-mix2lndval_num
-mix2rate
-mix2txtype
+  keep
+	acceptcode
+	account_id
+	act_lot
+	arn
+	complex
+	computed_a
+	computed_area_sf
+	condo_bk
+	condo_book
+	condo_book_num
+	condo_page
+	condo_page_num
+	condo_pg
+	condo_regi
+	condo_regime_num
+	condolot
+	conv_tol_1
+	conv_tol_2
+	conv_toler
+	conv_tolerance_resolution
+	conv_tolerance_type
+	conv_tolerance_value
+	dcgiscondolotplyarea
+	dcgiscondolotplylen
+	deeds
+	delcode
+	hstdcode
+	is_rear_of
+	is_theoret
+	landarea
+	marunitnum
+	no_units
+	o_lots
+	proptype
+	record_are
+	record_area_sf
+	recordatio
+	recordation_dt
+	recordlots
+	recordlotsplyid
+	regime
+	regime_id
+	res
+	reservatio
+	saletype_new
+	shapearea
+	shapelen
+	squareplyi
+	squareplyid
+	uid_
+	under_air
+	under_rec
+	under_tax
+	underlies_
+	underlies_condo
 
-mixeduse
-mortgageco
-nbhd
-new_impr new_land new_total
-old_impr old_land old_total
-no_units
-ownername
-ownname2
-part_part
-pchildcode
-phasebuild_num
-phaseland_num
-prmsward
-proptype
-qdrntname
-saledate_num
-saleprice_num
-saletype_new
-streetcode
-streetname
-subnbhd
-suffix
-taxrate 
-unitnumber
-usecode
-vaclnduse
 
-ui_proptype
 
-/** NEW VARS **/
-condo_regi
-condolot
-cy1: 
-cy2:
-py:
-
-;
-  
+	  ;
 
 run;
 
+
+
+
+
+
+proc sort data = realprop.itspe_m nodupkey; by ssl; run;
+proc sort data = ply_condos; by ssl; run;
+
+data RealProp.OwnerPly_OwnerPt;
+	merge realprop.itspe_m ply_condos;
+	by ssl;
+run;
+
+
+
 proc sort data=RealProp.OwnerPly_OwnerPt;
   by ssl;
-  
+
+
 %Dup_check(
   data=RealProp.OwnerPly_OwnerPt,
   by=ssl,
@@ -212,11 +270,6 @@ proc sort data=RealProp.OwnerPly_OwnerPt;
            ownerpt_extractdat lottype mix1class_3d mix2class_3d mix1txtype mix2txtype
            nbhd part_part pchildcode proptype qdrntname saletype_new sub_nbhd usecode vaclnduse
            ui_proptype
-
-
-
-
-
  )
 
 %Compare_file_struct( 
