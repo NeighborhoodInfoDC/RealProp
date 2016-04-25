@@ -41,16 +41,15 @@ data itspe_all;
 	%Acceptcode_old()
 
 	%let format=
-      deed_date ownerpt_extractdat saledate lastpaydt mmddyy10.
+      deed_date ownerpt_extractdat saledate mmddyy10.
       Proptype $proptyp.
       Usecode $Usecode.
-      Hstd_code $homestd.
+      Hstdcode $homestd.
       MIXEDUSE del_code part_part yesno.
-      class3 $yesno.
       Class_Type_3d Mix1class_3d Mix2class_3d $class3d.
       Mix1txtype Mix2txtype $taxtype.
-      Acceptcode $accept.
-      acceptcode_new $accptnw.
+      Acceptcode_old $accept.
+      acceptcode $accptnw.
       Saletype $Saletyp. saletype_new $sltypnw. 
       nbhd $nbhd.;
 
@@ -67,7 +66,7 @@ data itspe_all;
         saleprice = .n;
       end;
       else do;
-        %warn_put( macro=&mname, 
+        %warn_put( macro=Create_new_ownerpt, 
                    msg="Invalid sale date (will be set to .U): " / RecordNo= ssl= saledate= 
                        "SALEDATE(unformatted)=" saledate best16. " " saleprice= );
         saledate = .u;
@@ -241,7 +240,6 @@ data itspe_all;
 
 	/* Variables from old ownerpt */
 	ownerpt_extractdat = extractdat;
-	lottype = put( lot_type, 1. );
 	no_units = coopunits;
 
   
@@ -254,8 +252,13 @@ data itspe_all;
 	%ui_proptype
 
 	format ownerpt_extractdat saledate mmddyy10.;
+	
+	length class_type_3d mix1class_3d mix2class_3d $ 3;
 
 	class_type_3d = put(classtype,z3.);
+	mix1class_3d = put(mix1class,z3.);
+	mix2class_3d = put(mix2class,z3.);
+
 
 	/* ITS files don't have X/Y coords, but need these variables for parcel_base and parcel_geo */
 	x_coord = .;
@@ -272,8 +275,6 @@ data itspe_all;
 		   appraised_value_current_total = new_total
 		   hstdcode = hstd_code
 		   taxrate = tax_rate
-		   mix1class = mix1class_3d
-		   mix2class = mix2class_3d
 		   owner_occupied_coop_units = no_ownocct
 		   annualtax = amttax
 		   reasoncd = reasoncode
@@ -331,13 +332,13 @@ run;
 
 
 %File_info( data=realprop.ownerpt_&ownerptdt., printobs=5,
-  freqvars=acceptcode acceptcode_new class3 class3ex condolot del_code hstd_code 
-           ownerpt_extractdat lottype mix1class_3d mix2class_3d mix1txtype mix2txtype
+  freqvars=acceptcode acceptcode_new class3 class3ex del_code hstd_code 
+           ownerpt_extractdat mix1class_3d mix2class_3d mix1txtype mix2txtype
            nbhd part_part pchildcode proptype qdrntname saletype_new sub_nbhd usecode vaclnduse
            ui_proptype
  )
 
- proc contents data = realprop.ownerpt_&ownerptdt.; run;
+run;
 
 
 /* End of Program */
