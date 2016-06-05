@@ -118,7 +118,7 @@ run;
 
 ** Merge transposed data together **;
 
-data RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.;
+data RealProp_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
 
   set city_tr Ward2012_tr cluster_tr2000_tr;
   
