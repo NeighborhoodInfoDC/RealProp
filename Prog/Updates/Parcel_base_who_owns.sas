@@ -23,19 +23,21 @@
 %include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
-%DCData_lib( RealProp, local=n )
+%DCData_lib( RealProp )
+%DCData_lib( MAR )
 
-%let RegExpFile = Owner type codes & reg expr 09-28-11.xls;
+%let RegExpFile = Owner type codes & reg expr 09-28-11.txt;
 
-%let MaxExp     = 2000;  /** NOTE: This number should be larger than the number of rows in the above spreadsheet **/
+%let MaxExp     = 3000;  /** NOTE: This number should be larger than the number of rows in the above spreadsheet **/
 
 ** Read in regular expressions **;
 
-filename xlsfile dde "excel|&_dcdata_r_path\RealProp\Prog\[&RegExpFile]Sheet1!r2c1:r&MaxExp.c2" lrecl=256 notab;
+**filename xlsfile dde "excel|&_dcdata_r_path\RealProp\Prog\[&RegExpFile]Sheet1!r2c1:r&MaxExp.c2" lrecl=256 notab;
+filename xlsfile "&_dcdata_default_path\RealProp\Prog\Updates\&RegExpFile" lrecl=2500;
 
 data RegExp (compress=no);
   length OwnerCat_re $ 3 RegExp $ 2000;
-  infile xlsfile missover dsd dlm='09'x;
+  infile xlsfile missover dsd firstobs=2;
   input OwnerCat_re RegExp;
   OwnerCat_re = put( 1 * OwnerCat_re, z3. );
   if RegExp = '' then stop;
@@ -44,7 +46,7 @@ run;
 
 ** Add owner-occupied sale flag to Parcel records **;
 
-%create_own_occ( inlib=realprop, inds=parcel_base, outds=parcel_base_ownOcc );
+%create_own_occ( inlib=realprop, inds=parcel_base, outds=parcel_base_ownocc );
 
 ** Match regular expressions against owner data file **;
 
@@ -128,11 +130,13 @@ data Realprop.Parcel_base_who_owns;
   
   format OwnerCat $owncat.;
   
-  keep ssl premiseadd premiseadd_std OwnerCat Ownername_full owneraddress owneraddress_std address3 ui_proptype in_last_ownerpt Owner_occ_sale mix1txtype mix2txtype;
+  keep ssl premiseadd premiseadd_std premiseadd_m hstd_code OwnerCat 
+       Ownername_full owneraddress owneraddress_std owneraddress_m address3 
+       ui_proptype in_last_ownerpt Owner_occ_sale mix1txtype mix2txtype;
 
 run;
 
-%File_info( data=Realprop.Parcel_base_who_owns, freqvars=OwnerCat )
+%File_info( data=Realprop.Parcel_base_who_owns, printobs=5, freqvars=OwnerCat Owner_occ_sale )
 
 run;
 
@@ -150,7 +154,7 @@ proc sort data=Realprop.Parcel_base_who_owns (where=(Ownercat not in ( '010', '0
 run;
 
 ods listing close;
-ods tagsets.excelxp file="L:\Libraries\RealProp\Prog\Updates\Parcel_base_who_owns_diagnostic.xls" style=Minimal options(sheet_interval='Bygroup' );
+ods tagsets.excelxp file="&_dcdata_default_path\RealProp\Prog\Updates\Parcel_base_who_owns_diagnostic.xls" style=Minimal options(sheet_interval='Bygroup' );
 
 proc freq data=Parcel_base_who_owns_diagnostic;
   by OwnerCat;
