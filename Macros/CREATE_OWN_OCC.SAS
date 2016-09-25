@@ -33,12 +33,26 @@
   quiet=y  /** Suppress %DC_geocode() warning messages (Y/N) **/
 );
 
+  %local APPLICABLE_UI_PROPTYPE_CODES HSTD_OWN_OCC_CODES UNIT_LBL dsid rc premiseadd_lbl owneraddress_lbl;
+
   %let APPLICABLE_UI_PROPTYPE_CODES = '10', '11', '13';
   %let HSTD_OWN_OCC_CODES = '1', '5', 'A';
+  %let UNIT_LBL = 'UNIT';
 
-  %let cleanup = %upcase( &cleanup );
-  %let quiet = %upcase( &quiet );
+  %** Get labels for address variables **;
 
+  %let dsid=%sysfunc(open(&inlib..&inds,i));
+  %if &dsid %then %do;
+      %let premiseadd_lbl=%qsysfunc(varlabel(&dsid,%sysfunc(varnum(&dsid,premiseadd))));
+      %let rc=%sysfunc(close(&dsid));
+  %end;
+  %else %do;
+    %err_mput( macro=Create_own_occ, msg=The input data set %upcase(&inlib..&inds) does not exist or could not be opened. )
+    %goto exit;
+  %end;
+  
+  %let owneraddress_lbl = Property owner tax billing address;
+  
 	** Add unique ID for remerging data **;
 
 	data 
@@ -49,13 +63,12 @@
 
 	  _create_own_occ_id = _n_;
 
-***DEBUG***;
-***IF _create_own_occ_id=5446;
-
 	  length owneraddress $ 40;
 
 	  if address2 = '' then owneraddress = address1;
 	  else owneraddress = address2;
+	  
+	  label owneraddress = "&owneraddress_lbl";
 
 	  ** Standardize addresses of DC owners for matching **;
 	  ** DC-based owners of single-fam, condo, and rental properties 
@@ -68,27 +81,27 @@
 
 	run;
 
-	%DC_geocode(
+	%DC_mar_geocode(
 	  data=_sales_owner_dc,
 	  out=_premise_geo,
 	  staddr=premiseadd,
 	  id=_create_own_occ_id ,
 	  ds_label=,
 	  keep_geo=,
-	  geo_match=N,
+	  geo_match=Y,
 	  block_match=N,
 	  listunmatched=N,
           quiet=&quiet
 	)
 
-	%DC_geocode(
+	%DC_mar_geocode(
 	  data=_sales_owner_dc,
 	  out=_owneraddress_geo,
 	  staddr=owneraddress,
 	  id=_create_own_occ_id ,
 	  ds_label=,
 	  keep_geo=,
-	  geo_match=N,
+	  geo_match=Y,
 	  block_match=N,
 	  listunmatched=N,
           quiet=&quiet
@@ -99,62 +112,81 @@
 	** Merge standardized addresses & create owner-occ. sale flag **;
 
 	data &outlib..&outds;
+	
 	  merge
 	    _&inds
-	    _premise_geo (keep=_create_own_occ_id premiseadd_std)
-	    _owneraddress_geo (keep=_create_own_occ_id owneraddress_std in=inDC);
+	    _premise_geo 
+	      (keep=_create_own_occ_id premiseadd_std m_addr _matched_
+	       rename=(m_addr=premiseadd_m _matched_=_matched_premiseadd))
+	    _owneraddress_geo 
+	      (keep=_create_own_occ_id owneraddress_std m_addr _matched_ in=inDC
+	       rename=(m_addr=owneraddress_m _matched_=_matched_owneraddress));
 	  by  _create_own_occ_id;
 
 	  length Owner_occ_sale 3;
 
-          if ui_proptype in ( &APPLICABLE_UI_PROPTYPE_CODES ) then do;
+        if ui_proptype in ( &APPLICABLE_UI_PROPTYPE_CODES ) then do;
 
-	    if hstd_code in ( &HSTD_OWN_OCC_CODES ) then 
+	    if hstd_code in ( &HSTD_OWN_OCC_CODES ) then do;
 	      owner_occ_sale = 1; /** Own-occ.: homestead deduction **/
-            else do;
+	    end;
+          else do;
 	      if premiseadd ~= "" and owneraddress ~= "" then do;
-                if inDC then do;
+              if inDC then do;
 	          if premiseadd_std ~= "" and owneraddress_std ~= "" then do;
+	            if ( indexw( upcase( premiseadd_std ), &UNIT_LBL ) and indexw( upcase( owneraddress_std ), &UNIT_LBL ) )
+	               or indexw( upcase( premiseadd_std ), '1/2' ) or indexw( upcase( owneraddress_std ), '1/2' )
+	               or upcase( _matched_premiseadd ) ~= 'STREET' or upcase( _matched_owneraddress ) ~= 'STREET' then do;
+	              /** If both addresses contain apartment numbers, either address contains 1/2, 
+	                  or both geo matched addresses not to street, use _std addresses **/
                     if premiseadd_std = owneraddress_std then 
-	              owner_occ_sale = 1; /** Own-occ.: addresses match **/
-  	            else owner_occ_sale = 0;  /** In DC, but different address **/
-                  end;
+  	                owner_occ_sale = 1; /** Own-occ.: addresses match **/
+  	              else
+  	                owner_occ_sale = 0; /** In DC, but different address **/
+  	            end;
+  	            else do;
+  	              /** Otherwise, use geo matched addresses **/
+  	              if premiseadd_m = owneraddress_m then 
+  	                owner_occ_sale = 1; /** Own-occ.: addresses match **/
+  	              else 
+  	                owner_occ_sale = 0; /** In DC, but different address **/
+  	            end;
+                end;
 	          else owner_occ_sale = .u;  /** Status unknown: missing addresses **/
 	        end;
 	        else owner_occ_sale = 0;  /** Out of state owner **/
-              end;
-              else owner_occ_sale = .u;  /** Status unknown: missing addresses **/
             end;
+            else owner_occ_sale = .u;  /** Status unknown: missing addresses **/
+          end;
 
 	  end;
-          else do;
-            owner_occ_sale = .n;  /** Not applicable **/
-          end;
+        else do;
+          owner_occ_sale = .n;  /** Not applicable **/
+        end;
 
 	  format owner_occ_sale yesno.;
 
 	  label
-	    owner_occ_sale = 'Owner-occupied sale';
+	    owner_occ_sale = 'Owner-occupied sale'
+	    premiseadd_m = "&premiseadd_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    owneraddress_m = "&owneraddress_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    ;
 
 	  drop _create_own_occ_id;
 
 	run;
 
-/***************
-        %if &g_debug = YES %then %do;
-		%File_info( data=&outlib..&outds, freqvars=owner_occ_sale )
-	%end;
-***************/
+  %exit:
 
-%if &cleanup = Y %then %do;
+  %if %mparam_is_yes( &cleanup ) %then %do;
 
-  ** Cleanup temporary files **;
+    ** Cleanup temporary files **;
 
-  proc datasets nolist library=work memtype=(data);
-    delete _&inds _sales_owner_dc _premise_geo _owneraddress_geo;
-  quit;
+    proc datasets nolist library=work memtype=(data);
+      delete _&inds _sales_owner_dc _premise_geo _owneraddress_geo;
+    quit;
 
-%end;
+  %end;
 
 %mend create_own_occ;
 
