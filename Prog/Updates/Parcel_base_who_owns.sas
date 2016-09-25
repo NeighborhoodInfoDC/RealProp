@@ -27,7 +27,5 @@
 %DCData_lib( MAR )
 
 
-%Parcel_base_who_owns( 
-  RegExpFile = Owner type codes & reg expr 09-28-11.txt
-)
+%Parcel_base_who_owns()
 

@@ -12,7 +12,7 @@
  Modifications:
 **************************************************************************/
 
-%macro Parcel_base_who_owns( RegExpFile=, Finalize=Y, Revisions= );
+%macro Parcel_base_who_owns( RegExpFile=Owner type codes reg expr.txt, Finalize=Y, Revisions= );
 
   %local MaxExp Outlib parcel_base_file_dtmf dtm dtmf;
 
@@ -38,7 +38,7 @@
 
     %let dtm = %sysfunc( inputn( &parcel_base_file_dtmf, anydtdtm. ) );
     %let dtmf = %sysfunc( putn( %sysfunc( datepart( &dtm ) ), worddatx12. ) ),%sysfunc( putn( %sysfunc( timepart( &dtm ) ), timeampm8. ) );
-    %let revisions = Updated with Parcel_base (&dtmf), RegExpFile=&RegExpFile..;
+    %let revisions = Updated with Parcel_base (&dtmf).;
   
   %end;
   
