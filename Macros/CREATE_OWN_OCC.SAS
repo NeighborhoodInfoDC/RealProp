@@ -33,13 +33,26 @@
   quiet=y  /** Suppress %DC_geocode() warning messages (Y/N) **/
 );
 
+  %local APPLICABLE_UI_PROPTYPE_CODES HSTD_OWN_OCC_CODES UNIT_LBL dsid rc premiseadd_lbl owneraddress_lbl;
+
   %let APPLICABLE_UI_PROPTYPE_CODES = '10', '11', '13';
   %let HSTD_OWN_OCC_CODES = '1', '5', 'A';
   %let UNIT_LBL = 'UNIT';
 
-  %let cleanup = %upcase( &cleanup );
-  %let quiet = %upcase( &quiet );
+  %** Get labels for address variables **;
 
+  %let dsid=%sysfunc(open(&inlib..&inds,i));
+  %if &dsid %then %do;
+      %let premiseadd_lbl=%qsysfunc(varlabel(&dsid,%sysfunc(varnum(&dsid,premiseadd))));
+      %let rc=%sysfunc(close(&dsid));
+  %end;
+  %else %do;
+    %err_mput( macro=Create_own_occ, msg=The input data set %upcase(&inlib..&inds) does not exist or could not be opened. )
+    %goto exit;
+  %end;
+  
+  %let owneraddress_lbl = Property owner tax billing address;
+  
 	** Add unique ID for remerging data **;
 
 	data 
@@ -54,6 +67,8 @@
 
 	  if address2 = '' then owneraddress = address1;
 	  else owneraddress = address2;
+	  
+	  label owneraddress = "&owneraddress_lbl";
 
 	  ** Standardize addresses of DC owners for matching **;
 	  ** DC-based owners of single-fam, condo, and rental properties 
@@ -97,6 +112,7 @@
 	** Merge standardized addresses & create owner-occ. sale flag **;
 
 	data &outlib..&outds;
+	
 	  merge
 	    _&inds
 	    _premise_geo 
@@ -151,27 +167,26 @@
 	  format owner_occ_sale yesno.;
 
 	  label
-	    owner_occ_sale = 'Owner-occupied sale';
+	    owner_occ_sale = 'Owner-occupied sale'
+	    premiseadd_m = "&premiseadd_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    owneraddress_m = "&owneraddress_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    ;
 
 	  drop _create_own_occ_id;
 
 	run;
 
-/***************
-        %if &g_debug = YES %then %do;
-		%File_info( data=&outlib..&outds, freqvars=owner_occ_sale )
-	%end;
-***************/
+  %exit:
 
-%if &cleanup = Y %then %do;
+  %if %mparam_is_yes( &cleanup ) %then %do;
 
-  ** Cleanup temporary files **;
+    ** Cleanup temporary files **;
 
-  proc datasets nolist library=work memtype=(data);
-    delete _&inds _sales_owner_dc _premise_geo _owneraddress_geo;
-  quit;
+    proc datasets nolist library=work memtype=(data);
+      delete _&inds _sales_owner_dc _premise_geo _owneraddress_geo;
+    quit;
 
-%end;
+  %end;
 
 %mend create_own_occ;
 
