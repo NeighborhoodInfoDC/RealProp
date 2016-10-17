@@ -12,7 +12,8 @@
 
  Modifications:
   04/18/16 RMP - Re-wrote Parcel_geo_update to comply with new ownerpt.
- 
+  10/17/16 PAT - Added missing geo_file_dsname macro var, needed for 
+                 metadata registration.
 **************************************************************************/
 
 /** Macro Parcel_geo_update - Start Definition **/
@@ -43,6 +44,7 @@
   %let retain_temp = %upcase( &retain_temp );
   %let info = %upcase( &info );
   %let meta = %upcase( &meta );
+  %let geo_file_dsname = %scan( &geo_file, 2, . );
   
   %let ds_label = DC real property parcels - geographic identifiers;
   
@@ -96,7 +98,7 @@ run;
 		(drop= _matched_ _notes_ _score_  address_id 
 		m_addr m_city m_obs m_state m_zip newadd newadd_std x y )
 
-	Pb_ownerpt_2016_04_retain (in=b);
+	Pb_&update_file._retain (in=b);
 
 	length City $ 1;
     city = "1";
@@ -152,6 +154,10 @@ proc sort data = Parcel_geo_update; by ssl; run;
       updatemode=nomissingcheck;
     by ssl;
     
+    ** Recode x/y coordinate missing values **;
+    if not( 380000 < x_coord < 410000 ) then x_coord = .u;
+    if not( 120000 < y_coord < 150000 ) then y_coord = .u;
+    
   run;
   
 
@@ -181,6 +187,12 @@ proc sort data = Parcel_geo_update; by ssl; run;
     ** Replace existing base file **;
 
     data &geo_file (label="&ds_label" sortedby=ssl);
+      set &out_file;
+    run;
+
+	** Save backup base file **;
+
+	data &geo_file._&update_date. (label="&ds_label" sortedby=ssl);
       set &out_file;
     run;
 
@@ -226,7 +238,7 @@ proc sort data = Parcel_geo_update; by ssl; run;
   
   %note_mput( macro=Parcel_geo_update, msg=Exiting macro. )
 
-%mend arcel_geo_update_new;
+%mend Parcel_geo_update_new;
 
 /** End Macro Definition **/
 

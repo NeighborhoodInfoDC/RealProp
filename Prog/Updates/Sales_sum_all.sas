@@ -21,6 +21,8 @@
   01/13/14 PAT  Updated for new SAS1 server.
   03/30/14 PAT Added voterpre2012 summary. 
   07/28/14 PAT Updated for sales through 2013-Q4.
+  05/27/16 RP UPdated for sales through 2016-Q1.
+  10/07/16 RP Updated for sales through 2016-Q2.
 **************************************************************************/
 
 %include "F:\DCData\SAS\Inc\StdRemote.sas";
@@ -31,8 +33,8 @@
 /**rsubmit;**/
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2013;
-%let end_qtr = 4;
+%let end_yr = 2016;
+%let end_qtr = 2;
 
 /** Change to N for testing, Y for final batch mode run **/
 %let register = Y;

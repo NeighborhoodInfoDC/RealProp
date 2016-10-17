@@ -18,6 +18,7 @@
  Modifications:
   10/12/14 PAT Updated for SAS1 server.
                Updated regular expressions to 09-28-11.
+  10/7/16 RP Update for Sept-2016 parcel base
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";

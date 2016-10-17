@@ -9,7 +9,7 @@
  
  Description:  Read ITS Public Extract, ITSPE Facts, and ITSPE Sales
 
- Modifications:
+ Modifications: 10-3-16 Update with new data -RP
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -19,10 +19,10 @@
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\Test 01-08-16\;
-%let PEfile = ITS_Public_Extract.csv;
-%let FactsFile = ITSPE_Facts.csv;
-%let SalesFile = Itspe_property_sales.csv;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2016-10\;
+%let PEfile = Integrated_Tax_System_Public_Extract.csv;
+%let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
+%let SalesFile = Integrated_Tax_System_Public_Extract_Property_Sales.csv;
 
 /** Read ITS Public Extract File **/
 
@@ -654,9 +654,9 @@ data realprop.Itspe_property_sales;
 	c_LASTMODIFI
 ;
 
-	LAST_SALE1 = input( substr( c_LAST_SALE1, 1, 10 ), mmddyy10. );
-	DEED_DATE = input( substr( c_DEED_DATE, 1, 10 ), mmddyy10. );
-	LASTMODIFI = input( substr( c_LASTMODIFI, 1, 10 ), mmddyy10. );
+	LAST_SALE1 = input( substr( c_LAST_SALE1, 1, 10 ), yymmdd10. );
+	DEED_DATE = input( substr( c_DEED_DATE, 1, 10 ), yymmdd10. );
+	LASTMODIFI = input( substr( c_LASTMODIFI, 1, 10 ), yymmdd10. );
   
   format LAST_SALE1 mmddyy10.;
 	format	 DEED_DATE mmddyy10.;
@@ -668,7 +668,7 @@ drop c_LAST_SALE1 c_DEED_DATE c_LASTMODIFI
 run;
 
 proc sort data = realprop.Itspe_property_sales; by ssl; run;
-%File_info( data=RealProp.ITSPE_Facts )
+%File_info( data=realprop.Itspe_property_sales )
 
 
 

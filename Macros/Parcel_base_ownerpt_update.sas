@@ -14,6 +14,7 @@
   08/03/06  PT Added revisions= parameter.  Added OWNNAME2 to output ds.
                Expanded length of OWNERNAME to 70 chars.
   12/19/13 PAT Updated for new SAS1 server.
+  4/21/16 Update for new version of ownerpt
 **************************************************************************/
 
 /** Macro Parcel_base_ownerpt_update - Start Definition **/
@@ -23,6 +24,7 @@
   base_file=RealPr_r.Parcel_base, 
   geo_file=RealPr_r.Parcel_geo,
   out_file=Parcel_base_&update_file,
+  out_file2=RealPr_r.Parcel_base_&update_file,
   revisions=Updated with &update_file..,
   finalize=N,
   meta=Y,
@@ -158,7 +160,8 @@
       else do;
         ** Existing parcel **;
         new_ownerpt_parcel = 0;
-        %if &list_changes = Y %then %do;
+		/* Commented out error for new ownerpt, RP 4-20-16 */
+       /* %if &list_changes = Y %then %do;
           if premiseadd ~= premiseadd_new then do;
             %note_put( macro=Parcel_base_ownerpt_update, 
                        msg="Parcel address has changed: " ssl= / 
@@ -169,7 +172,7 @@
                        msg="Parcel property type has changed: " ssl= / 
                            "      " ui_proptype= / "  " ui_proptype_new= )
           end;
-        %end;
+        %end;*/
       end;
       premiseadd = premiseadd_new;
       ui_proptype = ui_proptype_new;
@@ -288,6 +291,10 @@
     ** Replace existing base file **;
 
     data &base_file (label="&ds_label" sortedby=ssl);
+      set &out_file;
+    run;
+
+	data &out_file2 (label="&ds_label" sortedby=ssl);
       set &out_file;
     run;
 
