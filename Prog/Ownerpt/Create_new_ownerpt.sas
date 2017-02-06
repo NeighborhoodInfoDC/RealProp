@@ -22,7 +22,9 @@
 %DCData_lib( RealProp )
 
 ** Date for ownerpt **;
+
 %let ownerptdt = 2017_02;
+%let ownerptdt = 2016_12;
 
 
 /* Sort input datasets */
