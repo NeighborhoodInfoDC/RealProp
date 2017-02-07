@@ -23,9 +23,11 @@
   07/28/14 PAT Updated for sales through 2013-Q4.
   05/27/16 RP UPdated for sales through 2016-Q1.
   10/07/16 RP Updated for sales through 2016-Q2.
+  02/07/17 RP Updated for sales through 2016-Q4.
 **************************************************************************/
 
-%include "F:\DCData\SAS\Inc\StdRemote.sas";
+*%include "F:\DCData\SAS\Inc\StdRemote.sas";
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -34,10 +36,10 @@
 
 /** Update with latest full year and quarter of sales data available **/
 %let end_yr = 2016;
-%let end_qtr = 2;
+%let end_qtr = 4;
 
 /** Change to N for testing, Y for final batch mode run **/
-%let register = Y;
+%let register = N;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;

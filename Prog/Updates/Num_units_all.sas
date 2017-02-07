@@ -22,17 +22,19 @@
   07/27/14 PAT Updated for 2014-Q1.
   05/27/16 RP Updated for 2016-Q1
   10/07/16 RP Updated for 2016-Q3
+  02/17/17 RP Updated for 2016-Q4
 **************************************************************************/
 
-%include "F:\DCData\SAS\Inc\StdRemote.sas";
+*%include "F:\DCData\SAS\Inc\StdRemote.sas";
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 /**rsubmit;**/
 
-%let end_yr = 2016;
-%let end_qtr = 3;
+%let end_yr = 2017;
+%let end_qtr = 1;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
