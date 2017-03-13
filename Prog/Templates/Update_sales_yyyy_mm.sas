@@ -4,7 +4,7 @@
  Project:  NeighborhoodInfo DC
  Author:   
  Created:  
- Version:  SAS 9.1
+ Version:  SAS 9.4
  Environment:  Windows with SAS/Connect
  
  Description:  Update Sales_master and Sales_res_clean data sets on
@@ -13,18 +13,13 @@
  Modifications:
 **************************************************************************/
 
-%include "K:\Metro\PTatian\DCData\SAS\Inc\Stdhead.sas";
-%include "K:\Metro\PTatian\DCData\SAS\Inc\AlphaSignon.sas" /nosource2;
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
-
-rsubmit;
+%DCData_lib( MAR )
 
 %Update_sales( year=yyyy, month=mm, finalize=N )
 
 run;
 
-endrsubmit;
-
-signoff;
