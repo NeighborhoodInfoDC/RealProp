@@ -22,6 +22,7 @@
   08/16/12 RAG Added new 2010 and 2012 geography vars: 
   12/31/13 PAT Updated for new SAS1 server.
   03/30/14 PAT Added voterpre2012 to list of geography vars. 
+  03/16/17 RP Added bridge park to list of geography vars.
 **************************************************************************/
 
 /** Macro Sales_pars - Start Definition **/
@@ -47,7 +48,7 @@
 %let geo_vars_cat = 
   anc2002 casey_nbr2003 casey_ta2003 city cluster2000
   cluster_tr2000 eor geo2000 psa2004 ward2002 zip
-  geo2010 psa2012 ward2012 anc2012 voterpre2012;
+  geo2010 psa2012 ward2012 anc2012 voterpre2012 bridgepk;
 
 %let geo_vars_xy = x_coord y_coord geoblk2000 geoblk2010;
 

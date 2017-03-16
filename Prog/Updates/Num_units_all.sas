@@ -22,17 +22,18 @@
   07/27/14 PAT Updated for 2014-Q1.
   05/27/16 RP Updated for 2016-Q1
   10/07/16 RP Updated for 2016-Q3
+  03/16/17 RP Updated through 2017-Q1 and new bridge park geo.
 **************************************************************************/
 
-%include "F:\DCData\SAS\Inc\StdRemote.sas";
+%include "L:\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 /**rsubmit;**/
 
-%let end_yr = 2016;
-%let end_qtr = 3;
+%let end_yr = 2017;
+%let end_qtr = 1;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -208,11 +209,7 @@ run;
 %Summarize( level=ward2012 )
 %Summarize( level=voterpre2012 )
 %Summarize( level=geo2010 )
-%Summarize( level=bridgepark )
+%Summarize( level=bridgepk )
 
 run;
-
-/**endrsubmit;**/
-
-/**signoff;**/
 
