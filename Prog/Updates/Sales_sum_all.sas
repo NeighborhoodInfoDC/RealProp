@@ -237,6 +237,7 @@ run;
 %Summarize( level=ward2012 )
 %Summarize( level=zip )
 %Summarize( level=voterpre2012 )
+%Summarize( level=bridgepark )
 
 run;
 
