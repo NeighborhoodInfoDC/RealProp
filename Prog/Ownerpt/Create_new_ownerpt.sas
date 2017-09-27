@@ -23,6 +23,7 @@
 
 ** Date for ownerpt **;
 
+%let ownerptdt = 2017_09;
 %let ownerptdt = 2017_02;
 %let ownerptdt = 2016_12;
 

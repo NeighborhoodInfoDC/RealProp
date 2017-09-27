@@ -11,7 +11,8 @@
 
 
  Modifications: 10-3-16 Update with new data -RP
-				02-03-17 Update with Q4-2016 data -RP
+				02-03-17 Update with Q4-2016 data -RP 
+				09-27-17 Updste with new data -IM
  Modifications: 10-3-16 Update with Q2-2016 data -RP
 				12-8-16 Update with Q3-2016 data -RP
 **************************************************************************/
@@ -23,6 +24,7 @@
 
 /* Path to raw data csv files and names */
 
+%let filepath = &_dcdata_r_path\RealProp\Raw\2017-09\;
 %let filepath = &_dcdata_r_path\RealProp\Raw\2017-02\;
 %let filepath = &_dcdata_r_path\RealProp\Raw\2016-12\;
 
