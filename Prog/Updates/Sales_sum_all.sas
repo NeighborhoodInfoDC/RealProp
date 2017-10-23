@@ -24,6 +24,7 @@
   05/27/16 RP UPdated for sales through 2016-Q1.
   10/07/16 RP Updated for sales through 2016-Q2.
   03/16/17 RP update for sales through 2017-Q4 and new bridge park geo.
+  10/22/17 IM update for sales through 2017-Q2
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -34,8 +35,8 @@
 /**rsubmit;**/
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2016;
-%let end_qtr = 4;
+%let end_yr = 2017;
+%let end_qtr = 3;
 
 /** Change to N for testing, Y for final batch mode run **/
 %let register = N;
