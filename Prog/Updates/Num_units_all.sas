@@ -23,6 +23,7 @@
   05/27/16 RP Updated for 2016-Q1
   10/07/16 RP Updated for 2016-Q3
   03/16/17 RP Updated through 2017-Q1 and new bridge park geo.
+  10/22/17 IM Updated for 2017- Q3
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -33,7 +34,7 @@
 /**rsubmit;**/
 
 %let end_yr = 2017;
-%let end_qtr = 1;
+%let end_qtr = 3;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
