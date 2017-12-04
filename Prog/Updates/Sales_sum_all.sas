@@ -25,6 +25,7 @@
   10/07/16 RP Updated for sales through 2016-Q2.
   03/16/17 RP update for sales through 2017-Q4 and new bridge park geo.
   10/22/17 IM update for sales through 2017-Q2
+  12/4/17  RP Updated code to %Finalize_data_set macro and clean up unneeded legacy code.
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -36,13 +37,10 @@
 
 /** Update with latest full year and quarter of sales data available **/
 %let end_yr = 2017;
-%let end_qtr = 3;
-
-/** Change to N for testing, Y for final batch mode run **/
-%let register = N;
+%let end_qtr = 2;
 
 /** Leave this macro var blank unless doing a special update **/
-%let revisions_sales_sum = ;
+%let revisions = Data updata for &end_qtr.-&end_yr. ;
 
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
@@ -163,7 +161,7 @@ run;
 
 %Super_transpose( 
   data=Sales&filesuf,
-  out=Realprop.Sales_sum&filesuf (label="&file_lbl" sortedby=&level),
+  out=Sales_sum&filesuf._out (label="&file_lbl" sortedby=&level),
   var=
     sales_tot sales_sf sales_condo 
     mprice_tot mprice_sf mprice_condo
@@ -176,8 +174,8 @@ run;
 quit;
 
 %if &end_qtr < 4 %then %do;
-  proc datasets library=RealProp memtype=(data) nolist;
-    modify Sales_sum&filesuf;
+  proc datasets library=work memtype=(data) nolist;
+    modify Sales_sum&filesuf._out;
     label
       sales_tot_&end_yr = "Number of sales, s.f. & condo, &end_yr-Q&end_qtr"
       sales_sf_&end_yr = "Number of sales, single-family, &end_yr-Q&end_qtr"
@@ -193,30 +191,23 @@ quit;
 
 /**x "purge [dcdata.realprop.data]Sales_sum&filesuf..*";**/
 
-%file_info( data=RealProp.Sales_sum&filesuf, printobs=0 )
-
 run;
 
-** Register metadata **;
+** Finalize dataset **;
 
-%if &register = Y %then %do;
-
-  %if &revisions_sales_sum = %then 
-    %let revisions = Updated through &end_yr-Q&end_qtr with &lib..&data (%trim(&filemod_dt), %trim(&filemod_tm)).;
-  %else 
-    %let revisions = &revisions_sales_sum;
-
-  %put revisions=&revisions;
-
-  %Dc_update_meta_file(
-    ds_lib=RealProp,
-    ds_name=Sales_sum&filesuf,
-    creator_process=Sales_sum_all.sas,
-    restrictions=None,
-    revisions=%str(&revisions)
+%Finalize_data_set(
+    data=Sales_sum&filesuf._out,
+    out=Sales_sum&filesuf,
+    outlib=Realprop,
+    label="&file_lbl",
+    sortby=&level,
+    /** Metadata parameters **/
+    revisions=%str(&revisions),
+    /** File info parameters **/
+    printobs=5,
+    freqvars=
   )
-  
-%end;
+
 
 run;
 
