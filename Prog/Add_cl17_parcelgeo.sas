@@ -18,11 +18,11 @@
 %DCData_lib( RealProp )
 
 
-data Parcel_geo_addbpk;
+data Parcel_geo_cl17;
 	set realprop.Parcel_geo;
 	%Block10_to_cluster17( );
 run;
 
 data realprop.Parcel_geo_2017_09;
-	set Parcel_geo_addbpk;
+	set Parcel_geo_cl17;
 run;

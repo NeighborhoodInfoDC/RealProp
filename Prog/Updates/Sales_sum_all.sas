@@ -40,7 +40,7 @@
 %let end_qtr = 3;
 
 /** Change to N for testing, Y for final batch mode run **/
-%let register = N;
+%let register = Y;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
