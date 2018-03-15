@@ -46,7 +46,7 @@
 %** Geography variables **;
 
 %let geo_vars_cat = 
-  anc2002 casey_nbr2003 casey_ta2003 city cluster2000
+  anc2002 casey_nbr2003 casey_ta2003 city cluster2000 cluster2017
   cluster_tr2000 eor geo2000 psa2004 ward2002 zip
   geo2010 psa2012 ward2012 anc2012 voterpre2012 bridgepk;
 
