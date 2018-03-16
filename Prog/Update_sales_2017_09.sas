@@ -19,7 +19,7 @@
 %DCData_lib( RealProp )
 %DCData_lib( MAR )
 
-%Update_sales( year=2017, month=09, finalize=N )
+%Update_sales( year=2017, month=09, finalize=Y )
 
 run;
 
