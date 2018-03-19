@@ -24,6 +24,7 @@
   10/07/16 RP Updated for 2016-Q3
   03/16/17 RP Updated through 2017-Q1 and new bridge park geo.
   10/22/17 IM Updated for 2017- Q3
+  03/15/18 NS Updated for Cluster2017 geographies
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -211,6 +212,7 @@ run;
 %Summarize( level=voterpre2012 )
 %Summarize( level=geo2010 )
 %Summarize( level=bridgepk )
+%Summarize( level=Cluster2017 )
 
 run;
 

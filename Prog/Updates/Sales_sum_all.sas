@@ -25,6 +25,7 @@
   10/07/16 RP Updated for sales through 2016-Q2.
   03/16/17 RP update for sales through 2017-Q4 and new bridge park geo.
   10/22/17 IM update for sales through 2017-Q2
+  03/15/18 NS update for Cluster2017 geographic data
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -39,7 +40,7 @@
 %let end_qtr = 3;
 
 /** Change to N for testing, Y for final batch mode run **/
-%let register = N;
+%let register = Y;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
@@ -240,6 +241,7 @@ run;
 %Summarize( level=zip )
 %Summarize( level=voterpre2012 )
 %Summarize( level=bridgepk )
+%Summarize( level=Cluster2017 )
 
 run;
 
