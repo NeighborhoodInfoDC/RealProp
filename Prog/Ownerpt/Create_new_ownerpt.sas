@@ -23,7 +23,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2017_09;
+%let ownerptdt = 2018_03;
 
 
 /* Sort input datasets */
