@@ -339,7 +339,7 @@ run;
   sortby=ssl,
   /** Metadata parameters **/
   restrictions=None,
-  revisions=%str(&revisions),
+  revisions=%str(New Ownerpt as of &ownerptdt.),
   /** File info parameters **/
   printobs=5,
   freqvars=acceptcode acceptcode_new class3 class3ex del_code hstd_code 
