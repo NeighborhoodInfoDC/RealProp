@@ -147,7 +147,7 @@
 	drop  c_SALEDATE c_GIS_LAST_MOD_DTTM c_usecode _i_;
 
 	label
- 
+ 	  OBJECTID="Object ID Provided by OTR"
 	  Ssl = "Property Identification Number (Square/Suffix/Lot)"
 	  Usecode = "Property Use Codes"
 	  Landarea = "Square footage of property from the recorded deed"
@@ -185,10 +185,11 @@
 		STYLE = "Building style"
 		STYLE_D	= "Building style description"
 		YR_Rmdl = "Last year residence was remodeled"
-		
+		EXTRACTDAT = "Date file was uploaded to the Open Data Portal" 
 
 	;
 
    run;
 
+ /*add code for COMM pt and CONDO PT*/ 
 %mend;
