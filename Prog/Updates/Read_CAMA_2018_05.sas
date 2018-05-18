@@ -18,77 +18,13 @@
 %DCData_lib( RealProp )
 
 
-%let date=2018-05; 
+%let filedate=2018-05; 
 
+/*Read in raw cama files*/
 %Read_cama; 
 
+/*merge files and figure out how to deal with duplicates*/ 
 
-  /** Input file information **/
-  inpath=&_dcdata_r_path\RealProp\Raw\2014-03,
-  infile=CAMARespt,
-  intype=sas7bdat,								
-  camatype=Respt,								/*Type of CAMA (ResPt, CondoPt, CommPt)*/
-  outfilesuf=,
-  filemonth=03,                                  /* Month of file extract (number) */
-  fileyear=2014,								 /* Year of file extract (4-digits) */
-  filedate='10mar2014'd,									/* Full date of file extract (mmDDyyyy)*/
-  /** Name of previous ownerpt data set 
-  prev_file=CAMARespt_xxxx_zz,**/
-  
-  /** List data corrections here **/
-  corrections=
-	saleyear=year(saledate);
-	if saleyear > 2014 then saledate=saledate-36524.2;
-	label saleyear="Sale Year Variable to Correct Sale Date";) *Check next -file many dates like 2098 instead of 1998); 
-
-
-%Read_cama_macro( 
-
-  /** Input file information **/
-  inpath=&_dcdata_r_path\RealProp\Raw\2013-10,
-  infile=CAMACommpt,
-  intype=sas7bdat,
-   camatype=CommPt,								/*Type of CAMA (ResPt, CondoPt, CommPt)*/
-  outfilesuf=,
-  filemonth=08,                                  /* Month of file extract (number) */
-  fileyear=2013,								 /* Year of file extract (4-digits) */
-  filedate='13aug2013'd,									/* Full date of file extract (mmDDyyyy)*/
-  /** Name of previous ownerpt data set 
-  prev_file=CAMACommpt_xxxx_zz,**/
-      
-  /** List data corrections here **/
-  corrections=
-      
-)
-
-
-%Read_cama_macro( 
-
-  /** Input file information **/
-  inpath=&_dcdata_r_path\RealProp\Raw\2013-10,
-  infile=CAMACondopt,
- 	intype=sas7bdat,
-   camatype=CondoPt,								/*Type of CAMA (ResPt, CondoPt, CommPt)*/
-  outfilesuf=,
-  filemonth=08,                                  /* Month of file extract (number) */
-  fileyear=2013,								 /* Year of file extract (4-digits) */
-  filedate='13aug2013'd,									/* Full date of file extract (mmDDyyyy)*/
-  /** Name of previous ownerpt data set 
-  prev_file=CAMACondopt_xxxx_zz,**/
-    
-  
-  /** List data corrections here **/
-  corrections=
-      
-);
-data camarespt (drop=old_units);
-set realpr_r.Camarespt_2014_03 (rename=(num_units=old_units));
-length num_units 3.;
-
-num_units=old_units;
-label num_units="Number of Units";
-
-run;
 data Cama;
 set realpr_r.Camacommpt_2013_08 (in=a) realpr_r.Camacondopt_2013_08 (in=b) camarespt (in=c);
 
