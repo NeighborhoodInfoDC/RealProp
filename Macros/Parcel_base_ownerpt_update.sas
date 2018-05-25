@@ -131,16 +131,6 @@
 
   ** Begin update **;
 
-	data ufile;
-		length ssl $ 17.; 
-		set RealPr_r.&update_file;
-	run;
-
-	proc sort data = &base_file. out = bfile; by ssl; run;
-	proc sort data = ufile; by ssl; run;
-
-
-
   data &out_file (label="&ds_label [updated by &update_file]" compress=no);
   
     ** Adjust length of ownername var. (was changed from 40 to 70) **;
@@ -148,8 +138,8 @@
     length OWNERNAME $ 70 ;
 
     update 
-      /*&base_file
-      RealPr_r.&update_file*/ bfile ufile
+      &base_file
+      RealPr_r.&update_file
        (keep=&keep_vars &xy_vars &ownname2 ownerpt_extractdat recordno
         rename=(recordno=ownerpt_recordno_last ownerpt_extractdat=ownerpt_extractdat_last
                 premiseadd=premiseadd_new ui_proptype=ui_proptype_new)
