@@ -13,8 +13,11 @@
  Modifications: 10-3-16 Update with new data -RP
 				02-03-17 Update with Q4-2016 data -RP 
 				09-27-17 Updste with new data -IM
+				03-20-18 Update with new data -NS
  Modifications: 10-3-16 Update with Q2-2016 data -RP
 				12-8-16 Update with Q3-2016 data -RP
+				5-25-18 Update with Q1-2018 data -RP
+				
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -22,9 +25,12 @@
 ** Define libraries **;
 %DCData_lib( RealProp );
 
+** Note revisions **;
+%let revisions = Updated through 2018-05;
+
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2017-09\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2018-05\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
@@ -34,7 +40,7 @@
 
 filename fimport "&filepath.&pefile." lrecl=2000;
 
-data realprop.ITS_Public_Extract;
+data ITS_Public_Extract;
 
   infile FIMPORT delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
 
@@ -473,15 +479,27 @@ drop c_SALEDATE c_DEEDDATE c_EXTRACTDAT in_usecode;
 
 run;
 
-proc sort data = realprop.ITS_Public_Extract; by ssl; run;
-%File_info( data=RealProp.ITS_Public_Extract )
+
+%Finalize_data_set( 
+  /** Finalize data set parameters **/
+  data=ITS_Public_Extract,
+  out=ITS_Public_Extract,
+  outlib=realprop,
+  label="ITS Public Extract File from DC Open Data",
+  sortby=ssl,
+  /** Metadata parameters **/
+  restrictions=None,
+  revisions=%str(&revisions),
+  /** File info parameters **/
+  printobs=5
+);
 
 
 /** Read ITSPE Facts File **/
 
 filename fimport "&filepath.&factsfile." lrecl=2000;
 
-data realprop.ITSPE_Facts;
+data ITSPE_Facts;
 
   infile FIMPORT delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
 
@@ -579,16 +597,26 @@ data realprop.ITSPE_Facts;
 
 run;
 
-proc sort data = realprop.ITSPE_Facts; by ssl; run;
-%File_info( data=RealProp.ITSPE_Facts )
-
+%Finalize_data_set( 
+  /** Finalize data set parameters **/
+  data=ITSPE_Facts,
+  out=ITSPE_Facts,
+  outlib=realprop,
+  label="ITS Facts File from DC Open Data",
+  sortby=ssl,
+  /** Metadata parameters **/
+  restrictions=None,
+  revisions=%str(&revisions),
+  /** File info parameters **/
+  printobs=5
+);
 
 
 /** Read ITSPE Sales File **/
 
 filename fimport "&filepath.&Salesfile." lrecl=2000;
 
-data realprop.Itspe_property_sales;
+data Itspe_property_sales;
 
   infile FIMPORT delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
 
@@ -673,8 +701,20 @@ drop c_LAST_SALE1 c_DEED_DATE c_LASTMODIFI
 
 run;
 
-proc sort data = realprop.Itspe_property_sales; by ssl; run;
-%File_info( data=realprop.Itspe_property_sales )
+%Finalize_data_set( 
+  /** Finalize data set parameters **/
+  data=Itspe_property_sales,
+  out=Itspe_property_sales,
+  outlib=realprop,
+  label="ITS Property Sales File from DC Open Data",
+  sortby=ssl,
+  /** Metadata parameters **/
+  restrictions=None,
+  revisions=%str(&revisions),
+  /** File info parameters **/
+  printobs=5
+);
+
 
 
 

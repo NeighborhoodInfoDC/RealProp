@@ -23,7 +23,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2017_09;
+%let ownerptdt = 2018_05;
 
 
 /* Sort input datasets */
@@ -304,7 +304,7 @@ data itspe_all;
 run;
 
 
-data realprop.ownerpt_&ownerptdt.;
+data ownerpt_&ownerptdt.;
 	set itspe_all
 	(drop = mixeduse saletype);
 
@@ -322,7 +322,7 @@ run;
 
 
 %Dup_check(
-  data=RealProp.ownerpt_&ownerptdt.,
+  data=ownerpt_&ownerptdt.,
   by=ssl,
   id=premiseadd,
   out=_dup_check,
@@ -330,16 +330,25 @@ run;
   count=dup_check_count
 )
 
-
-
-%File_info( data=realprop.ownerpt_&ownerptdt., printobs=5,
+%Finalize_data_set( 
+  /** Finalize data set parameters **/
+  data=ownerpt_&ownerptdt.,
+  out=ownerpt_&ownerptdt.,
+  outlib=realprop,
+  label="Recreated Ownerpt File from ITS Data",
+  sortby=ssl,
+  /** Metadata parameters **/
+  restrictions=None,
+  revisions=%str(New Ownerpt as of &ownerptdt.),
+  /** File info parameters **/
+  printobs=5,
   freqvars=acceptcode acceptcode_new class3 class3ex del_code hstd_code 
            ownerpt_extractdat mix1class_3d mix2class_3d mix1txtype mix2txtype
            nbhd part_part pchildcode proptype qdrntname saletype_new sub_nbhd usecode vaclnduse
            ui_proptype
- )
+);
 
-run;
+
 
 
 /* End of Program */
