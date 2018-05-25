@@ -59,7 +59,7 @@
 
   %if &update_file = %then %do;
     %err_mput( macro=Parcel_base_ownerpt_update,
-               msg=An update file must be specified in the UPDATE_FILE= parameter. )
+               msg=An update file must be specified in the UPDATE_FILE= parameter. ) 
     %goto exit;
   %end;
 
@@ -67,7 +67,7 @@
   
   %if not %Dataset_exists( RealPr_r.&update_file ) %then %do;
     %err_mput( macro=Parcel_base_ownerpt_update,
-               msg=The specified update file UPDATE_FILE=&update_file does not exist. )
+               msg=The specified update file UPDATE_FILE=&update_file does not exist. ) 
     %goto exit;
   %end;
 
@@ -87,7 +87,7 @@
     %err_mput( macro=Parcel_base_ownerpt_update,
                msg=The update file &update_file (or a later one) has already been applied to this base file. )
     %err_mput( macro=Parcel_base_ownerpt_update,
-               msg=Cannot apply a previous update to the current &base_file file. )
+               msg=Cannot apply a previous update to the current &base_file file. ) 
     %goto exit;
   %end;
 
@@ -135,7 +135,7 @@
   
     ** Adjust length of ownername var. (was changed from 40 to 70) **;
     
-    length OWNERNAME $ 70;
+    length OWNERNAME $ 70 ;
 
     update 
       &base_file
@@ -284,19 +284,42 @@
 
   %** Process final version of updated parcel base file **;
 
-  %if &finalize = Y %then %do;
-
-    %note_mput( macro=Parcel_base_ownerpt_update, msg=Existing parcel base (&base_file) will be replaced (FINALIZE=&finalize). )
+    %note_mput( macro=Parcel_base_ownerpt_update, msg=Existing parcel base (&base_file) will be replaced in a batch session )
 
     ** Replace existing base file **;
 
-    data &base_file (label="&ds_label" sortedby=ssl);
-      set &out_file;
-    run;
+	  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=&out_file.,
+	  out=parcel_base,
+	  outlib=realprop,
+	  label="&ds_label.",
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=ui_proptype
+	  );
 
-	data &out_file2 (label="&ds_label" sortedby=ssl);
-      set &out_file;
-    run;
+	  ** Saved dated copy of base file **;
+
+	  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=&out_file.,
+	  out=Parcel_base_&update_file,
+	  outlib=realprop,
+	  label="&ds_label.",
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=ui_proptype
+	  );
+
 
     %let per_pos = %sysfunc(indexc("&base_file",'.'));
     %let len = %sysfunc( length( "&base_file" ) );
@@ -307,37 +330,10 @@
     %else %do; 
       %let base_file_dsname = &base_file;
     %end;
-
-    /**x "purge /keep=2 [dcdata.realprop.data]&base_file_dsname..*";**/
     
-    %if &meta = Y %then %do;
-
-      ** Update metadata entry **;
-
-      %Dc_update_meta_file(
-        ds_lib=Realprop,
-        ds_name=&base_file_dsname,
-        creator_process=Parcel_base_&update_file..sas,
-        restrictions=None,
-        revisions=&revisions
-      )
-      
-    %end;
-
-    %let info_file = &base_file;
-
-  %end;
-  %else %do;
 
     %let info_file = &out_file;
 
-    %warn_mput( macro=Parcel_base_ownerpt_update, msg=Existing parcel base (&base_file) will NOT be replaced because FINALIZE=&finalize.. )
-
-  %end;
-
-  %if &info = Y %then %do;
-    %file_info( data=&info_file, freqvars=ui_proptype )
-  %end;
 
   proc freq data=&info_file;
     tables in_last_ownerpt * new_ownerpt_parcel / missing list;
@@ -360,8 +356,9 @@
     quiet=N,
     debug=N
   )
-  
+
   %exit:
+  
   
   %note_mput( macro=Parcel_base_ownerpt_update, msg=Exiting macro. )
 
