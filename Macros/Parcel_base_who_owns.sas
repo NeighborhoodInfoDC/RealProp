@@ -18,14 +18,7 @@
 
   %let MaxExp     = 3000;  /** NOTE: This number should be larger than the number of rows in the above spreadsheet **/
   
-  %if %mparam_is_yes( &finalize ) and not &_remote_batch_submit %then %do;
-       %warn_mput( macro=Parcel_base_who_owns, 
-                   msg=%str(Not a remote batch submit session. Finalize will be set to N.) )
-       %let finalize = N;
-  %end; 
   
-  %if %mparam_is_yes( &finalize ) %then %let outlib = RealProp;
-  %else %let outlib = WORK;
   
   ** Create default revisions= label **;
   
@@ -63,7 +56,7 @@
 
   ** Match regular expressions against owner data file **;
 
-  data &outlib..Parcel_base_who_owns (label="DC real property parcels - property owner types");
+  data Parcel_base_who_owns (label="DC real property parcels - property owner types");
 
      set parcel_base_ownOcc;
               
@@ -152,7 +145,7 @@
 
   **** Diagnostics ****;
 
-  proc sort data=&outlib..Parcel_base_who_owns (where=(Ownercat not in ( '010', '020', '030' )))
+  proc sort data=Parcel_base_who_owns (where=(Ownercat not in ( '010', '020', '030' )))
     out=Parcel_base_who_owns_diagnostic;
     by OwnerCat;
   run;
@@ -171,19 +164,20 @@
   
   **** Finalize data set ****;
   
-  %File_info( data=&outlib..Parcel_base_who_owns, printobs=0, freqvars=OwnerCat Owner_occ_sale )
-  
-  %if %mparam_is_yes( &finalize ) %then %do;
-    %Dc_update_meta_file(
-      ds_lib=RealProp,
-      ds_name=Parcel_base_who_owns,
-      creator_process=Parcel_base_who_owns.sas,
-      restrictions=None,
-      revisions=%str(&revisions)
-    )
-  %end;
-
-  run;
+  %Finalize_data_set( 
+  /** Finalize data set parameters **/
+  data=Parcel_base_who_owns,
+  out=Parcel_base_who_owns,
+  outlib=realprop,
+  label="DC real property parcels - property owner types",
+  sortby=ssl,
+  /** Metadata parameters **/
+  restrictions=None,
+  revisions=%str(&revisions),
+  /** File info parameters **/
+  printobs=5,
+  freqvars=OwnerCat Owner_occ_sale
+  );
 
 %mend Parcel_base_who_owns;
 
