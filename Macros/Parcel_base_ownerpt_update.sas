@@ -299,7 +299,8 @@
 	  restrictions=None,
 	  revisions=%str(&revisions),
 	  /** File info parameters **/
-	  printobs=5
+	  printobs=5,
+	  freqvars=ui_proptype
 	  );
 
 	  ** Saved dated copy of base file **;
@@ -315,7 +316,8 @@
 	  restrictions=None,
 	  revisions=%str(&revisions),
 	  /** File info parameters **/
-	  printobs=5
+	  printobs=5,
+	  freqvars=ui_proptype
 	  );
 
 
@@ -354,6 +356,8 @@
     quiet=N,
     debug=N
   )
+
+  %exit:
   
   
   %note_mput( macro=Parcel_base_ownerpt_update, msg=Exiting macro. )
