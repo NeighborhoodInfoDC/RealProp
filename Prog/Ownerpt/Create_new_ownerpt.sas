@@ -23,7 +23,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2018_03;
+%let ownerptdt = 2018_05;
 
 
 /* Sort input datasets */
@@ -349,7 +349,6 @@ run;
 );
 
 
-run;
 
 
 /* End of Program */
