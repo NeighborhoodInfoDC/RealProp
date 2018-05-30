@@ -7,8 +7,8 @@
  Version:  SAS 9.4
  Environment:  Windows with SAS/Connect
  
- Description:  Update Sales_master and Sales_res_clean data sets on
- Alpha with latest Ownerpt file.
+ Description:  Update Sales_master and Sales_res_clean data sets 
+ with latest Ownerpt file.
 
  Modifications:
 **************************************************************************/
@@ -19,7 +19,9 @@
 %DCData_lib( RealProp )
 %DCData_lib( MAR )
 
-%Update_sales( year=yyyy, month=mm, finalize=N )
+
+%Update_sales( year=yyyy, month=mm )
+
 
 run;
 

@@ -24,7 +24,6 @@
 *********************************************************************
 Include timer functions to measure program performance
 *********************************************************************;
-/**%include "[dcdata.realprop.prog]timer_funcs.sas";**/
 %include "&_dcdata_r_path\RealProp\Prog\Updates\timer_funcs.sas";
 
 *********************************************************************
@@ -120,18 +119,10 @@ Include Parameter file for all DCSALES programs
 **** this macro drops the appropriate variables and re-sets lengths to the       ***
 **** appropriate lengths                                                        ***;
 
-%if %upcase( &finalize ) = Y %then %do;
-  %let finalize_data = YES;
-  %** Libraries for finalized data sets **;
-  %let finalize_in_lib=work;
-  %let finalize_out_lib=realpr_r;
-%end;
-%else %do;
-  %let finalize_data = NO;
-  %** Libraries for non-finalized data sets **;
-  %let finalize_in_lib=work;
-  %let finalize_out_lib=work;
-%end;
+%let finalize_data = YES;
+%** Libraries for finalized data sets **;
+%let finalize_in_lib=work;
+%let finalize_out_lib=realprop;
 
 ***********************************************************************************
 	MERGE GEOGRAPHY VARIABLES ON TO THE NEW DATA FILE
@@ -252,53 +243,69 @@ Include Parameter file for all DCSALES programs
 		Finalize data sets
 	********************************************************************************************************;
 
-	%if %upcase(&finalize_data) = YES %then %do;
+      ** Get last sales date to include in data set label **;
 
-	%note_mput( macro=Update_sales, 
-                    msg=Writing final MASTER data set to %upcase( &finalize_out_lib..&master_dataset ).
-	)
+      proc sql noprint;
+        select max(saledate) into :_max_saledate
+        from &finalize_in_lib..&output_master_ds._&cmo._&cyear;
+        quit;
+      run;
 
-	%Finalize_sales_data(
-		inds=&output_master_ds._&cmo._&cyear, 
-		outds=&master_dataset,
-		inlib=&finalize_in_lib,
-		outlib=&finalize_out_lib,
-		which=MASTER
-	)
+      data _null_;
+        call symput("_max_saledate_fmt",left(put(&_max_saledate,mmddyy10.)));
+      run;
+      
+      ** Master data set **;
 
-	%note_mput( macro=Update_sales, 
-                    msg=Writing final CLEAN SALES data set to %upcase( &finalize_out_lib..&sales_dataset ).
-	)
+	data &master_dataset;
 
-	%finalize_sales_data(
-		inds=&master_dataset, 
-		outds=&sales_dataset,
-		inlib=&finalize_out_lib,
-		outlib=&finalize_out_lib,
-		which=SALES
-	)
+	  set &finalize_in_lib..&output_master_ds._&cmo._&cyear;
 
-	%let master_summary = &finalize_out_lib..&master_dataset;
-	%let sales_summary = &finalize_out_lib..&sales_dataset;
+	  label sale_num = "Sequential number of sale (for SSL)";
+	  
+	  informat _all_ ;
 
-	%end;
-	%else %do;
-
-	%note_mput( macro=Update_sales, 
-                    msg=Data set %upcase(RealProp.&master_dataset) will NOT be replaced because FINALIZE=&finalize.)
-
-	%note_mput( macro=Update_sales, 
-                    msg=Data set %upcase(RealProp.&sales_dataset) will NOT be replaced because FINALIZE=&finalize.)
-
-	%let master_summary = &finalize_out_lib..&output_master_ds._&cmo._&cyear;
-	%let sales_summary = &finalize_out_lib..&output_sales_ds._&cmo._&cyear;
-
-	data &sales_summary / view=&sales_summary;
-		set &master_summary;
-		where clean_sale;
 	run;
 
-	%end;
+	%Finalize_data_set( 
+	  data=&master_dataset,
+	  out=&master_dataset,
+	  outlib=realprop,
+	  label="Property sales master file, sales through &_max_saledate_fmt., DC",
+	  sortby=ssl sale_num,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(Updated with %MCapitalize(&new_extract).),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=ui_proptype
+	  );
+
+
+      ** Clean sales data set **;
+
+	data &sales_dataset;
+
+	  set &master_dataset (where=(clean_sale));
+
+	run;
+
+	%Finalize_data_set( 
+	  data=&sales_dataset,
+	  out=&sales_dataset,
+	  outlib=realprop,
+	  label="Property sales, single-family & condo, cleaned, sales 01/01/1995 - &_max_saledate_fmt., DC",
+	  sortby=ssl sale_num,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(Updated with %MCapitalize(&new_extract).),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=ui_proptype
+	  );
+
+	%let master_summary = &master_dataset;
+	%let sales_summary = &sales_dataset;
 
 	********************************************************************************************************
 		Summarize output files 
@@ -311,9 +318,6 @@ Include Parameter file for all DCSALES programs
         	%let freqvars = ui_proptype acceptcode saletype;
         	%if &create_owner_occ = YES %then %let freqvars = &freqvars owner_occ_sale;
         	%if &merge_geovars = YES %then %let freqvars = &freqvars ward2002;
-
-		%File_info( data=&master_summary, printobs=5, freqvars=&freqvars )
-		%File_info( data=&sales_summary, printobs=5, freqvars=&freqvars )
 
 		%Sales_summary( data=&sales_summary )
 
