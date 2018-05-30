@@ -112,6 +112,8 @@ run;
 
 %macro Summarize( level= );
 
+%local filesuf level_lbl level_fmt;
+
 %let level = %upcase( &level );
 
 %if %sysfunc( putc( &level, $geoval. ) ) ~= %then %do;
@@ -143,9 +145,7 @@ run;
   mprint=y
 )
 
-data Num_units&filesuf._final 
-       (sortedby=&level 
-        label="Single-family, condominium, and cooperative unit counts, &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl");
+data Num_units&filesuf._final;
 
   set Num_units&filesuf._tr;
   
@@ -155,6 +155,15 @@ data Num_units&filesuf._final
     if a{i} = . then a{i} = 0;
   end;
   
+  %if &end_qtr < 4 %then %do;
+      label
+        units_sf_&end_yr = "Number of single-family homes, &end_yr-Q&end_qtr"
+        units_condo_&end_yr = "Number of condominium units, &end_yr-Q&end_qtr"
+        units_coop_&end_yr = "Number of cooperative units, &end_yr-Q&end_qtr"
+        units_sf_condo_&end_yr = "Number of single-family homes and condominium units, &end_yr-Q&end_qtr"
+        units_owner_&end_yr = "Number of ownership units (s.f./condo/coop), &end_yr-Q&end_qtr";
+  %end;
+
   format &level ;
   
   drop i;
@@ -175,18 +184,6 @@ run;
 	  printobs=0,
 	  freqvars=&level
 	  );
-
-%if &end_qtr < 4 %then %do;
-  proc datasets library=RealProp memtype=(data) nolist;
-    modify Num_units&filesuf;
-    label
-      units_sf_&end_yr = "Number of single-family homes, &end_yr-Q&end_qtr"
-      units_condo_&end_yr = "Number of condominium units, &end_yr-Q&end_qtr"
-      units_coop_&end_yr = "Number of cooperative units, &end_yr-Q&end_qtr"
-      units_sf_condo_&end_yr = "Number of single-family homes and condominium units, &end_yr-Q&end_qtr"
-      units_owner_&end_yr = "Number of ownership units (s.f./condo/coop), &end_yr-Q&end_qtr";
-  quit;
-%end;
 
 
 %exit:

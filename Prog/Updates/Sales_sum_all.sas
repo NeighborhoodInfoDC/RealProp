@@ -34,14 +34,9 @@
 ** Define libraries **;
 %DCData_lib( RealProp )
 
-/**rsubmit;**/
-
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2018;
-%let end_qtr = 1;
-
-/** Change to N for testing, Y for final batch mode run **/
-%let register = Y;
+%let end_yr = 2017;
+%let end_qtr = 4;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
@@ -50,8 +45,6 @@
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
 %**** Initialize macro variables ****;
-
-%let register = %upcase( &register );
 
 %let start_yr = 1995;
 %let start_date = "01jan&start_yr"d;
@@ -109,6 +102,8 @@ run;
 
 %macro Summarize( level= );
 
+%local filesuf level_lbl level_fmt;
+
 %let level = %upcase( &level );
 
 %if %sysfunc( putc( &level, $geoval. ) ) ~= %then %do;
@@ -165,7 +160,7 @@ run;
 
 %Super_transpose( 
   data=Sales&filesuf,
-  out=Sales_sum&filesuf (label="&file_lbl" sortedby=&level),
+  out=Sales_sum&filesuf,
   var=
     sales_tot sales_sf sales_condo 
     mprice_tot mprice_sf mprice_condo
@@ -184,9 +179,28 @@ quit;
 
  %put revisions=&revisions;
 
+data Sales_sum&filesuf._final;
+
+  set Sales_sum&filesuf;
+
+  %if &end_qtr < 4 %then %do;
+    label
+      sales_tot_&end_yr = "Number of sales, s.f. & condo, &end_yr-Q&end_qtr"
+      sales_sf_&end_yr = "Number of sales, single-family, &end_yr-Q&end_qtr"
+      sales_condo_&end_yr = "Number of sales, condominiums, &end_yr-Q&end_qtr"
+      mprice_tot_&end_yr = "Median sales price ($), s.f. & condo, &end_yr-Q&end_qtr"
+      mprice_sf_&end_yr = "Median sales price ($), single-family, &end_yr-Q&end_qtr"
+      mprice_condo_&end_yr = "Median sales price ($), condominiums, &end_yr-Q&end_qtr"
+      r_mprice_tot_&end_yr = "Median sales price (&end_yr $), s.f. & condo, &end_yr-Q&end_qtr"
+      r_mprice_sf_&end_yr = "Median sales price (&end_yr $), single-family, &end_yr-Q&end_qtr"
+      r_mprice_condo_&end_yr = "Median sales price (&end_yr $), condominiums, &end_yr-Q&end_qtr";
+  %end;
+
+run;
+
   %Finalize_data_set( 
 	  /** Finalize data set parameters **/
-	  data=Sales_sum&filesuf,
+	  data=Sales_sum&filesuf._final,
 	  out=Sales_sum&filesuf,
 	  outlib=realprop,
 	  label="&file_lbl",
@@ -198,22 +212,6 @@ quit;
 	  printobs=0,
 	  freqvars=&level
 	  );
-
-%if &end_qtr < 4 %then %do;
-  proc datasets library=RealProp memtype=(data) nolist;
-    modify Sales_sum&filesuf;
-    label
-      sales_tot_&end_yr = "Number of sales, s.f. & condo, &end_yr-Q&end_qtr"
-      sales_sf_&end_yr = "Number of sales, single-family, &end_yr-Q&end_qtr"
-      sales_condo_&end_yr = "Number of sales, condominiums, &end_yr-Q&end_qtr"
-      mprice_tot_&end_yr = "Median sales price ($), s.f. & condo, &end_yr-Q&end_qtr"
-      mprice_sf_&end_yr = "Median sales price ($), single-family, &end_yr-Q&end_qtr"
-      mprice_condo_&end_yr = "Median sales price ($), condominiums, &end_yr-Q&end_qtr"
-      r_mprice_tot_&end_yr = "Median sales price (&end_yr $), s.f. & condo, &end_yr-Q&end_qtr"
-      r_mprice_sf_&end_yr = "Median sales price (&end_yr $), single-family, &end_yr-Q&end_qtr"
-      r_mprice_condo_&end_yr = "Median sales price (&end_yr $), condominiums, &end_yr-Q&end_qtr";
-  quit;
-%end;
 
 %exit:
 
