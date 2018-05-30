@@ -26,6 +26,7 @@
   03/16/17 RP update for sales through 2017-Q4 and new bridge park geo.
   10/22/17 IM update for sales through 2017-Q2
   03/15/18 NS update for Cluster2017 geographic data
+  05/30/18 RP Updated for 2018-Q2
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -36,8 +37,8 @@
 /**rsubmit;**/
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2017;
-%let end_qtr = 3;
+%let end_yr = 2018;
+%let end_qtr = 1;
 
 /** Change to N for testing, Y for final batch mode run **/
 %let register = Y;
@@ -164,7 +165,7 @@ run;
 
 %Super_transpose( 
   data=Sales&filesuf,
-  out=Realprop.Sales_sum&filesuf (label="&file_lbl" sortedby=&level),
+  out=Sales_sum&filesuf (label="&file_lbl" sortedby=&level),
   var=
     sales_tot sales_sf sales_condo 
     mprice_tot mprice_sf mprice_condo
@@ -175,6 +176,28 @@ run;
 )
 
 quit;
+
+  %if &revisions_sales_sum = %then 
+    %let revisions = Updated through &end_yr-Q&end_qtr with &lib..&data (%trim(&filemod_dt), %trim(&filemod_tm)).;
+  %else 
+    %let revisions = &revisions_sales_sum;
+
+ %put revisions=&revisions;
+
+  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=Sales_sum&filesuf,
+	  out=Sales_sum&filesuf,
+	  outlib=realprop,
+	  label="&file_lbl",
+	  sortby=&level ,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=0,
+	  freqvars=&level
+	  );
 
 %if &end_qtr < 4 %then %do;
   proc datasets library=RealProp memtype=(data) nolist;
@@ -191,35 +214,6 @@ quit;
       r_mprice_condo_&end_yr = "Median sales price (&end_yr $), condominiums, &end_yr-Q&end_qtr";
   quit;
 %end;
-
-/**x "purge [dcdata.realprop.data]Sales_sum&filesuf..*";**/
-
-%file_info( data=RealProp.Sales_sum&filesuf, printobs=0 )
-
-run;
-
-** Register metadata **;
-
-%if &register = Y %then %do;
-
-  %if &revisions_sales_sum = %then 
-    %let revisions = Updated through &end_yr-Q&end_qtr with &lib..&data (%trim(&filemod_dt), %trim(&filemod_tm)).;
-  %else 
-    %let revisions = &revisions_sales_sum;
-
-  %put revisions=&revisions;
-
-  %Dc_update_meta_file(
-    ds_lib=RealProp,
-    ds_name=Sales_sum&filesuf,
-    creator_process=Sales_sum_all.sas,
-    restrictions=None,
-    revisions=%str(&revisions)
-  )
-  
-%end;
-
-run;
 
 %exit:
 
@@ -242,6 +236,7 @@ run;
 %Summarize( level=voterpre2012 )
 %Summarize( level=bridgepk )
 %Summarize( level=Cluster2017 )
+%Summarize( level=stantoncommons )
 
 run;
 
