@@ -164,8 +164,6 @@ data Num_units&filesuf._final;
         units_owner_&end_yr = "Number of ownership units (s.f./condo/coop), &end_yr-Q&end_qtr";
   %end;
 
-  format &level ;
-  
   drop i;
 
 run;

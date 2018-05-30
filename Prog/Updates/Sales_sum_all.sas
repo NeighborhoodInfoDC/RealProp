@@ -196,6 +196,8 @@ data Sales_sum&filesuf._final;
       r_mprice_condo_&end_yr = "Median sales price (&end_yr $), condominiums, &end_yr-Q&end_qtr";
   %end;
 
+  format &level &level_fmt;
+
 run;
 
   %Finalize_data_set( 
