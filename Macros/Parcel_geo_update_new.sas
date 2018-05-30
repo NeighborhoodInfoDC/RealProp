@@ -50,13 +50,13 @@
   
 
 /* Pull in existing parcel_geo to match back existing SSLs */
-data realprop.old_parcel_geo;
+data old_parcel_geo;
 	set &geo_file.;
 	/* Flag for records matched to this file */
 	inpg = 1;
 run;
 
-proc sort data = realprop.old_parcel_geo out = old_parcel_geo; by ssl; run;
+proc sort data = old_parcel_geo; by ssl; run;
 proc sort data = RealPr_r.Parcel_base_&update_file. out = Parcel_base_&update_file._all; by ssl; run;
 
 
@@ -117,24 +117,31 @@ run;
 
 
 	 ** Tract-based neighborhood clusters **;
-    %Block00_to_cluster_tr00()
+    %Block00_to_cluster_tr00();
     
     ** Casey target area neighborhoods **;
-    %Tr00_to_cta03()
-    %Tr00_to_cnb03()
+    %Tr00_to_cta03();
+    %Tr00_to_cnb03();
     
     ** East of the river **;
-    %Tr00_to_eor()
+    %Tr00_to_eor();
 
 	 ** Voting precincts 2012 **;
-    %Block10_to_vp12()
+    %Block10_to_vp12();
 
 	** Bridge park geographies 2017 **;
-	%Block00_to_bpk( )
+	%Block00_to_bpk( );
+
+	** 2017 Neighborhood Clusters  **;
+	%Block10_to_cluster17 ();
+
+	** Stanton Commons **;
+	%Block10_to_stantoncommons ();
 
 	format geo2000 $geo00a. anc2002 $anc02a. psa2004 $psa04a. ward2002 $ward02a.
      	   geo2010 $geo10a. anc2012 $anc12a. psa2012 $psa12a. ward2012 $ward12a.
-		   zip $zipa. cluster2000 $clus00a. city $city.;
+		   zip $zipa. cluster2000 $clus00a. city $city. cluster2017 $clus17a. 
+		   stantoncommons $stanca. bridgepk $bpka.;
     
     label
       CJRTRACTBL = "OCTO tract/block ID"
@@ -164,78 +171,39 @@ proc sort data = Parcel_geo_update; by ssl; run;
   run;
   
 
-  %** Retain update-specific base file in RealProp library **;
+  %** Process final version of updated parcel geo file and dated parcel geo file **;
 
-  %if &retain_temp = Y %then %do;
+   %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=&out_file.,
+	  out=Parcel_geo,
+	  outlib=realprop,
+	  label="&ds_label.",
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=geo2000 Ward2002 Anc2002 Psa2004 geo2010 Ward2012 Anc2012 Psa2012 voterpre2012 cluster_tr2000 Cluster2000 Zip
+                         casey_ta2003 casey_nbr2003 eor city cluster2017 stantoncommons bridgepk
+	  );
 
-    %note_mput( macro=Parcel_geo_update, msg=Temporary updated parcel geo file (RealProp.&out_file) will be retained (RETAIN_TEMP=&retain_temp). )
-    
-
-    ** Copy &out_file to RealProp library **;
-
-    proc copy in=work out=RealProp;
-      select &out_file / memtype=data;
-    run;
-
-
-  %end;
-
-  %** Process final version of updated parcel geo file **;
-
-
-  %if &finalize = Y %then %do;
-
-    %note_mput( macro=Parcel_geo_update, msg=Existing parcel geo file (&geo_file) will be replaced (FINALIZE=&finalize). )
-
-    ** Replace existing base file **;
-
-    data &geo_file (label="&ds_label" sortedby=ssl);
-      set &out_file;
-    run;
-
-	** Save backup base file **;
-
-	data &geo_file._&update_date. (label="&ds_label" sortedby=ssl);
-      set &out_file;
-    run;
-
-    
-    %if &meta = Y %then %do;
-    
-      ** Update metadata entry **;
-
-      %Dc_update_meta_file(
-        ds_lib=Realprop,
-        ds_name=&geo_file_dsname,
-        creator_process=Parcel_geo_&update_file..sas,
-        restrictions=None,
-        revisions=Updated with &update_file..
-      )
-      
-      run;
-      
-      
-    %end;
-
-    %put Revisions=Updated with &update_file..;
-
-    %let info_file = &geo_file;
-
-  %end;
-  %else %do;
-
-    %let info_file = &out_file;
-
-    %warn_mput( macro=Parcel_geo_update, msg=Existing parcel geo file (&geo_file) will NOT be replaced because FINALIZE=&finalize.. )
-
-  %end;
-
-  %if &info = Y %then %do;
-    %file_info( data=&info_file, 
-                freqvars=geo2000 Ward2002 Anc2002 Psa2004 geo2010 Ward2012 Anc2012 Psa2012 voterpre2012 cluster_tr2000 Cluster2000 Zip
-                         casey_ta2003 casey_nbr2003 eor city ) 
-    run;
-  %end;
+	%Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=&out_file.,
+	  out=Parcel_geo_&update_date.,
+	  outlib=realprop,
+	  label="&ds_label.",
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=geo2000 Ward2002 Anc2002 Psa2004 geo2010 Ward2012 Anc2012 Psa2012 voterpre2012 cluster_tr2000 Cluster2000 Zip
+                         casey_ta2003 casey_nbr2003 eor city cluster2017 stantoncommons bridgepk
+	  );
 
   %exit:
   
