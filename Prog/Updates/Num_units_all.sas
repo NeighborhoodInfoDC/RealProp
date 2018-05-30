@@ -25,6 +25,7 @@
   03/16/17 RP Updated through 2017-Q1 and new bridge park geo.
   10/22/17 IM Updated for 2017- Q3
   03/15/18 NS Updated for Cluster2017 geographies
+  05/30/18 RP Updated for 2018-Q2
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -34,8 +35,8 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2017;
-%let end_qtr = 3;
+%let end_yr = 2018;
+%let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -142,7 +143,7 @@ run;
   mprint=y
 )
 
-data RealProp.Num_units&filesuf 
+data Num_units&filesuf._final 
        (sortedby=&level 
         label="Single-family, condominium, and cooperative unit counts, &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl");
 
@@ -160,6 +161,21 @@ data RealProp.Num_units&filesuf
 
 run;
 
+  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=Num_units&filesuf._final,
+	  out=Num_units&filesuf,
+	  outlib=realprop,
+	  label="Single-family, condominium, and cooperative unit counts, &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl",
+	  sortby=&level ,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=0,
+	  freqvars=&level
+	  );
+
 %if &end_qtr < 4 %then %do;
   proc datasets library=RealProp memtype=(data) nolist;
     modify Num_units&filesuf;
@@ -172,23 +188,6 @@ run;
   quit;
 %end;
 
-/**x "purge [dcdata.realprop.data]Num_units&filesuf..*";**/
-
-%file_info( data=RealProp.Num_units&filesuf, printobs=0 )
-
-run;
-
-** Register metadata **;
-
-%Dc_update_meta_file(
-  ds_lib=RealProp,
-  ds_name=Num_units&filesuf,
-  creator_process=Num_units_all.sas,
-  restrictions=None,
-  revisions=%str(&revisions)
-)
-
-run;
 
 %exit:
 
@@ -213,6 +212,7 @@ run;
 %Summarize( level=geo2010 )
 %Summarize( level=bridgepk )
 %Summarize( level=Cluster2017 )
+%Summarize( level=stantoncommons )
 
 run;
 
