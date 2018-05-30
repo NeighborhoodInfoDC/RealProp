@@ -15,6 +15,7 @@
                 Changed outlib= default to RealPr_r.
                 Changed ds_lib= parameter in %Dc_update_meta_file() to 
                 RealProp.
+  05/30/18 RP   Replaced legacy code with %Finalize_data_set
 **************************************************************************/
 
 /** Macro Finalize_sales_data - Start Definition **/
@@ -50,7 +51,30 @@
 	    call symput("_max_saledate_fmt",left(put(&_max_saledate,mmddyy10.)));
 	  run;
 
-	** Delete existing copy of output data set **;
+
+	** Save final dataset **;
+	%Finalize_data_set( 
+	  data=&_in_full.,
+	  out=&outds.,
+	  outlib=realprop,
+
+	  %if %upcase(&which)=MASTER %then %do;	    	
+	    	label="Property sales master file, sales through &_max_saledate_fmt., DC",
+	   %end;
+	   %else %do;
+	    	label="Property sales, single-family & condo, cleaned, sales 01/01/1995 - &_max_saledate_fmt., DC",
+	   %end;
+
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=ui_proptype
+	  );
+
+/*Delete existing copy of output data set **;
 	proc datasets lib=&outlib nolist;
 	  delete &outds /memtype=data;
 	quit;
@@ -72,7 +96,6 @@
 
 	run;
 
-/*
 	** Sort data and copy to output data set name **;
 	proc sort data=&inlib..&inds out=&outlib..&outds;
 	by ssl saledate;
@@ -82,23 +105,21 @@
 	proc datasets lib=&inlib nolist;
 	  delete &inds /memtype=data;
 	quit;
-*/
 
-	/**x "purge [dcdata.&outlib..data]&outds..*";**/
 
 	%if &register = Y %then %do;
 
 	** Register output data set with metadata system **;
 
 	%Dc_update_meta_file(
-	  ds_lib=RealProp/*&outlib*/,
+	  ds_lib=RealProp,
 	  ds_name=&outds,
 	  creator_process=Update_sales_&cyear._&cmo..sas,
 	  restrictions=None,
 	  revisions=&revisions
 	)
 
-	%end;
+	%end;*/
 
 %mend Finalize_sales_data;
 
