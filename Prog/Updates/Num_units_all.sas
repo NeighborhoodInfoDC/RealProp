@@ -25,6 +25,7 @@
   03/16/17 RP Updated through 2017-Q1 and new bridge park geo.
   10/22/17 IM Updated for 2017- Q3
   03/15/18 NS Updated for Cluster2017 geographies
+  05/30/18 RP Updated for 2018-Q2
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -34,8 +35,8 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2017;
-%let end_qtr = 3;
+%let end_yr = 2018;
+%let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -111,6 +112,8 @@ run;
 
 %macro Summarize( level= );
 
+%local filesuf level_lbl level_fmt;
+
 %let level = %upcase( &level );
 
 %if %sysfunc( putc( &level, $geoval. ) ) ~= %then %do;
@@ -133,6 +136,18 @@ proc summary data=Num_units_raw nway completetypes;
   output out=Num_units&filesuf (drop=_freq_ _type_) sum=;
 run;
 
+
+** For tract file, keep only DC tracts **;
+
+%if &level. = GEO2000 or &level. = GEO2010 %then %do;
+data Num_units&filesuf;
+	set Num_units&filesuf;
+	state = substr(&level.,1,2);
+	if state = "11";
+	drop state;
+run;
+%end;
+
 %Super_transpose( 
   data=Num_units&filesuf,
   out=Num_units&filesuf._tr,
@@ -142,9 +157,7 @@ run;
   mprint=y
 )
 
-data RealProp.Num_units&filesuf 
-       (sortedby=&level 
-        label="Single-family, condominium, and cooperative unit counts, &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl");
+data Num_units&filesuf._final;
 
   set Num_units&filesuf._tr;
   
@@ -154,41 +167,34 @@ data RealProp.Num_units&filesuf
     if a{i} = . then a{i} = 0;
   end;
   
-  format &level ;
-  
+  %if &end_qtr < 4 %then %do;
+      label
+        units_sf_&end_yr = "Number of single-family homes, &end_yr-Q&end_qtr"
+        units_condo_&end_yr = "Number of condominium units, &end_yr-Q&end_qtr"
+        units_coop_&end_yr = "Number of cooperative units, &end_yr-Q&end_qtr"
+        units_sf_condo_&end_yr = "Number of single-family homes and condominium units, &end_yr-Q&end_qtr"
+        units_owner_&end_yr = "Number of ownership units (s.f./condo/coop), &end_yr-Q&end_qtr";
+  %end;
+
   drop i;
 
 run;
 
-%if &end_qtr < 4 %then %do;
-  proc datasets library=RealProp memtype=(data) nolist;
-    modify Num_units&filesuf;
-    label
-      units_sf_&end_yr = "Number of single-family homes, &end_yr-Q&end_qtr"
-      units_condo_&end_yr = "Number of condominium units, &end_yr-Q&end_qtr"
-      units_coop_&end_yr = "Number of cooperative units, &end_yr-Q&end_qtr"
-      units_sf_condo_&end_yr = "Number of single-family homes and condominium units, &end_yr-Q&end_qtr"
-      units_owner_&end_yr = "Number of ownership units (s.f./condo/coop), &end_yr-Q&end_qtr";
-  quit;
-%end;
+  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=Num_units&filesuf._final,
+	  out=Num_units&filesuf,
+	  outlib=realprop,
+	  label="Single-family, condominium, and cooperative unit counts, &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl",
+	  sortby=&level ,
+	  /** Metadata parameters **/
+	  restrictions=None,
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=0,
+	  freqvars=&level
+	  );
 
-/**x "purge [dcdata.realprop.data]Num_units&filesuf..*";**/
-
-%file_info( data=RealProp.Num_units&filesuf, printobs=0 )
-
-run;
-
-** Register metadata **;
-
-%Dc_update_meta_file(
-  ds_lib=RealProp,
-  ds_name=Num_units&filesuf,
-  creator_process=Num_units_all.sas,
-  restrictions=None,
-  revisions=%str(&revisions)
-)
-
-run;
 
 %exit:
 
@@ -213,6 +219,7 @@ run;
 %Summarize( level=geo2010 )
 %Summarize( level=bridgepk )
 %Summarize( level=Cluster2017 )
+%Summarize( level=stantoncommons )
 
 run;
 
