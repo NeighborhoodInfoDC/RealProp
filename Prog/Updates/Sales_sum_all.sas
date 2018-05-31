@@ -156,6 +156,17 @@ data Sales&filesuf (compress=no);
   
 run;
 
+** For tract file, keep only DC tracts **;
+
+%if &level. = GEO2000 or &level. = GEO2010 %then %do;
+data Sales&filesuf;
+	set Sales&filesuf;
+	state = substr(&level.,1,2);
+	if state = "11";
+	drop state;
+run;
+%end;
+
 %let file_lbl = Property sales summary, residential (single-family & condo), &start_yr to &end_yr-Q&end_qtr, DC, &level_lbl;
 
 %Super_transpose( 

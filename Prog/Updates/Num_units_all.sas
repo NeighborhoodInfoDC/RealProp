@@ -142,7 +142,7 @@ run;
 %if &level. = GEO2000 or &level. = GEO2010 %then %do;
 data Num_units&filesuf;
 	set Num_units&filesuf;
-	state = substr(geo2010,1,2);
+	state = substr(&level.,1,2);
 	if state = "11";
 	drop state;
 run;
