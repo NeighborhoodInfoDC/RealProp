@@ -136,6 +136,18 @@ proc summary data=Num_units_raw nway completetypes;
   output out=Num_units&filesuf (drop=_freq_ _type_) sum=;
 run;
 
+
+** For tract file, keep only DC tracts **;
+
+%if &level. = GEO2000 or &level. = GEO2010 %then %do;
+data Num_units&filesuf;
+	set Num_units&filesuf;
+	state = substr(geo2010,1,2);
+	if state = "11";
+	drop state;
+run;
+%end;
+
 %Super_transpose( 
   data=Num_units&filesuf,
   out=Num_units&filesuf._tr,
