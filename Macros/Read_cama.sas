@@ -26,87 +26,87 @@
 
 /*read CAMA res pt*/ 
  data WORK.CAMA_respt  ;
- 	infile "&filepath.Computer_Assisted_Mass_Appraisal__Residential.csv" delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
-	  informat OBJECTID $4. ;
-	  informat SSL $17. ;
-	  informat BATHRM best32. ;
-	  informat HF_BATHRM best32. ;
-	  informat HEAT best32. ;
-	  informat HEAT_D $14. ;
-	  informat AC $1. ;
-	  informat NUM_UNITS best32. ;
-	  informat ROOMS best32. ;
-	  informat BEDRM best32. ;
-	  informat AYB best32. ;
-	  informat YR_RMDL best32. ;
-	  informat EYB best32. ;
-	  informat STORIES best32. ;
-	  informat c_SALEDATE $20. ; 
-	  informat PRICE best32. ;
-	  informat QUALIFIED $1. ;
-	  informat SALE_NUM best32. ;
-	  informat GBA best32. ;
-	  informat BLDG_NUM best32. ;
-	  informat STYLE best32. ;
-	  informat STYLE_D $15. ;
-	  informat STRUCT best32. ;
-	  informat STRUCT_D $13. ;
-	  informat GRADE best32. ;
-	  informat GRADE_D $13. ;
-	  informat CNDTN best32. ;
-	  informat CNDTN_D $9. ;
-	  informat EXTWALL best32. ;
-	  informat EXTWALL_D $14. ;
-	  informat ROOF best32. ;
-	  informat ROOF_D $14. ;
-	  informat INTWALL best32. ;
-	  informat INTWALL_D $14. ;
-	  informat KITCHENS best32. ;
-	  informat FIREPLACES best32. ;
-	  informat c_USECODE $3. ;
-	  informat LANDAREA best32. ;
-	  informat c_GIS_LAST_MOD_DTTM $20. ;
-  
-      input
-	  OBJECTID $
-	  SSL
-	  BATHRM
-	  HF_BATHRM
-	  HEAT
-	  HEAT_D $
-	  AC $
-	  NUM_UNITS
-	  ROOMS
-	  BEDRM
-	  AYB
-	  YR_RMDL
-	  EYB
-	  STORIES
-	  c_SALEDATE $
-	  PRICE
-	  QUALIFIED $
-	  SALE_NUM
-	  GBA
-	  BLDG_NUM
-	  STYLE
-	  STYLE_D $
-	  STRUCT
-	  STRUCT_D $
-	  GRADE
-	  GRADE_D $
-	  CNDTN
-	  CNDTN_D $
-	  EXTWALL
-	  EXTWALL_D $
-	  ROOF
-	  ROOF_D $
-	  INTWALL
-	  INTWALL_D $
-	  KITCHENS
-	  FIREPLACES
-	  c_USECODE $
-	  LANDAREA
-	  c_GIS_LAST_MOD_DTTM $
+ 	infile "&filepath.Computer_Assisted_Mass_Appraisal__Commercial.csv" delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
+	 informat OBJECTID $4. ;
+informat SSL $17. ;
+informat BATHRM best32. ;
+informat HF_BATHRM best32. ;
+informat HEAT best32. ;
+informat HEAT_D $14. ;
+informat AC $1. ;
+informat NUM_UNITS best32. ;
+informat ROOMS best32. ;
+informat BEDRM best32. ;
+informat AYB best32. ;
+informat YR_RMDL best32. ;
+informat EYB best32. ;
+informat STORIES best32. ;
+informat c_SALEDATE $20. ;
+informat PRICE best32. ;
+informat QUALIFIED $1. ;
+informat SALE_NUM best32. ;
+informat GBA best32. ;
+informat BLDG_NUM best32. ;
+informat STYLE best32. ;
+informat STYLE_D $15. ;
+informat STRUCT best32. ;
+informat STRUCT_D $13. ;
+informat GRADE best32. ;
+informat GRADE_D $13. ;
+informat CNDTN best32. ;
+informat CNDTN_D $9. ;
+informat EXTWALL best32. ;
+informat EXTWALL_D $14. ;
+informat ROOF best32. ;
+informat ROOF_D $14. ;
+informat INTWALL best32. ;
+informat INTWALL_D $14. ;
+informat KITCHENS best32. ;
+informat FIREPLACES best32. ;
+informat c_USECODE $3. ;
+informat LANDAREA best32. ;
+informat c_GIS_LAST_MOD_DTTM $20. ;
+
+input
+OBJECTID $
+SSL
+BATHRM
+HF_BATHRM
+HEAT
+HEAT_D $
+AC $
+NUM_UNITS
+ROOMS
+BEDRM
+AYB
+YR_RMDL
+EYB
+STORIES
+c_SALEDATE $
+PRICE
+QUALIFIED $
+SALE_NUM
+GBA
+BLDG_NUM
+STYLE
+STYLE_D $
+STRUCT
+STRUCT_D $
+GRADE
+GRADE_D $
+CNDTN
+CNDTN_D $
+EXTWALL
+EXTWALL_D $
+ROOF
+ROOF_D $
+INTWALL
+INTWALL_D $
+KITCHENS
+FIREPLACES
+c_USECODE $
+LANDAREA
+c_GIS_LAST_MOD_DTTM $
    ;
 
 	ssl = left( upcase( ssl ) );
