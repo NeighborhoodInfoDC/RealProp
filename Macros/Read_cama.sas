@@ -192,7 +192,7 @@
    run;
 
  /*add code for COMM pt and CONDO PT*/ 
-    data WORK.CAMA_respt  ;
+    data WORK.CAMA_commpt  ;
  	infile "&filepath.Computer_Assisted_Mass_Appraisal__Commercial.csv" delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
          informat OBJECTID $4. ;
          informat SSL $17. ;
@@ -358,7 +358,7 @@
 
       run;
 
-    data WORK.CAMA_respt  ;
+    data WORK.CAMA_condopt  ;
  	infile "&filepath.Computer_Assisted_Mass_Appraisal__Condominium.csv" delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
          informat OBJECTID $4. ;
          informat SSL $17. ;
