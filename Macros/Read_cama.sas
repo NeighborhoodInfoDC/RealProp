@@ -17,14 +17,8 @@
  Modifications: 
 
 **************************************************************************/
-%include "L:\SAS\Inc\StdLocal.sas";
 
-** Define libraries **;
-%DCData_lib( RealProp );
-
-
-
-%macro read_cama; 
+%macro read_cama(filedate=); 
 /* Path to raw data csv files and names */
 
 %let filepath = &_dcdata_r_path\RealProp\Raw\&filedate.\;
@@ -448,4 +442,4 @@
        ;
 
       run;
-%mend;
+%mend read_cama;

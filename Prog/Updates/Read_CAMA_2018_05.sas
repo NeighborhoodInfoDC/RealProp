@@ -19,9 +19,10 @@
 
 
 %let filedate=2018-05; 
+%let update_file = _2018_05;
 
 /*Read in raw cama files*/
-%Read_cama; 
+%Read_cama(filedate=&filedate., update_file=&update_file.); 
 
 /*merge files and figure out how to deal with duplicates*/ 
 
@@ -77,7 +78,7 @@
 
 *delete straight dups for 	"2359    0837" 		"2745A   0074";
 			 
-		proc sort data=cama2 out=cama3 nodupkey;
+		proc sort data=cama2 out=cama3 nodupkey EQUALS;
 		by ssl bldg_num;
 
 		run;
@@ -92,6 +93,24 @@
 	  revisions=New file. Data downloaded from opendata.dc.gov in 5-2018.,
 	  freqvars=cama usecode bldg_num
 	)
+
+	
+	  ** Saved dated copy of base file **;
+
+	  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=cama3,
+	  out=cama_building_&update_file,
+	  outlib=realprop,
+	  label="Computer Assisted Mass Appraisal (CAMA) Property Characteristics - Building Level file, &update_file",
+	  sortby=ssl bldg_num,
+	  /** Metadata parameters **/
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=cama usecode bldg_num
+	  );
+
 
 *create parcel-level file;
 
