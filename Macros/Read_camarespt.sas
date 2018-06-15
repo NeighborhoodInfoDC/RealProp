@@ -16,7 +16,7 @@
 
 /** Macro Read_CAMAResPt_macro - Start Definition **/
 
-%macro Read_CAMAResPt_macro( 
+%macro Read_CAMAResPt( 
   inpath= &_dcdata_r_path\RealProp\Raw,    /* Location of input file */
   infile= CAMAResPt,                             /* Name of input file */
   intype=dbf,                                  /* Type of input file (dbf, mdb) */
