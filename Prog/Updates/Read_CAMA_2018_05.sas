@@ -122,7 +122,7 @@
 	run;
 	
 	*select out only first observation by ssl  - most should be bldg #1; 
-	proc sort data=cama3 out=cama_bldg1 nodupkey;
+	proc sort data=cama3 out=cama_bldg1 nodupkey equals;
 	by ssl;
 	run;
 	data cama4;
@@ -148,3 +148,19 @@
 	  revisions=New file. Data downloaded from opendata.dc.gov in 5-2018.,
 	  freqvars=cama usecode num_bldg multi_bldg
 	)
+
+	  ** Saved dated copy of base file **;
+
+	  %Finalize_data_set( 
+	  /** Finalize data set parameters **/
+	  data=cama3,
+	  out=cama_parcel_&update_file,
+	  outlib=realprop,
+	  label="Computer Assisted Mass Appraisal (CAMA) - Parcel file Bldg 1 Characteristics, &update_file",
+	  sortby=ssl,
+	  /** Metadata parameters **/
+	  revisions=%str(&revisions),
+	  /** File info parameters **/
+	  printobs=5,
+	  freqvars=cama usecode num_bldg multi_bldg
+	  );
