@@ -574,7 +574,7 @@
 
 	  %Finalize_data_set( 
 	  /** Finalize data set parameters **/
-	  data=cama3,
+	  data=cama4,
 	  out=cama_parcel_&update_file,
 	  outlib=realprop,
 	  label="Computer Assisted Mass Appraisal (CAMA) - Parcel file Bldg 1 Characteristics, &update_file",
