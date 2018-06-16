@@ -19,7 +19,7 @@
 ** Define libraries **;
 
 %DCData_lib( RealProp )
-%Init_macro_vars( rpt_yr=2015, rpt_qtr=4, sales_qtr_offset=0 )
+%Init_macro_vars( rpt_yr=2017, rpt_qtr=4, sales_qtr_offset=0 )
 
 
 
