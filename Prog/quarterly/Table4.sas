@@ -31,12 +31,12 @@
 data Sales_adj (compress=no);
 
   set RealProp.Sales_clean_&g_rpt_yr._&g_rpt_qtr 
-       (keep=ui_proptype cluster_tr2000 Ward2012 saledate_yr saleprice_adj);
+       (keep=ui_proptype cluster2017 Ward2012 saledate_yr saleprice_adj);
   
   ** Select single-family homes and condos with non-missing cluster or ward IDs **;
   ** Keep only years to be included in table **;
   
-  where ui_proptype in ( '10', '11' ) and cluster_tr2000 ~= '' and Ward2012 ~= '' and 
+  where ui_proptype in ( '10', '11' ) and cluster2017 ~= '' and Ward2012 ~= '' and 
     saledate_yr in ( &g_sales_start_yr, &g_sales_mid_yr, &prev_year, &g_sales_end_yr );
   
   city = '1';
@@ -92,13 +92,13 @@ run;
 
 %Transpose_data( by=Ward2012 )
 
-%Transpose_data( by=cluster_tr2000 )
+%Transpose_data( by=cluster2017 )
 
 ** Add wards to cluster file, resort **;
 
-data cluster_tr2000_tr;
+data cluster2017_tr;
 
-  set cluster_tr2000_tr;
+  set cluster2017_tr;
 
   ** Cluster ward var **;
   
@@ -111,20 +111,20 @@ data cluster_tr2000_tr;
 run;
 
 /*
-proc sort data=cluster_tr2000_tr;
-  by Ward2012 cluster_tr2000;
+proc sort data=cluster2017_tr;
+  by Ward2012 cluster2017;
 run;
   */
 
 ** Merge transposed data together **;
 
-data RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
+data RealProp_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
 
-  set city_tr Ward2012_tr cluster_tr2000_tr;
+  set city_tr Ward2012_tr cluster2017_tr;
   
   ** Remove noncluster areas **;
   
-  if cluster_tr2000 = '99' then delete;
+  if cluster2017 = '99' then delete;
   
   ** Suppress and filter clusters w/too few sales **;
   
@@ -151,14 +151,14 @@ data RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
 run;
 
 proc sort data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.;
-  by ui_proptype Ward2012 cluster_tr2000;
+  by ui_proptype Ward2012 cluster2017;
 run;
 
 %File_info( data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr., printobs=0 )
 
 proc print data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.;
   by ui_proptype;
-  id city Ward2012 cluster_tr2000;
+  id city Ward2012 cluster2017;
   title2 "File = RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.";
 run;
 title2;
@@ -184,14 +184,14 @@ title2;
     set RealProp.Table4_&g_rpt_yr.&g_rpt_qtr. (where=(&where));
     by Ward2012;
     
-    cluster_num = input( cluster_tr2000, 2. );
+    cluster_num = input( cluster2017, 2. );
     
     if Ward2012 = '' then 
       put 'Washington, D.C. Total' '09'x '09'x '09'x '09'x @;
-    else if Cluster_tr2000 = '' then 
+    else if Cluster2017 = '' then 
       put Ward2012 '09'x '09'x '09'x '09'x @;
     else
-      put '09'x cluster_num '09'x '09'x Cluster_tr2000 $clus00s. '09'x @;
+      put '09'x cluster_num '09'x '09'x Cluster2017 $CLUS17A97. '09'x @;
       
     put num_sales_&g_sales_start_yr. '09'x num_sales_&g_sales_mid_yr. '09'x num_sales_&prev_year. '09'x num_sales_&g_sales_end_yr. '09'x @;
     put saleprice_adj_&g_sales_start_yr. '09'x saleprice_adj_&g_sales_mid_yr. '09'x saleprice_adj_&prev_year. '09'x saleprice_adj_&g_sales_end_yr. '09'x @;
