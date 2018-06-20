@@ -23,7 +23,7 @@
 
 
 %let filedate=2018-05; 
-%let update_file = _2018_05;
+%let update_file = 2018_05;
 %let revisions=New file. Data downloaded from opendata.dc.gov in 5-2018.;
 
 /*Read in raw cama files*/
@@ -45,3 +45,17 @@
 
 ); 
 
+/*this code should be deleted the next time the program is run - LH 6/20/18*/
+%Delete_metadata_file(  
+         ds_lib=realprop,
+         ds_name=cama_building__2018_05,
+         meta_lib=_metadat,
+         meta_pre=meta
+  )
+  
+%Delete_metadata_file(  
+         ds_lib=realprop,
+         ds_name=CAMA_PARCEL__2018_05,
+         meta_lib=_metadat,
+         meta_pre=meta
+  )  
