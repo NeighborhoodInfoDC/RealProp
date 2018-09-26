@@ -18,10 +18,9 @@
 %DCData_lib( RealProp )
 
 %let update_file = Ownerpt_2018_09;
-%let finalize    = N;
 
 
-%Parcel_base_ownerpt_update( update_file=&update_file, finalize=&finalize, keep_vars =
+%Parcel_base_ownerpt_update( update_file=&update_file, finalize=Y, keep_vars =
     ssl premiseadd ui_proptype no_units
     abtlotcode acceptcode address1 address2 
     arn asr_name assess_val basebuild baseland
