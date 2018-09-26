@@ -30,7 +30,7 @@
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2018-05\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2018-09\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
