@@ -17,6 +17,7 @@
  Modifications: 10-3-16 Update with Q2-2016 data -RP
 				12-8-16 Update with Q3-2016 data -RP
 				5-25-18 Update with Q1-2018 data -RP
+				5-25-18 Update with Q2-2018 data -WO
 				
 **************************************************************************/
 
@@ -26,7 +27,7 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2018-05;
+%let revisions = Updated through 2018-09;
 
 /* Path to raw data csv files and names */
 
