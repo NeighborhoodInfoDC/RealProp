@@ -19,7 +19,7 @@
 /** Macro Parcel_geo_update - Start Definition **/
 
 %macro Parcel_geo_update_new( 
-  update_file=, 
+  update_file=Ownerpt_&update_date., 
   geo_file=RealPr_r.Parcel_geo,
   out_file=Parcel_geo_&update_file,
   finalize=,
@@ -182,7 +182,7 @@ proc sort data = Parcel_geo_update; by ssl; run;
 	  sortby=ssl,
 	  /** Metadata parameters **/
 	  restrictions=None,
-	  revisions=%str(&revisions),
+	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
 	  freqvars=geo2000 Ward2002 Anc2002 Psa2004 geo2010 Ward2012 Anc2012 Psa2012 voterpre2012 cluster_tr2000 Cluster2000 Zip
@@ -198,7 +198,7 @@ proc sort data = Parcel_geo_update; by ssl; run;
 	  sortby=ssl,
 	  /** Metadata parameters **/
 	  restrictions=None,
-	  revisions=%str(&revisions),
+	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
 	  freqvars=geo2000 Ward2002 Anc2002 Psa2004 geo2010 Ward2012 Anc2012 Psa2012 voterpre2012 cluster_tr2000 Cluster2000 Zip
