@@ -26,6 +26,7 @@
   10/22/17 IM Updated for 2017- Q3
   03/15/18 NS Updated for Cluster2017 geographies
   05/30/18 RP Updated for 2018-Q2
+  09/27/18 WO Updated for 2018-Q3
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -36,7 +37,7 @@
 /**rsubmit;**/
 
 %let end_yr = 2018;
-%let end_qtr = 2;
+%let end_qtr = 3;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
