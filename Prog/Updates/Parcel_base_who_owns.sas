@@ -24,41 +24,10 @@
 %DCData_lib( MAR )
 
 
-proc format library=work;
-  value $OwnCat
-    '010' = 'Single-family owner-occupied'
-    '020' = 'Multifamily owner-occupied'
-    '030' = 'Other individuals'
-    '040' = 'DC government'
-    '045' = 'DC Housing Authority'
-    '050' = 'US government'
-    '060' = 'Foreign governments'
-    '070' = 'Quasi-public entities'
-    '080' = 'Community development corporations/organizations'
-    '090' = 'Private universities, colleges, schools'
-    '100' = 'Churches, synagogues, religious'
-    '110' = 'Corporations, partnership, LLCs, LLPs, associations'
-    '111' = 'Nontaxable corporations, partnerships, associations'
-    '115' = 'Taxable corporations, partnerships, associations'
-    '120' = 'Government-Sponsored Enterprise'
-    '130' = 'Banks, Lending, Mortgage and Servicing Companies'
-  ;
-	
-run;
-
-data Parcel_base;
-
-  set RealProp.Parcel_base (obs=1000);
-  
-run;
-
-
-** NOTE: Leave Revisions= parameter blank when just doing a regular update **;
+** NOTE: Revisions= parameter should be blank when doing a regular Parcel_base update **;
 
 %Parcel_base_who_owns(
-  inlib=realprop,
-  data=Parcel_base,
   RegExpFile=&_dcdata_default_path\RealProp\Prog\Updates\Owner type codes reg expr.txt,
-  Revisions= 
+  Revisions=Revise regular expressions.  
   )
 
