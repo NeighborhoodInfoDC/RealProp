@@ -23,6 +23,7 @@ proc format library=RealProp;
     '020' = 'Multifamily owner-occupied'
     '030' = 'Other individuals'
     '040' = 'DC government'
+    '045' = 'DC Housing Authority'
     '050' = 'US government'
     '060' = 'Foreign governments'
     '070' = 'Quasi-public entities'
