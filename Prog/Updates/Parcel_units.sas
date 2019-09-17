@@ -20,7 +20,7 @@
 %DCData_lib( MAR, local=n )
 
 
-%let address_file = Address_points_2016_01;
+%let address_file = Address_points_view;
 
 %let revisions = Update with &address_file..;
 
