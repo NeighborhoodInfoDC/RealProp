@@ -27,11 +27,11 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2018-09;
+%let revisions = Updated through 2019-09;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2018-09\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2019-09\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
