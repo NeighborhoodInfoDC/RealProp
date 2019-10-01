@@ -1,8 +1,8 @@
 /**************************************************************************
- Program:  Parcel_base_ownerpt_yyyy_mm.sas
+ Program:  Parcel_base_ownerpt_2019_09.sas
  Library:  RealProp
  Project:  NeighborhoodInfo DC
- Author:   
+ Author:   Eleanor Noble
  Created:  
  Version:  SAS 9.2
  Environment:  Local Windows session (desktop)
@@ -20,7 +20,7 @@
 %DCData_lib( RealProp, local=n )
 
 %let update_file = Ownerpt_2019_09;
-%let finalize    = N;
+%let finalize    = Y;
 
 %Parcel_base_ownerpt_update( 
   update_file=&update_file, 
