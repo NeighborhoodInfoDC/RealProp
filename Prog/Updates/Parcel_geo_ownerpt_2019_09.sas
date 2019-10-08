@@ -3,7 +3,7 @@
  Library:  RealProp
  Project:  NeighborhoodInfo DC
  Author:   Eleanor Noble
- Created:  10/8/2019
+ Created:  10/08/2019
  Version:  SAS 9.4
  Environment:  Windows with SAS/Connect
  
@@ -22,7 +22,7 @@
 /** Update two parameters below **/
 
 %let update_date = 2019_09;
-%let finalize  = N;
+%let revisions = Updated through 2019-09;
 
 
 /** Don't need to edit this code **/
