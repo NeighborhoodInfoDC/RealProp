@@ -22,7 +22,7 @@
 /** Update two parameters below **/
 
 %let update_date = yyyy_mm;
-%let finalize  = N;
+%let revisions = Updated through yyyy-mm;
 
 
 /** Don't need to edit this code **/
