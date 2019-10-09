@@ -2,8 +2,8 @@
  Program:  Parcel_geo_ownerpt_yyyy_mm.sas
  Library:  RealProp
  Project:  NeighborhoodInfo DC
- Author:   
- Created:  
+ Author:   Eleanor Noble
+ Created:  10/08/2019
  Version:  SAS 9.4
  Environment:  Windows with SAS/Connect
  
@@ -21,9 +21,9 @@
 
 /** Update two parameters below **/
 
-%let update_date = yyyy_mm;
-%let revisions = Updated through yyyy-mm;
-%let finalize = N;
+%let update_date = 2019_09;
+%let revisions = Updated through 2019-09;
+%let finalize = Y;
 
 
 /** Don't need to edit this code **/
