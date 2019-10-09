@@ -23,6 +23,7 @@
 
 %let update_date = yyyy_mm;
 %let revisions = Updated through yyyy-mm;
+%let finalize = N;
 
 
 /** Don't need to edit this code **/
