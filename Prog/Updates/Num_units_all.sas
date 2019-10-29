@@ -27,7 +27,7 @@
   03/15/18 NS Updated for Cluster2017 geographies
   05/30/18 RP Updated for 2018-Q2
   09/27/18 WO Updated for 2018-Q3
-  09/27/18 EN Updated for 2019-Q3
+  10/29/19 EN Updated for 2019-Q3
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
