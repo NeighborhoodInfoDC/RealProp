@@ -34,6 +34,7 @@ Prog/Updates/Old/
 # Raw files
 *.csv
 *.xml
+*.txt
 
 # Image files
 *.gif
