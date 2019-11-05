@@ -27,6 +27,7 @@
   10/22/17 IM update for sales through 2017-Q2
   03/15/18 NS update for Cluster2017 geographic data
   05/30/18 RP Updated for 2018-Q2
+  09/27/18 WO Updated for 2018-Q3
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -35,8 +36,8 @@
 %DCData_lib( RealProp )
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2017;
-%let end_qtr = 4;
+%let end_yr = 2018;
+%let end_qtr = 2;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;

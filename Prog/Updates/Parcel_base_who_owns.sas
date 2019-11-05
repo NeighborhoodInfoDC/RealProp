@@ -9,10 +9,6 @@
  
  Description:  Create ownership categories for real property parcels.
  
- NOTE: Workbook 
- "L:\Libraries\RealProp\Prog\Updates\Owner type codes & reg expr 09-28-11.xls"
- must be open in Excel before submitting this program.
- 
  Runtime: Approximately 5 minutes.
 
  Modifications:
@@ -28,5 +24,10 @@
 %DCData_lib( MAR )
 
 
-%Parcel_base_who_owns()
+** NOTE: Revisions= parameter should be blank when doing a regular Parcel_base update **;
+
+%Parcel_base_who_owns(
+  RegExpFile=&_dcdata_default_path\RealProp\Prog\Updates\Owner type codes reg expr.txt,
+  Revisions=Revise regular expressions.  
+  )
 

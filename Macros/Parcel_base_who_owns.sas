@@ -12,21 +12,31 @@
  Modifications:
 **************************************************************************/
 
-%macro Parcel_base_who_owns( RegExpFile=Owner type codes reg expr.txt, Finalize=Y, Revisions= );
+%macro Parcel_base_who_owns( 
+  RegExpFile=, 
+  MaxExp=3000,  /** NOTE: This number should be larger than the number of rows in the above file **/
+  Diagnostic_file=&_dcdata_default_path\RealProp\Prog\Updates\Parcel_base_who_owns_diagnostic.xls,
+  inlib=RealProp,
+  data=Parcel_base,
+  outlib=RealProp,
+  Finalize=Y, 
+  Revisions= 
+  );
 
-  %local MaxExp Outlib parcel_base_file_dtmf dtm dtmf;
+  %local parcel_base_file_dtmf dtm dtmf;
+  
+  %if %length( &RegExpFile ) = 0 %then %do;
+    %Err_mput( macro=Parcel_base_who_owns, msg=Must provide a regular expression file in RegExpFile=. )
+    %goto Exit_macro;
+  %end;
 
-  %let MaxExp     = 3000;  /** NOTE: This number should be larger than the number of rows in the above spreadsheet **/
-  
-  
-  
   ** Create default revisions= label **;
   
-  %if &revisions = %then %do;
+  %if %length( &revisions ) = 0 %then %do;
   
     proc sql noprint;
       select modate into :parcel_base_file_dtmf separated by ' '
-      from dictionary.tables where libname="REALPROP" and memname = "PARCEL_BASE";
+      from dictionary.tables where libname="%upcase(&inlib)" and memname = "%upcase(&data)";
     quit;
 
     %let dtm = %sysfunc( inputn( &parcel_base_file_dtmf, anydtdtm. ) );
@@ -39,7 +49,7 @@
   
   ** Read in regular expressions **;
 
-  filename xlsfile "&_dcdata_default_path\RealProp\Prog\Updates\&RegExpFile" lrecl=2500;
+  filename xlsfile "&RegExpFile" lrecl=2500;
 
   data RegExp (compress=no);
     length OwnerCat_re $ 3 RegExp $ 2000;
@@ -52,7 +62,7 @@
 
   ** Add owner-occupied sale flag to Parcel records **;
 
-  %create_own_occ( inlib=realprop, inds=parcel_base, outds=parcel_base_ownocc );
+  %create_own_occ( inlib=&inlib, inds=&data, outds=parcel_base_ownocc );
 
   ** Match regular expressions against owner data file **;
 
@@ -151,7 +161,7 @@
   run;
 
   ods listing close;
-  ods tagsets.excelxp file="&_dcdata_default_path\RealProp\Prog\Updates\Parcel_base_who_owns_diagnostic.xls" style=Minimal options(sheet_interval='Bygroup' );
+  ods tagsets.excelxp file="&diagnostic_file" style=Minimal options(sheet_interval='Bygroup' );
 
   proc freq data=Parcel_base_who_owns_diagnostic;
     by OwnerCat;
@@ -161,23 +171,28 @@
   ods tagsets.excelxp close;
   ods listing;
   
+  %if %mparam_is_yes( &finalize ) %then %do;
   
-  **** Finalize data set ****;
-  
-  %Finalize_data_set( 
-  /** Finalize data set parameters **/
-  data=Parcel_base_who_owns,
-  out=Parcel_base_who_owns,
-  outlib=realprop,
-  label="DC real property parcels - property owner types",
-  sortby=ssl,
-  /** Metadata parameters **/
-  restrictions=None,
-  revisions=%str(&revisions),
-  /** File info parameters **/
-  printobs=5,
-  freqvars=OwnerCat Owner_occ_sale
-  );
+    **** Finalize data set ****;
+    
+    %Finalize_data_set( 
+    /** Finalize data set parameters **/
+    data=Parcel_base_who_owns,
+    out=Parcel_base_who_owns,
+    outlib=&outlib,
+    label="DC real property parcels - property owner types",
+    sortby=ssl,
+    /** Metadata parameters **/
+    restrictions=None,
+    revisions=%str(&revisions),
+    /** File info parameters **/
+    printobs=5,
+    freqvars=OwnerCat Owner_occ_sale
+    );
+    
+  %end;
+
+  %Exit_macro:
 
 %mend Parcel_base_who_owns;
 
