@@ -1,5 +1,5 @@
- filename lognew "&_dcdata_l_path\RealProp\Prog\Quarterly\Qtrly_sales.log";
- filename outnew "&_dcdata_l_path\RealProp\Prog\Quarterly\Qtrly_sales.lst";
+ filename lognew "&_dcdata_default_path\RealProp\Prog\Quarterly\Qtrly_sales.log";
+ filename outnew "&_dcdata_default_path\RealProp\Prog\Quarterly\Qtrly_sales.lst";
  proc printto print=outnew log=lognew new;
  run;
 /**************************************************************************
@@ -17,6 +17,7 @@
  Modifications:
  07/09/13 LH Moved from HsngMon library to Realprop.
  06/03/16 LH  Packaged quarterly programs together. 
+ 11/05/19 LH Update path to default and cluster2017
 **************************************************************************/
 
 
@@ -24,8 +25,8 @@
 
 
 
-proc tabulate data=Realprop.Sales_clean_&g_rpt_yr._&g_rpt_qtr format=comma16. noseps missing;
-  where cluster_tr2000 ~= '' and Ward2012 ~= '' and put( saledate, dtrngB. ) ~= '';
+proc tabulate data=Realpr_l.Sales_clean_&g_rpt_yr._&g_rpt_qtr format=comma16. noseps missing;
+  where cluster2017 ~= '' and Ward2012 ~= '' and put( saledate, dtrngB. ) ~= '';
   class saledate ui_proptype;
   var saleprice_adj;
   table 

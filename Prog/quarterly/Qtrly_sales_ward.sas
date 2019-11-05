@@ -1,5 +1,5 @@
- filename lognew "&_dcdata_l_path\RealProp\Prog\Quarterly\Qtrly_sales_ward.log";
- filename outnew "&_dcdata_l_path\RealProp\Prog\Quarterly\Qtrly_sales_ward.lst";
+ filename lognew "&_dcdata_default_path\RealProp\Prog\Quarterly\Qtrly_sales_ward.log";
+ filename outnew "&_dcdata_default_path\RealProp\Prog\Quarterly\Qtrly_sales_ward.lst";
  proc printto print=outnew log=lognew new;
  run;
 /**************************************************************************
@@ -17,16 +17,17 @@
  07/09/13 LH Moved from HsngMon library to Realprop.
  07/15/14 MSW Updated for new SAS1 server and updated for Winter 2013.
  06/03/16 LH  Packaged quarterly programs together. 
+ 11/05/19 LH  Update path to default and cluster2017
 **************************************************************************/
 
 
 
 data Sales_adj (compress=no);
 
-  set Realprop.Sales_clean_&g_rpt_yr._&g_rpt_qtr;
+  set Realpr_l.Sales_clean_&g_rpt_yr._&g_rpt_qtr;
   
   where 
-    ( cluster_tr2000 ~= '' and Ward2012 ~= '' ) and
+    ( cluster2017 ~= '' and Ward2012 ~= '' ) and
     ( intnx( 'qtr', intnx( 'year', &g_sales_end_dt, -9, 'beginning' ), -3, 'beginning' ) <= saledate <= &g_sales_end_dt ) and
     ui_proptype = '10';
   
@@ -104,7 +105,7 @@ data Csv_out (compress=no);
   
 run;
 
-filename fexport "&_dcdata_l_path\realprop\Prog\quarterly\&g_rpt_yr.-&g_rpt_qtr.\Qtrly_sales_ward.csv" lrecl=256;
+filename fexport "&_dcdata_default_path\realprop\Prog\quarterly\&g_rpt_yr.-&g_rpt_qtr.\Qtrly_sales_ward.csv" lrecl=256;
 
 proc export data=Csv_out
     outfile=fexport

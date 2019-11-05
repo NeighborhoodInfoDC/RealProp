@@ -13,6 +13,7 @@
  Modifications:
   11/22/07 PAT Filter sales by date using dtrngA. format.
   07/09/13 LH Transfer from Hsngmon library to run in realprop
+  11/05/19 LH Update for Cluster2017
 **************************************************************************/
 
 /** Macro Table1_data - Start Definition **/
@@ -25,9 +26,9 @@ title2 "UI_PROPTYPE = &ui_proptype";
 
 data Sales_adj;
 
-  set realprop.Sales_clean_&g_rpt_yr._&g_rpt_qtr;
+  set realpr_l.Sales_clean_&g_rpt_yr._&g_rpt_qtr;
   
-  where cluster_tr2000 ~= '' and Ward2012 ~= '' and ui_proptype = &ui_proptype and
+  where cluster2017 ~= '' and Ward2012 ~= '' and ui_proptype = &ui_proptype and
         put( saledate, dtrngA. ) ~= '';
 
   owner_occ_sale = 100 * owner_occ_sale;

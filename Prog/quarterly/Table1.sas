@@ -1,5 +1,5 @@
- filename lognew "&_dcdata_l_path\RealProp\Prog\Quarterly\Table1.log";
- filename outnew "&_dcdata_l_path\RealProp\Prog\Quarterly\Table1.lst";
+ filename lognew "&_dcdata_default_path\RealProp\Prog\Quarterly\Table1.log";
+ filename outnew "&_dcdata_default_path\RealProp\Prog\Quarterly\Table1.lst";
  proc printto print=outnew log=lognew new;
  run;
 /**************************************************************************
@@ -18,6 +18,7 @@
  07/09/13 LH Moved from HsngMon library to Realprop.
  07/15/14 MSW Updated for new SAS1 server and updated for Winter 2013. 
  06/03/16 LH  Packaged quarterly programs together. 
+ 11/05/16 LH  Update log to save in default path
 **************************************************************************/
 
 

@@ -1,5 +1,5 @@
- filename lognew "&_dcdata_l_path\RealProp\Prog\Quarterly\Download_sales_clean.log";
- filename outnew "&_dcdata_l_path\RealProp\Prog\Quarterly\Download_sales_clean.lst";
+ filename lognew "&_dcdata_default_path\RealProp\Prog\Quarterly\Download_sales_clean.log";
+ filename outnew "&_dcdata_default_path\RealProp\Prog\Quarterly\Download_sales_clean.lst";
  proc printto print=outnew log=lognew new;
  run;
 /**************************************************************************
@@ -18,6 +18,8 @@
   07/09/13 LH  Moved from HsngMon Library to RealProp
   06/26/14 MW  Moved to L drive and updated for SAS1 Server
   06/03/16 LH  Packaged quarterly programs together. 
+  11/05/19 LH  Added Cluster2017 to output. Update path to default.
+
  
 **************************************************************************/
 
@@ -54,16 +56,14 @@ data realpr_l.&out (label="Clean property sales for &g_rpt_title DC Quarterly Sa
     saleprice_adj = "Property sale price (&g_sales_end_yr $)"
     pct_owner_occ_sale = "Pct. owner-occupied sale";
 
-  keep ssl saleprice saledate ui_proptype ward2012 cluster_tr2000 geo2000 saledate_yr owner_occ_sale
+  keep ssl saleprice saledate ui_proptype ward2012 cluster_tr2000 cluster2017 geo2000 saledate_yr owner_occ_sale
        saleprice_adj pct_owner_occ_sale ;
 
 run;
 
 
-** End submitting commands to remote server **;
-
 %file_info( data=realpr_l.&out, printobs=20, 
-            freqvars=ward2012 cluster_tr2000 ui_proptype saledate_yr owner_occ_sale )
+            freqvars=ward2012 cluster2017 ui_proptype saledate_yr owner_occ_sale )
 
 proc freq data=realpr_l.&out;
   tables saledate;

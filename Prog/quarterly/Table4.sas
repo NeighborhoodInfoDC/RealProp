@@ -1,5 +1,5 @@
- filename lognew "&_dcdata_l_path\RealProp\Prog\Quarterly\Table4.log";
- filename outnew "&_dcdata_l_path\RealProp\Prog\Quarterly\Table4.lst";
+ filename lognew "&_dcdata_default_path\RealProp\Prog\Quarterly\Table4.log";
+ filename outnew "&_dcdata_default_path\RealProp\Prog\Quarterly\Table4.lst";
  proc printto print=outnew log=lognew new;
  run;
 /**************************************************************************
@@ -18,6 +18,8 @@
  07/09/13 LH Moved from HsngMon library to Realprop.
  07/25/14 MW Removed reference to DDE and renamed resulting .xls files
  06/03/16 LH  Packaged quarterly programs together. 
+ 11/05/19 LH Update path for log to default forced local for data. 
+ 			 Updated for cluster2017.
 **************************************************************************/
 
 
@@ -30,7 +32,7 @@
 
 data Sales_adj (compress=no);
 
-  set RealProp.Sales_clean_&g_rpt_yr._&g_rpt_qtr 
+  set RealPr_l.Sales_clean_&g_rpt_yr._&g_rpt_qtr 
        (keep=ui_proptype cluster2017 Ward2012 saledate_yr saleprice_adj);
   
   ** Select single-family homes and condos with non-missing cluster or ward IDs **;
@@ -104,7 +106,7 @@ data cluster2017_tr;
   
   length Ward2012 $ 1;
   
-  Ward2012 = put( cluster_tr2000, $cl0wd2f. );
+  Ward2012 = put( cluster2017, $cl17wd12f. );
   
   label Ward2012 = 'Ward (cluster-based)';
   
@@ -118,7 +120,7 @@ run;
 
 ** Merge transposed data together **;
 
-data RealProp_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
+data RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
 
   set city_tr Ward2012_tr cluster2017_tr;
   
@@ -136,7 +138,7 @@ data RealProp_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
   end;
   
   if n( of saleprice_adj_: ) = 0 or mean( of num_sales_: ) < &MIN_AVG_SALES_PER_YR then do;
-    %note_put( msg=ui_proptype= cluster_tr2000 " deleted. " (num_sales_:) (=) )
+    %note_put( msg=ui_proptype= cluster2017 " deleted. " (num_sales_:) (=) )
     delete;
   end;
   
@@ -146,17 +148,17 @@ data RealProp_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
   chg_price_&g_sales_mid_yr._&g_sales_end_yr. = 100 * %annchg( saleprice_adj_&g_sales_mid_yr., saleprice_adj_&g_sales_end_yr., &g_sales_end_yr. - &g_sales_mid_yr. );
   chg_price_&prev_year._&g_sales_end_yr. = 100 * %annchg( saleprice_adj_&prev_year., saleprice_adj_&g_sales_end_yr., &g_sales_end_yr. - &prev_year. );
   
-  keep ui_proptype city Ward2012 cluster_tr2000 num_sales_: saleprice_adj_: chg_price_: ;
+  keep ui_proptype city Ward2012 cluster2017 num_sales_: saleprice_adj_: chg_price_: ;
   
 run;
 
-proc sort data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.;
+proc sort data=RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
   by ui_proptype Ward2012 cluster2017;
 run;
 
-%File_info( data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr., printobs=0 )
+%File_info( data=RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr., printobs=0 )
 
-proc print data=RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.;
+proc print data=RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr.;
   by ui_proptype;
   id city Ward2012 cluster2017;
   title2 "File = RealProp.Table4_&g_rpt_yr.&g_rpt_qtr.";
@@ -175,13 +177,13 @@ title2;
     "excel|&_dcdata_l_path\realprop\Prog\quarterly\2013-1\[&g_table_wbk]&sheet!R&start_row.C1:R&end_row.C15" 
     lrecl=1000 notab;**;
 
-	filename xout "&_dcdata_l_path\realprop\Prog\quarterly\&g_rpt_yr.-&g_rpt_qtr.\_tmp_&g_table_wbk..&sheet..R&start_row.C1.R&end_row..txt" lrecl=1000;
+	filename xout "&_dcdata_default_path\realprop\Prog\quarterly\&g_rpt_yr.-&g_rpt_qtr.\_tmp_&g_table_wbk..&sheet..R&start_row.C1.R&end_row..txt" lrecl=1000;
 
   data _null_;
 
     file xout;
     
-    set RealProp.Table4_&g_rpt_yr.&g_rpt_qtr. (where=(&where));
+    set RealPr_l.Table4_&g_rpt_yr.&g_rpt_qtr. (where=(&where));
     by Ward2012;
     
     cluster_num = input( cluster2017, 2. );

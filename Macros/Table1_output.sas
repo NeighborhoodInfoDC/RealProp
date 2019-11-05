@@ -13,6 +13,7 @@
  Modifications:
   11/22/07 PAT Added DDE= parameter, to switch from DDE to CSV output.
   07/25/14 MSW Changed DDE=Y to DDE=N. Rewrote CSV pathname to export individual files. 
+  11/05/19 LH  Switched output to default path.
 **************************************************************************/
 
 /** Macro Table1_output - Start Definition **/
@@ -43,7 +44,7 @@
   %else %do;
     ** CSV output **;
     **filename xout "&g_path\_tmp_&g_table_wbk..&sheet..&start_cell.&end_cell..txt" lrecl=1000;**;
-	filename xout "&_dcdata_l_path\Realprop\Prog\Quarterly\&g_rpt_yr.-&g_rpt_qtr\_tmp_&g_table_wbk..&sheet..&start_cell.&end_cell..txt" lrecl=1000;
+	filename xout "&_dcdata_default_path\Realprop\Prog\Quarterly\&g_rpt_yr.-&g_rpt_qtr\_tmp_&g_table_wbk..&sheet..&start_cell.&end_cell..txt" lrecl=1000;
   %end;
 
   data _null_;
