@@ -193,7 +193,7 @@ title2;
     else if Cluster2017 = '' then 
       put Ward2012 '09'x '09'x '09'x '09'x @;
     else
-      put '09'x cluster_num '09'x '09'x Cluster2017 $CLUS17A97. '09'x @;
+      put '09'x cluster_num '09'x '09'x Cluster2017 $CLUS17A. '09'x @;
       
     put num_sales_&g_sales_start_yr. '09'x num_sales_&g_sales_mid_yr. '09'x num_sales_&prev_year. '09'x num_sales_&g_sales_end_yr. '09'x @;
     put saleprice_adj_&g_sales_start_yr. '09'x saleprice_adj_&g_sales_mid_yr. '09'x saleprice_adj_&prev_year. '09'x saleprice_adj_&g_sales_end_yr. '09'x @;
