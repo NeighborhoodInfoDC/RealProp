@@ -23,7 +23,7 @@
 %let outfolder = sales; /* Name of folder where output CSV will be saved */
 %let sumdata = sales_sum; /* Summary dataset name (without geo suffix) */
 %let start = 1995; /* Start year */
-%let end = 2016; /* End year */
+%let end = 2018; /* End year */
 %let keepvars = sales_sf mprice_sf; /* Summary variables to keep and transpose */
 
 
@@ -57,18 +57,6 @@ run;
 proc contents data = &sumdata._&geo._long_allyr out = &sumdata._&geo._metadata noprint;
 run;
 
-/* Output the metadata 
-ods csv file ="&_dcdata_default_path.\web\output\&outfolder.\&outfolder._&geo._metadata..csv";
-	proc print data =&sumdata._&geo._metadata noobs;
-	run;
-ods csv close;*/
-
-
-/* Output the CSV 
-ods csv file ="&_dcdata_default_path.\web\output\&outfolder.\&outfolder._&geo..csv";
-	proc print data =&sumdata._&geo._long_allyr noobs;
-	run;
-ods csv close;*/
 
 
 %mend csv_create;
