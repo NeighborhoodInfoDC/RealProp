@@ -2,8 +2,8 @@
  Program:  Create_new_ownerpt.sas
  Library:  RealProp
  Project:  NeighborhoodInfo DC
- Author:   Rob Pitingolo
- Created:  4/1/16
+ Author:   Eleanor Noble
+ Created:  5/11/2020
  Version:  SAS 9.4
  Environment:  Local Windows session (desktop)
  
@@ -23,7 +23,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2019_09;
+%let ownerptdt = 2020_05;
 
 
 /* Sort input datasets */
