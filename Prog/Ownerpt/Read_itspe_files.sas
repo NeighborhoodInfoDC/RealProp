@@ -2,8 +2,8 @@
  Program:  Read_itspe_files.sas
  Library:  RealProp
  Project:  NeighborhoodInfo DC
- Author:   Rob Pitingolo
- Created:  01/16/16
+ Author:   Eleanor Noble
+ Created:  05/11/2020
  Version:  SAS 9.4
  Environment:  Local Windows session (desktop)
  
@@ -18,6 +18,7 @@
 				12-8-16 Update with Q3-2016 data -RP
 				5-25-18 Update with Q1-2018 data -RP
 				5-25-18 Update with Q2-2018 data -WO
+				5-11-2020 Update with new data - EN
 				
 **************************************************************************/
 
@@ -27,11 +28,11 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2019-09;
+%let revisions = Updated through 2020-05;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2019-09\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2020-05\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
