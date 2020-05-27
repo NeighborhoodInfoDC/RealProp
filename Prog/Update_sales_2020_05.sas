@@ -20,7 +20,7 @@
 %DCData_lib( MAR )
 
 
-%Update_sales( year=2020, month=05, finalize = N )
+%Update_sales( year=2020, month=05, finalize = Y )
 
 
 run;
