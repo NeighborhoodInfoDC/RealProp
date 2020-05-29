@@ -27,7 +27,8 @@
   03/15/18 NS Updated for Cluster2017 geographies
   05/30/18 RP Updated for 2018-Q2
   09/27/18 WO Updated for 2018-Q3
-  10/29/19 EN Updated for 2019-Q3
+  10/29/19 EN Updated for 2019-
+  05/29/20 AH updated for 2020-Q2
 **************************************************************************/
 
 %include "L:\SAS\Inc\StdLocal.sas";
@@ -37,8 +38,8 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2019;
-%let end_qtr = 3;
+%let end_yr = 2020;
+%let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
