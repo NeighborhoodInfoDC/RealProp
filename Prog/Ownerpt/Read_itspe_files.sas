@@ -47,424 +47,444 @@ data ITS_Public_Extract;
 
   infile FIMPORT delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
 
-        informat OBJECTID_1 best32. ;
-        informat OBJECTID best32. ;
-        informat SSL $17. ;
-        informat SQUARE $4.;
-        informat SUFFIX $4.;
-        informat LOT $4.;
-        informat ARN $1.;
-        informat ASRNAME $1.;
-        informat PROPTYPE $1.;
-        informat TRIGROUP $1.;
-        informat in_usecode best32.;
-        informat LANDAREA best32.;
-        informat PREMISEADD $45.;
-        informat NBHD $3.;
-        informat SUBNBHD $1.;
-        informat UNITNUMBER $5.;
-        informat OWNERNAME $60.;
-        informat CAREOFNAME $40.;
+        informat ABTLOTCODE     $4.;
+        informat ACCEPTCODE $30.;
         informat ADDRESS1 $30.;
         informat ADDRESS2 $30.;
-        informat CITYSTZIP $40.;
-        informat BASELAND best32.;
-        informat BASEBUILD best32.;
-        informat OLDLAND $9.;
-        informat OLDIMPR $9.;
-        informat OLDTOTAL $9.;
-        informat NEWLAND $9.;
-        informat NEWIMPR $9.;
-        informat NEWTOTAL $9.;
-        informat PHASELAND best32.;
-        informat PHASEBUILD best32.;
-        informat PHASECYCLE $1.;
-        informat PARTPART $1.;
-        informat VACLNDUSE $1.;
-        informat LOWNUMBER $4.;
-        informat HIGHNUMBER $4.;
-        informat STREETNAME     $30. ;
-        informat STREETCODE     $4.;
-        informat QDRNTNAME      $2.;
-        informat DELCODE $1.;
-        informat HSTDCODE $1.;
-        informat CLASSTYPE best32.;
-        informat TAXRATE best32.;
-        informat MIXEDUSE $1.;
-        informat MIX1TXTYPE $2.;
-        informat MIX1CLASS best32.;
-        informat MIX1RATE best32.;
-        informat MIX1LNDPCT best32.;
-        informat MIX1LNDVAL     best32.;
-        informat MIX1BLDPCT     best32.;
-        informat MIX1BLDVAL best32.;
-        informat MIX2TXTYPE $2.;
-        informat MIX2CLASS best32.;
-        informat MIX2RATE best32.;
-        informat MIX2LNDPCT best32.;
-        informat MIX2LNDVAL     best32.;
-        informat MIX2BLDPCT     best32.;
-        informat MIX2BLDVAL best32.;
-        informat OWNOCCT $3.;
-        informat COOPUNITS best32.;
-        informat PCHILDCODE     $1.;
-        informat ABTLOTCODE     $4.;
-        informat SALEPRICE best32.;
-        informat c_SALEDATE $20.;
-        informat ACCEPTCODE $30.;
-        informat SALETYPE $20.;
-        informat c_DEEDDATE $20.;
-        informat ASSESSMENT     best32.;
-        informat ANNUALTAX      best32.;
-        informat DUEDATE1       best32.;
         informat AMTDUE1        best32.;
-        informat DUEDATE2       best32.;
         informat AMTDUE2        best32.;
-        informat DUEDATE3       best32.;
         informat AMTDUE3        best32.;
-        informat TOTDUEAMT      best32.;
-        informat TOTCOLAMT      best32.;
-        informat TOTBALAMT      best32.;
-        informat c_EXTRACTDAT $20.;
-        informat DEEDSTATUS $1.;
+        informat ANNUALTAX      best32.;
+        informat ARN $1.;
+        informat ASRNAME $1.;
+        informat ASSESSMENT     best32.;
+        informat BIDBALANCE     best32.;
+        informat BIDCOLLECTED     best32.;
+        informat BIDNAME $30.;
+        informat BIDTOTALDUE     best32.;
         informat CAPCURR        $13.;
         informat CAPPROP $10.;
-        informat REASONCD       $1.;
-        informat TXSALEDESC     $1.;
-        informat CLASS3 best32.;
-        informat CLASS3EX       $1.;
-        informat CY1YEAR $16.;
-        informat CY1TXSALE      $10.;
-        informat CY1TAX best32.;
-        informat CY1PEN best32.;
-        informat CY1INT best32.;
-        informat CY1FEE best32.;
-        informat CY1TOTDUE      best32.;
-        informat CY1COLL best32.;
+        informat CAREOFNAME $40.;
+        informat CITYSTZIP $40.;
+        informat CLASSTYPE best32.;
+        informat COOPUNITS best32.;
         informat CY1BAL best32.;
+        informat CY1COLL best32.;
         informat CY1CR best32.;
-        informat CY2YEAR $16.;
-        informat CY2TXSALE      $10.;
-        informat CY2TAX best32.;
-        informat CY2PEN best32.;
-        informat CY2INT best32.;
-        informat CY2FEE best32.;
-        informat CY2TOTDUE      best32.;
-        informat CY2COLL best32.;
+        informat CY1FEE best32.;
+        informat CY1INT best32.;
+        informat CY1PEN best32.;
+        informat CY1TAX best32.;
+        informat CY1TOTDUE      best32.;
+        informat CY1TXSALE      $10.;
+        informat CY1YEAR $16.;
         informat CY2BAL best32.;
+        informat CY2COLL best32.;
         informat CY2CR best32.;
-        informat PY1YEAR $16.;
-        informat PY1TXSALE      $10.;
-        informat PY1TAX best32.;
-        informat PY1PEN best32.;
-        informat PY1INT best32.;
-        informat PY1FEE best32.;
-        informat PY1TOTDUE      best32.;
-        informat PY1COLL best32.;
-        informat PY1BAL best32.;
-        informat PY1CR best32.;
-        informat PY2YEAR $16.;
-        informat PY2TXSALE      $10.;
-        informat PY2TAX best32.;
-        informat PY2PEN best32.;
-        informat PY2INT best32.;
-        informat PY2FEE best32.;
-        informat PY2TOTDUE      best32.;
-        informat PY2COLL best32.;
-        informat PY2BAL best32.;
-        informat PY2CR best32.;
-        informat PY3YEAR $16.;
-        informat PY3TXSALE      $10.;
-        informat PY3TAX best32.;
-        informat PY3PEN best32.;
-        informat PY3INT best32.;
-        informat PY3FEE best32.;
-        informat PY3TOTDUE      best32.;
-        informat PY3COLL best32.;
-        informat PY3BAL best32.;
-        informat PY3CR best32.;
-        informat PY4YEAR $16.;
-        informat PY4TXSALE      $10.;
-        informat PY4TAX best32.;
-        informat PY4PEN best32.;
-        informat PY4INT best32.;
-        informat PY4FEE best32.;
-        informat PY4TOTDUE      best32.;
-        informat PY4COLL best32.;
-        informat PY4BAL best32.;
-        informat PY4CR best32.;
-        informat PY5YEAR $16.;
-        informat PY5TXSALE      $10.;
-        informat PY5TAX best32.;
-        informat PY5PEN best32.;
-        informat PY5INT best32.;
-        informat PY5FEE best32.;
-        informat PY5TOTDUE      best32.;
-        informat PY5COLL best32.;
-        informat PY5BAL best32.;
-        informat PY5CR best32.;
-        informat PY6YEAR $16.;
-        informat PY6TXSALE      $10.;
-        informat PY6TAX best32.;
-        informat PY6PEN best32.;
-        informat PY6INT best32.;
-        informat PY6FEE best32.;
-        informat PY6TOTDUE      best32.;
-        informat PY6COLL best32.;
-        informat PY6BAL best32.;
-        informat PY6CR best32.;
-        informat PY7YEAR $16.;
-        informat PY7TXSALE      $10.;
-        informat PY7TAX best32.;
-        informat PY7PEN best32.;
-        informat PY7INT best32.;
-        informat PY7FEE best32.;
-        informat PY7TOTDUE      best32.;
-        informat PY7COLL best32.;
-        informat PY7BAL best32.;
-        informat PY7CR best32.;
-        informat PY8YEAR $16.;
-        informat PY8TXSALE      $10.;
-        informat PY8TAX best32.;
-        informat PY8PEN best32.;
-        informat PY8INT best32.;
-        informat PY8FEE best32.;
-        informat PY8TOTDUE      best32.;
-        informat PY8COLL best32.;
-        informat PY8BAL best32.;
-        informat PY8CR best32.;
-        informat PY9YEAR $16.;
-        informat PY9TXSALE      $10.;
-        informat PY9TAX best32.;
-        informat PY9PEN best32.;
-        informat PY9INT best32.;
-        informat PY9FEE best32.;
-        informat PY9TOTDUE      best32.;
-        informat PY9COLL best32.;
-        informat PY9BAL best32.;
-        informat PY9CR best32.;
-        informat PY10YEAR $16.;
-        informat PY10TXSALE     $10.;
-        informat PY10TAX        best32.;
-        informat PY10PEN        best32.;
-        informat PY10INT        best32.;
-        informat PY10FEE        best32.;
-        informat PY10TOTDUE     best32.;
-        informat PY10COLL best32.;
-        informat PY10BAL        best32.;
-        informat PY10CR best32.;
+        informat CY2FEE best32.;
+        informat CY2INT best32.;
+        informat CY2PEN best32.;
+        informat CY2TAX best32.;
+        informat CY2TOTDUE      best32.;
+        informat CY2TXSALE      $10.;
+        informat CY2YEAR $16.;
+        informat DEEDSTATUS $1.;
+        informat DELCODE $1.;
+        informat DUEDATE1       best32.;
+        informat DUEDATE2       best32.;
+        informat DUEDATE3       best32.;
+        informat EXTRACTDAT       best32.;
+        informat HSTDCODE $1.;
+        informat INST_NO       best32.;
+        informat INTERNALID       best32.;
+        informat LANDAREA best32.;
         informat LASTPAYDT $10.;
+        informat LOT $4.;
+        informat LOWNUMBER $4.;
+        informat MIX1BLDPCT     best32.;
+        informat MIX1BLDVAL best32.;
+        informat MIX1CLASS best32.;
+        informat MIX1LNDPCT best32.;
+        informat MIX1LNDVAL     best32.;
+        informat MIX1RATE best32.;
+        informat MIX1TXTYPE $2.;
+        informat MIX2BLDPCT     best32.;
+        informat MIX2BLDVAL best32.;
+        informat MIX2CLASS best32.;
+        informat MIX2LNDPCT best32.;
+        informat MIX2LNDVAL     best32.;
+        informat MIX2RATE best32.;
+        informat MIX2TXTYPE $2.;
+        informat MIXEDUSE $1.;
+        informat MORTGAGECO best32.;
+        informat NBHD $3.;
+        informat NBHDNAME $30.;
+        informat NEWIMPR $9.;
+        informat NEWLAND $9.;
+        informat NEWTOTAL $9.;
+        informat OBJECTID best32. ;
+        informat OLDIMPR $9.;
+        informat OLDLAND $9.;
+        informat OLDTOTAL $9.;
+        informat OWNERNAME $60.;
         informat OWNNAME2 $30.;
+        informat OWNOCCT $3.;
+        informat PACEBALANCE best32.;
+        informat PACECOLLECTED best32.;
+        informat PACETOTALDUE best32.;
+        informat PARTPART $1.;
+        informat PCHILDCODE     $1.;
+        informat PHASEBUILD best32.;
+        informat PHASELAND best32.;
+        informat PIPARENTLOT $12.;
+        informat PREMISEADD $45.;
+        informat PRESSL $45.;
+        informat PRMS_WARD best32.;
+        informat PROPTYPE $1.;
+        informat PY10BAL        best32.;
+        informat PY10COLL best32.;
+        informat PY10CR best32.;
+        informat PY10FEE        best32.;
+        informat PY10INT        best32.;
+        informat PY10PEN        best32.;
+        informat PY10TAX        best32.;
+        informat PY10TOTDUE     best32.;
+        informat PY10TXSALE     $10.;
+        informat PY10YEAR $16.;
+        informat PY1BAL best32.;
+        informat PY1COLL best32.;
+        informat PY1CR best32.;
+        informat PY1FEE best32.;
+        informat PY1INT best32.;
+        informat PY1PEN best32.;
+        informat PY1TAX best32.;
+        informat PY1TOTDUE      best32.;
+        informat PY1TXSALE      $10.;
+        informat PY1YEAR $16.;
+        informat PY2BAL best32.;
+        informat PY2COLL best32.;
+        informat PY2CR best32.;
+        informat PY2FEE best32.;
+        informat PY2INT best32.;
+        informat PY2PEN best32.;
+        informat PY2TAX best32.;
+        informat PY2TOTDUE      best32.;
+        informat PY2TXSALE      $10.;
+        informat PY2YEAR $16.;
+        informat PY3BAL best32.;
+        informat PY3COLL best32.;
+        informat PY3CR best32.;
+        informat PY3FEE best32.;
+        informat PY3INT best32.;
+        informat PY3PEN best32.;
+        informat PY3TAX best32.;
+        informat PY3TOTDUE      best32.;
+        informat PY3TXSALE      $10.;
+        informat PY3YEAR $16.;
+        informat PY4BAL best32.;
+        informat PY4COLL best32.;
+        informat PY4CR best32.;
+        informat PY4FEE best32.;
+        informat PY4INT best32.;
+        informat PY4PEN best32.;
+        informat PY4TAX best32.;
+        informat PY4TOTDUE      best32.;
+        informat PY4TXSALE      $10.;
+        informat PY4YEAR $16.;
+        informat PY5BAL best32.;
+        informat PY5COLL best32.;
+        informat PY5CR best32.;
+        informat PY5FEE best32.;
+        informat PY5INT best32.;
+        informat PY5PEN best32.;
+        informat PY5TAX best32.;
+        informat PY5TOTDUE      best32.;
+        informat PY5TXSALE      $10.;
+        informat PY5YEAR $16.;
+        informat PY6BAL best32.;
+        informat PY6COLL best32.;
+        informat PY6CR best32.;
+        informat PY6FEE best32.;
+        informat PY6INT best32.;
+        informat PY6PEN best32.;
+        informat PY6TAX best32.;
+        informat PY6TOTDUE      best32.;
+        informat PY6TXSALE      $10.;
+        informat PY6YEAR $16.;
+        informat PY7BAL best32.;
+        informat PY7COLL best32.;
+        informat PY7CR best32.;
+        informat PY7FEE best32.;
+        informat PY7INT best32.;
+        informat PY7PEN best32.;
+        informat PY7TAX best32.;
+        informat PY7TOTDUE      best32.;
+        informat PY7TXSALE      $10.;
+        informat PY7YEAR $16.;
+        informat PY8BAL best32.;
+        informat PY8COLL best32.;
+        informat PY8CR best32.;
+        informat PY8FEE best32.;
+        informat PY8INT best32.;
+        informat PY8PEN best32.;
+        informat PY8TAX best32.;
+        informat PY8TOTDUE      best32.;
+        informat PY8TXSALE      $10.;
+        informat PY8YEAR $16.;
+        informat PY9BAL best32.;
+        informat PY9COLL best32.;
+        informat PY9CR best32.;
+        informat PY9FEE best32.;
+        informat PY9INT best32.;
+        informat PY9PEN best32.;
+        informat PY9TAX best32.;
+        informat PY9TOTDUE      best32.;
+        informat PY9TXSALE      $10.;
+        informat PY9YEAR $16.;
+        informat QDRNTNAME      $2.;
+        informat REASONCD       $1.;
+        informat SALEDATE       best32.;
+        informat SALEPRICE best32.;
+        informat SALETYPE $20.;
+        informat SEWSBALANCE best32.;
+        informat SEWSCOLLECTED best32.;
+        informat SEWSTOTALDUE best32.;
+        informat SQUARE $4.;
+        informat SSL $17. ;
+        informat STREETNAME     $30. ;
+        informat SUBNBHD $1.;
+        informat SUFFIX $4.;
+        informat SWWSADBALANCE best32.;
+        informat SWWSADCOLLECTED best32.;
+        informat SWWSADTOTALDUE best32.;
+        informat TAXRATE best32.;
+        informat TOTBALAMT      best32.;
+        informat TOTCOLAMT      best32.;
+        informat TOTDUEAMT      best32.;
+        informat TRIGROUP $1.;
+        informat UNITNUMBER $10. ;
+        informat USECODE $4. ;
+        informat VACLNDUSE $1.;
 
         input
-        OBJECTID_1
-        OBJECTID
-        SSL $
-        SQUARE  $
-        SUFFIX  $
-        LOT $
-        ARN $
-        ASRNAME  $
-        PROPTYPE $
-        TRIGROUP $
-        in_usecode
-        LANDAREA
-        PREMISEADD $
-        NBHD $
-        SUBNBHD $
-        UNITNUMBER $
-        OWNERNAME $
-        CAREOFNAME $
-        ADDRESS1 $
-        ADDRESS2 $
-        CITYSTZIP $
-        BASELAND
-        BASEBUILD
-        OLDLAND $
-        OLDIMPR $
-        OLDTOTAL $
-        NEWLAND $
-        NEWIMPR $
-        NEWTOTAL $
-        PHASELAND
-        PHASEBUILD
-        PHASECYCLE $
-        PARTPART $
-        VACLNDUSE $
-        LOWNUMBER $
-        HIGHNUMBER $
-        STREETNAME      $
-        STREETCODE      $
-        QDRNTNAME       $
-        DELCODE $
-        HSTDCODE $
-        CLASSTYPE
-        TAXRATE
-        MIXEDUSE $
-        MIX1TXTYPE $
-        MIX1CLASS
-        MIX1RATE
-        MIX1LNDPCT
-        MIX1LNDVAL
-        MIX1BLDPCT
-        MIX1BLDVAL
-        MIX2TXTYPE $
-        MIX2CLASS
-        MIX2RATE
-        MIX2LNDPCT
-        MIX2LNDVAL
-        MIX2BLDPCT
-        MIX2BLDVAL
-        OWNOCCT $
-        COOPUNITS
-        PCHILDCODE      $
-        ABTLOTCODE      $
-        SALEPRICE
-        c_SALEDATE $
-        ACCEPTCODE $
-        SALETYPE $
-        c_DEEDDATE $
-        ASSESSMENT
-        ANNUALTAX
-        DUEDATE1
-        AMTDUE1
-        DUEDATE2
-        AMTDUE2
-        DUEDATE3
-        AMTDUE3
-        TOTDUEAMT
-        TOTCOLAMT
-        TOTBALAMT
-        c_EXTRACTDAT $
-        DEEDSTATUS $
-        CAPCURR $
-        CAPPROP $
-        REASONCD        $
-        TXSALEDESC      $
-        CLASS3
-        CLASS3EX        $
-        CY1YEAR $
-        CY1TXSALE       $
-        CY1TAX
-        CY1PEN
-        CY1INT
-        CY1FEE
-        CY1TOTDUE
-        CY1COLL
-        CY1BAL
-        CY1CR
-        CY2YEAR $
-        CY2TXSALE       $
-        CY2TAX
-        CY2PEN
-        CY2INT
-        CY2FEE
-        CY2TOTDUE
-        CY2COLL
-        CY2BAL
-        CY2CR
-        PY1YEAR $
-        PY1TXSALE       $
-        PY1TAX
-        PY1PEN
-        PY1INT
-        PY1FEE
-        PY1TOTDUE
-        PY1COLL
-        PY1BAL
-        PY1CR
-        PY2YEAR $
-        PY2TXSALE       $
-        PY2TAX
-        PY2PEN
-        PY2INT
-        PY2FEE
-        PY2TOTDUE
-        PY2COLL
-        PY2BAL
-        PY2CR
-        PY3YEAR $
-        PY3TXSALE       $
-        PY3TAX
-        PY3PEN
-        PY3INT
-        PY3FEE
-        PY3TOTDUE
-        PY3COLL
-        PY3BAL
-        PY3CR
-        PY4YEAR $
-        PY4TXSALE       $
-        PY4TAX
-        PY4PEN
-        PY4INT
-        PY4FEE
-        PY4TOTDUE
-        PY4COLL
-        PY4BAL
-        PY4CR
-        PY5YEAR $
-        PY5TXSALE       $
-        PY5TAX
-        PY5PEN
-        PY5INT
-        PY5FEE
-        PY5TOTDUE
-        PY5COLL
-        PY5BAL
-        PY5CR
-        PY6YEAR $
-        PY6TXSALE       $
-        PY6TAX
-        PY6PEN
-        PY6INT
-        PY6FEE
-        PY6TOTDUE
-        PY6COLL
-        PY6BAL
-        PY6CR
-        PY7YEAR $
-        PY7TXSALE       $
-        PY7TAX
-        PY7PEN
-        PY7INT
-        PY7FEE
-        PY7TOTDUE
-        PY7COLL
-        PY7BAL
-        PY7CR
-        PY8YEAR $
-        PY8TXSALE       $
-        PY8TAX
-        PY8PEN
-        PY8INT
-        PY8FEE
-        PY8TOTDUE
-        PY8COLL
-        PY8BAL
-        PY8CR
-        PY9YEAR $
-        PY9TXSALE       $
-        PY9TAX
-        PY9PEN
-        PY9INT
-        PY9FEE
-        PY9TOTDUE
-        PY9COLL
-        PY9BAL
-        PY9CR
-        PY10YEAR $
-        PY10TXSALE      $
-        PY10TAX
-        PY10PEN
-        PY10INT
-        PY10FEE
-        PY10TOTDUE
-        PY10COLL
-        PY10BAL
-        PY10CR
-        LASTPAYDT $
-        OWNNAME2 $
+        ABTLOTCODE     $;
+        ACCEPTCODE $;
+        ADDRESS1 $;
+        informat ADDRESS2 $;
+        informat AMTDUE1       ;
+        informat AMTDUE2        ;
+        informat AMTDUE3        ;
+        informat ANNUALTAX      ;
+        informat ARN $;
+        informat ASRNAME $;
+        informat ASSESSMENT     ;
+        informat BIDBALANCE     ;
+        informat BIDCOLLECTED     ;
+        informat BIDNAME $;
+        informat BIDTOTALDUE     ;
+        informat CAPCURR        $;
+        informat CAPPROP $;
+        informat CAREOFNAME $;
+        informat CITYSTZIP $;
+        informat CLASSTYPE ;
+        informat COOPUNITS ;
+        informat CY1BAL ;
+        informat CY1COLL ;
+        informat CY1CR ;
+        informat CY1FEE ;
+        informat CY1INT ;
+        informat CY1PEN ;
+        informat CY1TAX ;
+        informat CY1TOTDUE      ;
+        informat CY1TXSALE      $;
+        informat CY1YEAR $;
+        informat CY2BAL ;
+        informat CY2COLL ;
+        informat CY2CR ;
+        informat CY2FEE ;
+        informat CY2INT ;
+        informat CY2PEN ;
+        informat CY2TAX ;
+        informat CY2TOTDUE      ;
+        informat CY2TXSALE      $;
+        informat CY2YEAR $;
+        informat DEEDSTATUS $;
+        informat DELCODE $;
+        informat DUEDATE1       ;
+        informat DUEDATE2       ;
+        informat DUEDATE3       ;
+        informat EXTRACTDAT       ;
+        informat HSTDCODE $;
+        informat INST_NO       ;
+        informat INTERNALID       ;
+        informat LANDAREA ;
+        informat LASTPAYDT $;
+        informat LOT $;
+        informat LOWNUMBER $;
+        informat MIX1BLDPCT     ;
+        informat MIX1BLDVAL ;
+        informat MIX1CLASS ;
+        informat MIX1LNDPCT ;
+        informat MIX1LNDVAL     ;
+        informat MIX1RATE ;
+        informat MIX1TXTYPE $;
+        informat MIX2BLDPCT     ;
+        informat MIX2BLDVAL ;
+        informat MIX2CLASS ;
+        informat MIX2LNDPCT ;
+        informat MIX2LNDVAL     ;
+        informat MIX2RATE ;
+        informat MIX2TXTYPE $;
+        informat MIXEDUSE $;
+        informat MORTGAGECO ;
+        informat NBHD $;
+        informat NBHDNAME $;
+        informat NEWIMPR $;
+        informat NEWLAND $;
+        informat NEWTOTAL $;
+        informat OBJECTID  ;
+        informat OLDIMPR $;
+        informat OLDLAND $;
+        informat OLDTOTAL $;
+        informat OWNERNAME $;
+        informat OWNNAME2 $;
+        informat OWNOCCT $;
+        informat PACEBALANCE ;
+        informat PACECOLLECTED ;
+        informat PACETOTALDUE ;
+        informat PARTPART $;
+        informat PCHILDCODE     $;
+        informat PHASEBUILD ;
+        informat PHASELAND ;
+        informat PIPARENTLOT $;
+        informat PREMISEADD $;
+        informat PRESSL $;
+        informat PRMS_WARD ;
+        informat PROPTYPE $;
+        informat PY10BAL        ;
+        informat PY10COLL ;
+        informat PY10CR ;
+        informat PY10FEE        ;
+        informat PY10INT        ;
+        informat PY10PEN        ;
+        informat PY10TAX        ;
+        informat PY10TOTDUE     ;
+        informat PY10TXSALE     $;
+        informat PY10YEAR $;
+        informat PY1BAL ;
+        informat PY1COLL ;
+        informat PY1CR ;
+        informat PY1FEE ;
+        informat PY1INT ;
+        informat PY1PEN ;
+        informat PY1TAX ;
+        informat PY1TOTDUE      ;
+        informat PY1TXSALE      $;
+        informat PY1YEAR $;
+        informat PY2BAL ;
+        informat PY2COLL ;
+        informat PY2CR ;
+        informat PY2FEE ;
+        informat PY2INT ;
+        informat PY2PEN ;
+        informat PY2TAX ;
+        informat PY2TOTDUE      ;
+        informat PY2TXSALE      $;
+        informat PY2YEAR $;
+        informat PY3BAL ;
+        informat PY3COLL ;
+        informat PY3CR ;
+        informat PY3FEE ;
+        informat PY3INT ;
+        informat PY3PEN ;
+        informat PY3TAX ;
+        informat PY3TOTDUE      ;
+        informat PY3TXSALE      $;
+        informat PY3YEAR $;
+        informat PY4BAL ;
+        informat PY4COLL ;
+        informat PY4CR ;
+        informat PY4FEE ;
+        informat PY4INT ;
+        informat PY4PEN ;
+        informat PY4TAX ;
+        informat PY4TOTDUE      ;
+        informat PY4TXSALE      $;
+        informat PY4YEAR $;
+        informat PY5BAL ;
+        informat PY5COLL ;
+        informat PY5CR ;
+        informat PY5FEE ;
+        informat PY5INT ;
+        informat PY5PEN ;
+        informat PY5TAX ;
+        informat PY5TOTDUE      ;
+        informat PY5TXSALE      $;
+        informat PY5YEAR $;
+        informat PY6BAL ;
+        informat PY6COLL ;
+        informat PY6CR ;
+        informat PY6FEE ;
+        informat PY6INT ;
+        informat PY6PEN ;
+        informat PY6TAX ;
+        informat PY6TOTDUE      ;
+        informat PY6TXSALE      $;
+        informat PY6YEAR $;
+        informat PY7BAL ;
+        informat PY7COLL ;
+        informat PY7CR ;
+        informat PY7FEE ;
+        informat PY7INT ;
+        informat PY7PEN ;
+        informat PY7TAX ;
+        informat PY7TOTDUE      ;
+        informat PY7TXSALE      $;
+        informat PY7YEAR $;
+        informat PY8BAL ;
+        informat PY8COLL ;
+        informat PY8CR ;
+        informat PY8FEE ;
+        informat PY8INT ;
+        informat PY8PEN ;
+        informat PY8TAX ;
+        informat PY8TOTDUE      ;
+        informat PY8TXSALE      $;
+        informat PY8YEAR $;
+        informat PY9BAL ;
+        informat PY9COLL ;
+        informat PY9CR ;
+        informat PY9FEE ;
+        informat PY9INT ;
+        informat PY9PEN ;
+        informat PY9TAX ;
+        informat PY9TOTDUE      ;
+        informat PY9TXSALE      $;
+        informat PY9YEAR $;
+        informat QDRNTNAME      $;
+        informat REASONCD       $;
+        informat SALEDATE       ;
+        informat SALEPRICE ;
+        informat SALETYPE $;
+        informat SEWSBALANCE ;
+        informat SEWSCOLLECTED ;
+        informat SEWSTOTALDUE ;
+        informat SQUARE $;
+        informat SSL $ ;
+        informat STREETNAME     $ ;
+        informat SUBNBHD $;
+        informat SUFFIX $;
+        informat SWWSADBALANCE ;
+        informat SWWSADCOLLECTED ;
+        informat SWWSADTOTALDUE ;
+        informat TAXRATE ;
+        informat TOTBALAMT      ;
+        informat TOTCOLAMT      ;
+        informat TOTDUEAMT      ;
+        informat TRIGROUP $;
+        informat UNITNUMBER $ ;
+        informat USECODE $ ;
+        informat VACLNDUSE $;
 
 ;
 
