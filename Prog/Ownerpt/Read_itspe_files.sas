@@ -33,7 +33,7 @@
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2021-12\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2021-01\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
@@ -540,16 +540,11 @@ data ITSPE_Facts;
         informat OWNER_ADDRESS_LINE1 $30.;
         informat OWNER_ADDRESS_LINE2 $30.;
         informat OWNER_ADDRESS_CITYSTZIP $40.;
-        informat APPRAISED_VALUE_BASEYEAR_LAND best32.;
-        informat APPRAISED_VALUE_BASEYEAR_BLDG best32.;
         informat APPRAISED_VALUE_PRIOR_LAND best32.;
         informat APPRAISED_VALUE_PRIOR_IMPR best32.;
         informat APPRAISED_VALUE_PRIOR_TOTAL best32.;
         informat APPRAISED_VALUE_CURRENT_LAND best32.;
-        informat APPRAISED_VALUE_CURRENT_IMPR best32.;
         informat APPRAISED_VALUE_CURRENT_TOTAL best32.;
-        informat PHASEIN_VALUE_CURRENT_LAND best32.;
-        informat PHASEIN_VALUE_CURRENT_BLDG best32.;
         informat VACANT_USE $3.;
         informat HOMESTEAD_DESCRIPTION $16.;
         informat TAX_TYPE_DESCRIPTION $50.;
@@ -564,47 +559,51 @@ data ITSPE_Facts;
         informat OWNER_NAME_SECONDARY $60.;
         informat ADDRESS_ID $358.;
         informat c_LASTMODIFIEDDATE $32.;
+		informat APPRAISED_VALUE_PROPOSED_LAND best32.;
+		informat APPRAISED_VALUE_PROPOSED_IMPR best32.;
+		informat APPRAISED_VALUE_PROPOSED_TOTAL best32.;
+		informat APPRAISED_VALUE_CURRENT_IMPR best32.;
+
 
 
         input
-        OBJECTID
+        OBJECTID 
         SSL $
         ASSESSOR_NAME $
-        LAND_USE_CODE
+        LAND_USE_CODE 
         LAND_USE_DESCRIPTION $
-        LANDAREA
+        LANDAREA 
         PROPERTY_ADDRESS $
-        OTR_NEIGHBORHOOD_CODE
+        OTR_NEIGHBORHOOD_CODE 
         OTR_NEIGHBORHOOD_NAME $
         OWNER_NAME_PRIMARY $
         CAREOF_NAME $
         OWNER_ADDRESS_LINE1 $
         OWNER_ADDRESS_LINE2 $
         OWNER_ADDRESS_CITYSTZIP $
-        APPRAISED_VALUE_BASEYEAR_LAND
-        APPRAISED_VALUE_BASEYEAR_BLDG
-        APPRAISED_VALUE_PRIOR_LAND
-        APPRAISED_VALUE_PRIOR_IMPR
-        APPRAISED_VALUE_PRIOR_TOTAL
-        APPRAISED_VALUE_CURRENT_LAND
-        APPRAISED_VALUE_CURRENT_IMPR
-        APPRAISED_VALUE_CURRENT_TOTAL
-        PHASEIN_VALUE_CURRENT_LAND
-        PHASEIN_VALUE_CURRENT_BLDG
+        APPRAISED_VALUE_PRIOR_LAND 
+        APPRAISED_VALUE_PRIOR_IMPR 
+        APPRAISED_VALUE_PRIOR_TOTAL 
+        APPRAISED_VALUE_CURRENT_LAND 
+        APPRAISED_VALUE_CURRENT_TOTAL 
         VACANT_USE $
         HOMESTEAD_DESCRIPTION $
         TAX_TYPE_DESCRIPTION $
-        TAXRATE
+        TAXRATE 
         MIXED_USE $
-        OWNER_OCCUPIED_COOP_UNITS
-        LAST_SALE_PRICE
+        OWNER_OCCUPIED_COOP_UNITS 
+        LAST_SALE_PRICE 
         c_LAST_SALE_DATE $
         c_DEED_DATE $
-        CURRENT_ASSESSMENT_CAP
-        PROPOSED_ASSESSMENT_CAP
+        CURRENT_ASSESSMENT_CAP 
+        PROPOSED_ASSESSMENT_CAP 
         OWNER_NAME_SECONDARY $
         ADDRESS_ID $
         c_LASTMODIFIEDDATE $
+		APPRAISED_VALUE_PROPOSED_LAND 
+		APPRAISED_VALUE_PROPOSED_IMPR 
+		APPRAISED_VALUE_PROPOSED_TOTAL 
+		APPRAISED_VALUE_CURRENT_IMPR 
 ;
 
         LAST_SALE_DATE = input( substr( c_LAST_SALE_DATE, 1, 10 ), yymmdd10. );
@@ -650,19 +649,14 @@ data Itspe_property_sales;
         informat LANDAREA best32.;
         informat PROPERTY_A $39.;
         informat OWNER_NAME $30.;
-        informat APPRAISED_ best32.;
-        informat APPRAISED1 best32.;
-        informat APPRAISE_1 best32.;
-        informat APPRAISE_2 best32.;
-        informat APPRAISE_3 best32.;
-        informat APPRAISE_4 best32.;
-        informat APPRAISE_5 best32.;
-        informat APPRAISE_6 best32.;
-        informat PHASEIN_VA best32.;
-        informat PHASEIN__1 best32.;
+		informat APPRAISED_VALUE_PRIOR_LAND best32.;
+		informat APPRAISED_VALUE_PRIOR_IMPR best32.;
+		informat APPRAISED_VALUE_PRIOR_TOTAL best32.;
+		informat APPRAISED_VALUE_CURRENT_LAND best32.;
+		informat APPRAISED_VALUE_CURRENT_TOTAL best32.;
         informat VACANT_USE $3.;
         informat HOMESTEAD_ best32.;
-        informat HOMESTEAD1 $16.;
+		informat HOMESTEAD1 $16.;
         informat TAX_TYPE_D $50.;
         informat TAXRATE best32.;
         informat MIXED_USE $1.;
@@ -675,40 +669,44 @@ data Itspe_property_sales;
         informat OWNER_NA_1 $30.;
         informat ADDRESS_ID $358.;
         informat c_LASTMODIFI $32.;
+		informat APPRAISED_VALUE_PROPOSED_LAND best32.;
+		informat APPRAISED_VALUE_PROPOSED_IMPR best32.;
+		informat APPRAISED_VALUE_PROPOSED_TOTAL best32.;
+		informat APPRAISED_VALUE_CURRENT_BLDG best32.;
+
 
         input
-        OBJECTID
+        OBJECTID 
         SSL $
-        LAND_USE_C
+        LAND_USE_C 
         LAND_USE_D $
-        LANDAREA
+        LANDAREA 
         PROPERTY_A $
         OWNER_NAME $
-        APPRAISED_
-        APPRAISED1
-        APPRAISE_1
-        APPRAISE_2
-        APPRAISE_3
-        APPRAISE_4
-        APPRAISE_5
-        APPRAISE_6
-        PHASEIN_VA
-        PHASEIN__1
+		APPRAISED_VALUE_PRIOR_LAND 
+		APPRAISED_VALUE_PRIOR_IMPR 
+		APPRAISED_VALUE_PRIOR_TOTAL 
+		APPRAISED_VALUE_CURRENT_LAND 
+		APPRAISED_VALUE_CURRENT_TOTAL 
         VACANT_USE $
-        HOMESTEAD_
+		HOMESTEAD_ 
         HOMESTEAD1 $
         TAX_TYPE_D $
-        TAXRATE
+        TAXRATE 
         MIXED_USE $
-        OWNER_OCCU
-        LAST_SALE_
-        c_LAST_SALE1
-        c_DEED_DATE
-        CURRENT_AS
-        PROPOSED_A
+        OWNER_OCCU 
+        LAST_SALE_ 
+        c_LAST_SALE1 $
+        c_DEED_DATE $
+        CURRENT_AS 
+        PROPOSED_A 
         OWNER_NA_1 $
         ADDRESS_ID $
-        c_LASTMODIFI
+        c_LASTMODIFI $
+		APPRAISED_VALUE_PROPOSED_LAND 
+		APPRAISED_VALUE_PROPOSED_IMPR 
+		APPRAISED_VALUE_PROPOSED_TOTAL 
+		APPRAISED_VALUE_CURRENT_BLDG 
 ;
 
         LAST_SALE1 = input( substr( c_LAST_SALE1, 1, 10 ), yymmdd10. );
