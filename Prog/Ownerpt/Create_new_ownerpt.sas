@@ -29,9 +29,9 @@
 
 
 /* Sort input datasets */
-proc sort data = work.Its_public_extract out = Its_public_extract_in; by ssl; run;
-proc sort data = work.Itspe_facts out = Itspe_facts_in ; by ssl; run;
-proc sort data = work.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;
+proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
+proc sort data = realprop.Itspe_facts out = Itspe_facts_in ; by ssl; run;
+proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;
 
 
 /* Merge ITS files */
@@ -321,10 +321,9 @@ data ownerpt_&ownerptdt.;
 
 
         /* Label ownerpt */
-        %include "&_dcdata_r_path\RealProp\Prog\Updates\Label_ownerpt.sas";
+        %include "&_dcdata_default_path\RealProp\Prog\Updates\Label_ownerpt.sas";
 
 run;
-
 
 
 %Dup_check(
@@ -348,7 +347,7 @@ run;
   revisions=%str(New Ownerpt as of &ownerptdt.),
   /** File info parameters **/
   printobs=5,
-  freqvars=acceptcode acceptcode_new class3 class3ex del_code hstd_code
+  freqvars=acceptcode acceptcode_new del_code hstd_code
            ownerpt_extractdat mix1class_3d mix2class_3d mix1txtype mix2txtype
            nbhd part_part pchildcode proptype qdrntname saletype_new sub_nbhd usecode vaclnduse
            ui_proptype
