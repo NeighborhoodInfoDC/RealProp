@@ -27,10 +27,11 @@
 %let ownerptdt = 2021_01;
 
 
+
 /* Sort input datasets */
-proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
-proc sort data = realprop.Itspe_facts out = Itspe_facts_in ; by ssl; run;
-proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;
+proc sort data = work.Its_public_extract out = Its_public_extract_in; by ssl; run;
+proc sort data = work.Itspe_facts out = Itspe_facts_in ; by ssl; run;
+proc sort data = work.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;
 
 
 /* Merge ITS files */
@@ -40,7 +41,11 @@ data itspe_all;
 
         %let filedate = extractdat;
 
-        %Acceptcode_old()
+		saletype = upcase(saletype);
+		acceptcode = upcase(acceptcode);
+
+		%let dyr = %substr(&ownerptdt,1,4);
+        %Acceptcode_old(datayear=&dyr.)
 
         %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
@@ -174,9 +179,9 @@ data itspe_all;
     length saletype_old $ 2 saletype_new $ 1;
 
     select ( saletype );
-      when ( 'I - IMPROVED' )
+      when ( 'IMPROVED' )
         saletype_new = 'I';
-      when ( 'V - VACANT' )
+      when ( 'VACANT' )
         saletype_new = 'V';
       when ( '' )
         saletype_new = '';
@@ -185,7 +190,7 @@ data itspe_all;
       end;
     end;
 
-    if acceptcode in: ( 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9' ) then do;
+    if acceptcode in: ( 'MULTI' ) then do;
       saletype_old = '03';
     end;
     else do;
@@ -207,21 +212,21 @@ data itspe_all;
     length acceptcode_old $ 2;
 
     select ( acceptcode );
-      when ( 'BUYER=SELLER' ) acceptcode_old = '03';
+      when ( 'BUYER = SELLER' ) acceptcode_old = '03';
       when ( 'FORECLOSURE' ) acceptcode_old = '05';
-      when ( 'GOVT PURCHASE' ) acceptcode_old = '06';
-      when ( 'LANDSALE' ) acceptcode_old = '09';
-      when ( 'M1 MULTI-VERIFIED SALE' ) acceptcode_old = '98';
-      when ( 'M2 MULTI-UNASSESSED' ) acceptcode_old = '02';
-      when ( 'M3 MULTI-BUYER-SELLER' ) acceptcode_old = '03';
-      when ( 'M4 MULTI-UNUSUAL' ) acceptcode_old = '04';
-      when ( 'M5 MULTI-FORECLOSURE' ) acceptcode_old = '05';
-      when ( 'M6 MULTI-GOVT PURCHASE' ) acceptcode_old = '06';
-      when ( 'M7 MULTI-SPECULATIVE' ) acceptcode_old = '07';
-      when ( 'M8 MULTI-MISC' ) acceptcode_old = '08';
-      when ( 'M9 MULTI-LAND SALE' ) acceptcode_old = '09';
-      when ( 'MARKET' ) acceptcode_old = '01';
-      when ( 'MISC' ) acceptcode_old = '08';
+      when ( 'GOVERNMENT PURCHASE' ) acceptcode_old = '06';
+      when ( 'LAND SALE' ) acceptcode_old = '09';
+      when ( 'MULTI-MARKET SALE' ) acceptcode_old = '98';
+      when ( 'MULTI-UNASSESSED' ) acceptcode_old = '02';
+      when ( 'MULTI-BUYER = SELLER' ) acceptcode_old = '03';
+      when ( 'MULTI-UNUSUAL' ) acceptcode_old = '04';
+      when ( 'MULTI-FORECLOSURE' ) acceptcode_old = '05';
+      when ( 'MULTI-GOVT PURCHASE' ) acceptcode_old = '06';
+      when ( 'MULTI-SPECULATIVE' ) acceptcode_old = '07';
+      when ( 'MULTI-MISC' ) acceptcode_old = '08';
+      when ( 'MULTI-LAND SALE' ) acceptcode_old = '09';
+      when ( 'MARKET SALE' ) acceptcode_old = '01';
+      when ( 'MISCELLANEOUS' ) acceptcode_old = '08';
       when ( 'SPECULATIVE' ) acceptcode_old = '07';
       when ( 'TAX DEED' ) acceptcode_old = '98';
       when ( 'UNASSESSED' ) acceptcode_old = '02';

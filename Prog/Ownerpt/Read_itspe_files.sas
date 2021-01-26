@@ -88,12 +88,12 @@ data ITS_Public_Extract;
         informat CY2TOTDUE      best32.;
         informat CY2TXSALE      $10.;
         informat CY2YEAR $16.;
-        informat DEEDSTATUS $1.;
+        informat c_DEEDDATE $32.;
         informat DELCODE $1.;
         informat DUEDATE1       best32.;
         informat DUEDATE2       best32.;
         informat DUEDATE3       best32.;
-        informat EXTRACTDAT       best32.;
+        informat c_EXTRACTDAT       $32.;
         informat HSTDCODE $1.;
         informat INST_NO       best32.;
         informat INTERNALID       best32.;
@@ -243,7 +243,7 @@ data ITS_Public_Extract;
         informat PY9YEAR $16.;
         informat QDRNTNAME      $2.;
         informat REASONCD       $1.;
-        informat SALEDATE       best32.;
+        informat c_SALEDATE       $32.;
         informat SALEPRICE best32.;
         informat SALETYPE $20.;
         informat SEWSBALANCE best32.;
@@ -263,230 +263,229 @@ data ITS_Public_Extract;
         informat TOTDUEAMT      best32.;
         informat TRIGROUP $1.;
         informat UNITNUMBER $10. ;
-        informat USECODE $4. ;
+        informat in_usecode best32.;
         informat VACLNDUSE $1.;
 
         input
-        ABTLOTCODE     $;
-        ACCEPTCODE $;
-        ADDRESS1 $;
-        informat ADDRESS2 $;
-        informat AMTDUE1       ;
-        informat AMTDUE2        ;
-        informat AMTDUE3        ;
-        informat ANNUALTAX      ;
-        informat ARN $;
-        informat ASRNAME $;
-        informat ASSESSMENT     ;
-        informat BIDBALANCE     ;
-        informat BIDCOLLECTED     ;
-        informat BIDNAME $;
-        informat BIDTOTALDUE     ;
-        informat CAPCURR        $;
-        informat CAPPROP $;
-        informat CAREOFNAME $;
-        informat CITYSTZIP $;
-        informat CLASSTYPE ;
-        informat COOPUNITS ;
-        informat CY1BAL ;
-        informat CY1COLL ;
-        informat CY1CR ;
-        informat CY1FEE ;
-        informat CY1INT ;
-        informat CY1PEN ;
-        informat CY1TAX ;
-        informat CY1TOTDUE      ;
-        informat CY1TXSALE      $;
-        informat CY1YEAR $;
-        informat CY2BAL ;
-        informat CY2COLL ;
-        informat CY2CR ;
-        informat CY2FEE ;
-        informat CY2INT ;
-        informat CY2PEN ;
-        informat CY2TAX ;
-        informat CY2TOTDUE      ;
-        informat CY2TXSALE      $;
-        informat CY2YEAR $;
-        informat DEEDSTATUS $;
-        informat DELCODE $;
-        informat DUEDATE1       ;
-        informat DUEDATE2       ;
-        informat DUEDATE3       ;
-        informat EXTRACTDAT       ;
-        informat HSTDCODE $;
-        informat INST_NO       ;
-        informat INTERNALID       ;
-        informat LANDAREA ;
-        informat LASTPAYDT $;
-        informat LOT $;
-        informat LOWNUMBER $;
-        informat MIX1BLDPCT     ;
-        informat MIX1BLDVAL ;
-        informat MIX1CLASS ;
-        informat MIX1LNDPCT ;
-        informat MIX1LNDVAL     ;
-        informat MIX1RATE ;
-        informat MIX1TXTYPE $;
-        informat MIX2BLDPCT     ;
-        informat MIX2BLDVAL ;
-        informat MIX2CLASS ;
-        informat MIX2LNDPCT ;
-        informat MIX2LNDVAL     ;
-        informat MIX2RATE ;
-        informat MIX2TXTYPE $;
-        informat MIXEDUSE $;
-        informat MORTGAGECO ;
-        informat NBHD $;
-        informat NBHDNAME $;
-        informat NEWIMPR $;
-        informat NEWLAND $;
-        informat NEWTOTAL $;
-        informat OBJECTID  ;
-        informat OLDIMPR $;
-        informat OLDLAND $;
-        informat OLDTOTAL $;
-        informat OWNERNAME $;
-        informat OWNNAME2 $;
-        informat OWNOCCT $;
-        informat PACEBALANCE ;
-        informat PACECOLLECTED ;
-        informat PACETOTALDUE ;
-        informat PARTPART $;
-        informat PCHILDCODE     $;
-        informat PHASEBUILD ;
-        informat PHASELAND ;
-        informat PIPARENTLOT $;
-        informat PREMISEADD $;
-        informat PRESSL $;
-        informat PRMS_WARD ;
-        informat PROPTYPE $;
-        informat PY10BAL        ;
-        informat PY10COLL ;
-        informat PY10CR ;
-        informat PY10FEE        ;
-        informat PY10INT        ;
-        informat PY10PEN        ;
-        informat PY10TAX        ;
-        informat PY10TOTDUE     ;
-        informat PY10TXSALE     $;
-        informat PY10YEAR $;
-        informat PY1BAL ;
-        informat PY1COLL ;
-        informat PY1CR ;
-        informat PY1FEE ;
-        informat PY1INT ;
-        informat PY1PEN ;
-        informat PY1TAX ;
-        informat PY1TOTDUE      ;
-        informat PY1TXSALE      $;
-        informat PY1YEAR $;
-        informat PY2BAL ;
-        informat PY2COLL ;
-        informat PY2CR ;
-        informat PY2FEE ;
-        informat PY2INT ;
-        informat PY2PEN ;
-        informat PY2TAX ;
-        informat PY2TOTDUE      ;
-        informat PY2TXSALE      $;
-        informat PY2YEAR $;
-        informat PY3BAL ;
-        informat PY3COLL ;
-        informat PY3CR ;
-        informat PY3FEE ;
-        informat PY3INT ;
-        informat PY3PEN ;
-        informat PY3TAX ;
-        informat PY3TOTDUE      ;
-        informat PY3TXSALE      $;
-        informat PY3YEAR $;
-        informat PY4BAL ;
-        informat PY4COLL ;
-        informat PY4CR ;
-        informat PY4FEE ;
-        informat PY4INT ;
-        informat PY4PEN ;
-        informat PY4TAX ;
-        informat PY4TOTDUE      ;
-        informat PY4TXSALE      $;
-        informat PY4YEAR $;
-        informat PY5BAL ;
-        informat PY5COLL ;
-        informat PY5CR ;
-        informat PY5FEE ;
-        informat PY5INT ;
-        informat PY5PEN ;
-        informat PY5TAX ;
-        informat PY5TOTDUE      ;
-        informat PY5TXSALE      $;
-        informat PY5YEAR $;
-        informat PY6BAL ;
-        informat PY6COLL ;
-        informat PY6CR ;
-        informat PY6FEE ;
-        informat PY6INT ;
-        informat PY6PEN ;
-        informat PY6TAX ;
-        informat PY6TOTDUE      ;
-        informat PY6TXSALE      $;
-        informat PY6YEAR $;
-        informat PY7BAL ;
-        informat PY7COLL ;
-        informat PY7CR ;
-        informat PY7FEE ;
-        informat PY7INT ;
-        informat PY7PEN ;
-        informat PY7TAX ;
-        informat PY7TOTDUE      ;
-        informat PY7TXSALE      $;
-        informat PY7YEAR $;
-        informat PY8BAL ;
-        informat PY8COLL ;
-        informat PY8CR ;
-        informat PY8FEE ;
-        informat PY8INT ;
-        informat PY8PEN ;
-        informat PY8TAX ;
-        informat PY8TOTDUE      ;
-        informat PY8TXSALE      $;
-        informat PY8YEAR $;
-        informat PY9BAL ;
-        informat PY9COLL ;
-        informat PY9CR ;
-        informat PY9FEE ;
-        informat PY9INT ;
-        informat PY9PEN ;
-        informat PY9TAX ;
-        informat PY9TOTDUE      ;
-        informat PY9TXSALE      $;
-        informat PY9YEAR $;
-        informat QDRNTNAME      $;
-        informat REASONCD       $;
-        informat SALEDATE       ;
-        informat SALEPRICE ;
-        informat SALETYPE $;
-        informat SEWSBALANCE ;
-        informat SEWSCOLLECTED ;
-        informat SEWSTOTALDUE ;
-        informat SQUARE $;
-        informat SSL $ ;
-        informat STREETNAME     $ ;
-        informat SUBNBHD $;
-        informat SUFFIX $;
-        informat SWWSADBALANCE ;
-        informat SWWSADCOLLECTED ;
-        informat SWWSADTOTALDUE ;
-        informat TAXRATE ;
-        informat TOTBALAMT      ;
-        informat TOTCOLAMT      ;
-        informat TOTDUEAMT      ;
-        informat TRIGROUP $;
-        informat UNITNUMBER $ ;
-        informat USECODE $ ;
-        informat VACLNDUSE $;
-
-;
+        ABTLOTCODE     $
+        ACCEPTCODE $
+        ADDRESS1 $
+        ADDRESS2 $
+        AMTDUE1       
+        AMTDUE2        
+        AMTDUE3        
+        ANNUALTAX      
+        ARN $
+        ASRNAME $
+        ASSESSMENT     
+        BIDBALANCE     
+        BIDCOLLECTED     
+        BIDNAME $
+        BIDTOTALDUE     
+        CAPCURR        $
+        CAPPROP $
+        CAREOFNAME $
+        CITYSTZIP $
+        CLASSTYPE 
+        COOPUNITS 
+        CY1BAL 
+        CY1COLL 
+        CY1CR 
+        CY1FEE 
+        CY1INT 
+        CY1PEN 
+        CY1TAX 
+        CY1TOTDUE      
+        CY1TXSALE      $
+        CY1YEAR $
+        CY2BAL 
+        CY2COLL 
+        CY2CR 
+        CY2FEE 
+        CY2INT 
+        CY2PEN 
+        CY2TAX 
+        CY2TOTDUE      
+        CY2TXSALE      $
+        CY2YEAR $
+        c_DEEDDATE $
+        DELCODE $
+        DUEDATE1       
+        DUEDATE2       
+        DUEDATE3       
+        c_EXTRACTDAT     $
+        HSTDCODE $
+        INST_NO       
+        INTERNALID       
+        LANDAREA 
+        LASTPAYDT $
+        LOT $
+        LOWNUMBER $
+        MIX1BLDPCT     
+        MIX1BLDVAL 
+        MIX1CLASS 
+        MIX1LNDPCT 
+        MIX1LNDVAL     
+        MIX1RATE 
+        MIX1TXTYPE $
+        MIX2BLDPCT     
+        MIX2BLDVAL 
+        MIX2CLASS 
+        MIX2LNDPCT 
+        MIX2LNDVAL     
+        MIX2RATE 
+        MIX2TXTYPE $
+        MIXEDUSE $
+        MORTGAGECO 
+        NBHD $
+        NBHDNAME $
+        NEWIMPR $
+        NEWLAND $
+        NEWTOTAL $
+        OBJECTID  
+        OLDIMPR $
+        OLDLAND $
+        OLDTOTAL $
+        OWNERNAME $
+        OWNNAME2 $
+        OWNOCCT $
+        PACEBALANCE 
+        PACECOLLECTED 
+        PACETOTALDUE 
+        PARTPART $
+        PCHILDCODE     $
+        PHASEBUILD 
+        PHASELAND 
+        PIPARENTLOT $
+        PREMISEADD $
+        PRESSL $
+        PRMS_WARD 
+        PROPTYPE $
+        PY10BAL        
+        PY10COLL 
+        PY10CR 
+        PY10FEE        
+        PY10INT        
+        PY10PEN        
+        PY10TAX        
+        PY10TOTDUE     
+        PY10TXSALE     $
+        PY10YEAR $
+        PY1BAL 
+        PY1COLL 
+        PY1CR 
+        PY1FEE 
+        PY1INT 
+        PY1PEN 
+        PY1TAX 
+        PY1TOTDUE      
+        PY1TXSALE      $
+        PY1YEAR $
+        PY2BAL 
+        PY2COLL 
+        PY2CR 
+        PY2FEE 
+        PY2INT 
+        PY2PEN 
+        PY2TAX 
+        PY2TOTDUE      
+        PY2TXSALE      $
+        PY2YEAR $
+        PY3BAL 
+        PY3COLL 
+        PY3CR 
+        PY3FEE 
+        PY3INT 
+        PY3PEN 
+        PY3TAX 
+        PY3TOTDUE      
+        PY3TXSALE      $
+        PY3YEAR $
+        PY4BAL 
+        PY4COLL 
+        PY4CR 
+        PY4FEE 
+        PY4INT 
+        PY4PEN 
+        PY4TAX 
+        PY4TOTDUE      
+        PY4TXSALE      $
+        PY4YEAR $
+        PY5BAL 
+        PY5COLL 
+        PY5CR 
+        PY5FEE 
+        PY5INT 
+        PY5PEN 
+        PY5TAX 
+        PY5TOTDUE      
+        PY5TXSALE      $
+        PY5YEAR $
+        PY6BAL 
+        PY6COLL 
+        PY6CR 
+        PY6FEE 
+        PY6INT 
+        PY6PEN 
+        PY6TAX 
+        PY6TOTDUE      
+        PY6TXSALE      $
+        PY6YEAR $
+        PY7BAL 
+        PY7COLL 
+        PY7CR 
+        PY7FEE 
+        PY7INT 
+        PY7PEN 
+        PY7TAX 
+        PY7TOTDUE      
+        PY7TXSALE      $
+        PY7YEAR $
+        PY8BAL 
+        PY8COLL 
+        PY8CR 
+        PY8FEE 
+        PY8INT 
+        PY8PEN 
+        PY8TAX 
+        PY8TOTDUE      
+        PY8TXSALE      $
+        PY8YEAR $
+        PY9BAL 
+        PY9COLL 
+        PY9CR 
+        PY9FEE 
+        PY9INT 
+        PY9PEN 
+        PY9TAX 
+        PY9TOTDUE      
+        PY9TXSALE      $
+        PY9YEAR $
+        QDRNTNAME      $
+        REASONCD       $
+        c_SALEDATE       $
+        SALEPRICE 
+        SALETYPE $
+        SEWSBALANCE 
+        SEWSCOLLECTED 
+        SEWSTOTALDUE 
+        SQUARE $
+        SSL $ 
+        STREETNAME     $ 
+        SUBNBHD $
+        SUFFIX $
+        SWWSADBALANCE 
+        SWWSADCOLLECTED 
+        SWWSADTOTALDUE 
+        TAXRATE 
+        TOTBALAMT      
+        TOTCOLAMT      
+        TOTDUEAMT      
+        TRIGROUP $
+        UNITNUMBER $ 
+        in_usecode
+        VACLNDUSE $
+		;
 
         SALEDATE = input( substr( c_SALEDATE, 1, 10 ), yymmdd10. );
         DEEDDATE = input( substr( c_DEEDDATE, 1, 10 ), yymmdd10. );
@@ -494,7 +493,7 @@ data ITS_Public_Extract;
 
         usecode = put(in_usecode,z3.);
 
-  format SALEDATE yymmdd10.;
+  		format SALEDATE yymmdd10.;
         format   DEEDDATE yymmdd10.;
         format   EXTRACTDAT yymmdd10.;
 
