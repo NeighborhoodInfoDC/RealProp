@@ -6,24 +6,26 @@
  Created:  5/11/2020
  Version:  SAS 9.4
  Environment:  Local Windows session (desktop)
- 
+
  Description:  Combine ITS Public Extract files from opendata.dc.gov:
-				1) Its_public_extract
-				2) itspe_facts
-			    3) itspe_property_sales
+                                1) Its_public_extract
+                                2) itspe_facts
+                            3) itspe_property_sales
 
  Modifications:
  Output dataset: ownerpt_yyyy_mm
+        AH updated with new data in 1-2021
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2020_05;
+%let ownerptdt = 2021_01;
+
 
 
 /* Sort input datasets */
@@ -34,14 +36,18 @@ proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by
 
 /* Merge ITS files */
 data itspe_all;
-	merge Its_public_extract_in Itspe_facts_in Itspe_property_sales_in;
-	by ssl;
+        merge Its_public_extract_in Itspe_facts_in Itspe_property_sales_in;
+        by ssl;
 
-	%let filedate = extractdat;
+        %let filedate = extractdat;
 
-	%Acceptcode_old()
+		saletype = upcase(saletype);
+		acceptcode = upcase(acceptcode);
 
-	%let format=
+		%let dyr = %substr(&ownerptdt,1,4);
+        %Acceptcode_old(datayear=&dyr.)
+
+        %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
       Proptype $proptyp.
       Usecode $Usecode.
@@ -51,46 +57,46 @@ data itspe_all;
       Mix1txtype Mix2txtype $taxtype.
       Acceptcode_old $accept.
       acceptcode $accptnw.
-      Saletype $Saletyp. saletype_new $sltypnw. 
+      Saletype $Saletyp. saletype_new $sltypnw.
       nbhd $nbhd.;
 
     ** UI Record number **;
-    
-	RecordNo = _n_;
+
+        RecordNo = _n_;
     label RecordNo = 'Record number (UI created)';
 
     ** Date missing values **;
-    
+
     if saledate <= '01jan1900'd or saledate > &filedate then do;
       if saleprice in ( 0, . ) then do;
         saledate = .n;
         saleprice = .n;
       end;
       else do;
-        %warn_put( macro=Create_new_ownerpt, 
-                   msg="Invalid sale date (will be set to .U): " / RecordNo= ssl= saledate= 
+        %warn_put( macro=Create_new_ownerpt,
+                   msg="Invalid sale date (will be set to .U): " / RecordNo= ssl= saledate=
                        "SALEDATE(unformatted)=" saledate best16. " " saleprice= );
         saledate = .u;
       end;
     end;
-   
+
 
    ** NB:  Many deed dates are missing, so no sense in printing them to the log **;
-    
-    if deed_date <= '01jan1800'd or deed_date > &filedate 
+
+    if deed_date <= '01jan1800'd or deed_date > &filedate
       then do;
         deed_date = .u;
       end;
-    
+
     ** Sale price missing values **;
-    
+
     if saleprice in ( ., 0 ) then do;
       if saledate = .n then saleprice = .n;
       else if saleprice = . then saleprice = .u;
     end;
-    
+
     ** Cleaned street name **;
-    
+
     length ustreetname $ 40;
 
     ustreetname = left( compbl( upcase( streetname ) ) );
@@ -109,23 +115,23 @@ data itspe_all;
     end;
 
     label ustreetname = "UI-cleaned street name";
-    
+
     ** Recode LOWNUMBER, HIGHNUMBER = "0000" to "" **;
-    
+
     if lownumber = "0000" then lownumber = "";
     if highnumber = "0000" then highnumber = "";
-    
+
     ** Recode SALETYPE "00" to blank **;
-    
+
     if saletype = "00" then saletype = "";
-    
+
     ** Recode QDRNTNAME **;
-    
+
     if qdrntname = "__" then qdrntname = "";
 
 
     ** Recode MIXEDUSE **;
-    
+
     select ( upcase( mixeduse ) );
       when ( "Y", "S" )
         nmixeduse = 1;
@@ -137,9 +143,9 @@ data itspe_all;
         %warn_put( msg="MIXEDUSE value unknown:  " MIXEDUSE )
       end;
     end;
-    
+
     ** Recode DEL_CODE **;
-    
+
     select ( upcase( delcode ) );
       when ( "Y" )
         ndelcode = 1;
@@ -151,10 +157,10 @@ data itspe_all;
         %warn_put( msg="DELCODE value unknown:  " delcode )
       end;
     end;
-	del_code = ndelcode; 
-    
+        del_code = ndelcode;
+
     ** Recode PARTPART **;
-    
+
     select ( upcase( partpart ) );
       when ( "Y" )
         npartpart = 1;
@@ -166,16 +172,16 @@ data itspe_all;
         %warn_put( msg="PARTPART value unknown:  " partpart )
       end;
     end;
-	part_part = npartpart;
-    
+        part_part = npartpart;
+
     ** Recode SALETYPE **;
-    
+
     length saletype_old $ 2 saletype_new $ 1;
 
     select ( saletype );
-      when ( 'I - IMPROVED' )
+      when ( 'IMPROVED' )
         saletype_new = 'I';
-      when ( 'V - VACANT' )
+      when ( 'VACANT' )
         saletype_new = 'V';
       when ( '' )
         saletype_new = '';
@@ -184,7 +190,7 @@ data itspe_all;
       end;
     end;
 
-    if acceptcode in: ( 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9' ) then do;
+    if acceptcode in: ( 'MULTI' ) then do;
       saletype_old = '03';
     end;
     else do;
@@ -200,27 +206,27 @@ data itspe_all;
         end;
       end;
     end;
-    
+
     ** Recode ACCEPTCODE **;
-    
+
     length acceptcode_old $ 2;
-    
+
     select ( acceptcode );
-      when ( 'BUYER=SELLER' ) acceptcode_old = '03';
+      when ( 'BUYER = SELLER' ) acceptcode_old = '03';
       when ( 'FORECLOSURE' ) acceptcode_old = '05';
-      when ( 'GOVT PURCHASE' ) acceptcode_old = '06';
-      when ( 'LANDSALE' ) acceptcode_old = '09';
-      when ( 'M1 MULTI-VERIFIED SALE' ) acceptcode_old = '98';
-      when ( 'M2 MULTI-UNASSESSED' ) acceptcode_old = '02';
-      when ( 'M3 MULTI-BUYER-SELLER' ) acceptcode_old = '03';
-      when ( 'M4 MULTI-UNUSUAL' ) acceptcode_old = '04';
-      when ( 'M5 MULTI-FORECLOSURE' ) acceptcode_old = '05';
-      when ( 'M6 MULTI-GOVT PURCHASE' ) acceptcode_old = '06';
-      when ( 'M7 MULTI-SPECULATIVE' ) acceptcode_old = '07';
-      when ( 'M8 MULTI-MISC' ) acceptcode_old = '08';
-      when ( 'M9 MULTI-LAND SALE' ) acceptcode_old = '09';
-      when ( 'MARKET' ) acceptcode_old = '01';
-      when ( 'MISC' ) acceptcode_old = '08';
+      when ( 'GOVERNMENT PURCHASE' ) acceptcode_old = '06';
+      when ( 'LAND SALE' ) acceptcode_old = '09';
+      when ( 'MULTI-MARKET SALE' ) acceptcode_old = '98';
+      when ( 'MULTI-UNASSESSED' ) acceptcode_old = '02';
+      when ( 'MULTI-BUYER = SELLER' ) acceptcode_old = '03';
+      when ( 'MULTI-UNUSUAL' ) acceptcode_old = '04';
+      when ( 'MULTI-FORECLOSURE' ) acceptcode_old = '05';
+      when ( 'MULTI-GOVT PURCHASE' ) acceptcode_old = '06';
+      when ( 'MULTI-SPECULATIVE' ) acceptcode_old = '07';
+      when ( 'MULTI-MISC' ) acceptcode_old = '08';
+      when ( 'MULTI-LAND SALE' ) acceptcode_old = '09';
+      when ( 'MARKET SALE' ) acceptcode_old = '01';
+      when ( 'MISCELLANEOUS' ) acceptcode_old = '08';
       when ( 'SPECULATIVE' ) acceptcode_old = '07';
       when ( 'TAX DEED' ) acceptcode_old = '98';
       when ( 'UNASSESSED' ) acceptcode_old = '02';
@@ -230,95 +236,94 @@ data itspe_all;
         %warn_put( msg='ACCEPTCODE value unknown: ' recordno= ssl= acceptcode= )
       end;
     end;
-  
-    
+
+
       ** NBHDNAME **;
-      
+
       length Nbhdname $ 30;
-      
+
       Nbhdname = put( nbhd, $nbhd. );
-    
-
-	/* Variables from old ownerpt */
-	ownerpt_extractdat = extractdat;
-	no_units = coopunits;
-
-  
- 
-	/* Fix capasscur and capasspro */
-	capasscur = input( capcurr, best32. );
-	capasspro = input( capprop, best32. );
-
-  
-	%ui_proptype
-
-	format ownerpt_extractdat saledate mmddyy10.;
-	
-	length class_type_3d mix1class_3d mix2class_3d $ 3;
-
-	class_type_3d = put(classtype,z3.);
-	mix1class_3d = put(mix1class,z3.);
-	mix2class_3d = put(mix2class,z3.);
 
 
-	/* ITS files don't have X/Y coords, but need these variables for parcel_base and parcel_geo */
-	x_coord = .;
-	y_coord = .;
+        /* Variables from old ownerpt */
+        ownerpt_extractdat = extractdat;
+        no_units = coopunits;
 
 
 
-	/* Final renames to make consistent with old ownerpt*/
-	rename appraised_value_prior_land = old_land
-		   appraised_value_prior_impr = old_impr
-		   appraised_value_prior_total = old_total
-		   appraised_value_current_land = new_land
-		   appraised_value_current_impr = new_impr
-		   appraised_value_current_total = new_total
-		   hstdcode = hstd_code
-		   taxrate = tax_rate
-		   owner_occupied_coop_units = no_ownocct
-		   annualtax = amttax
-		   reasoncd = reasoncode
-		   acceptcode = acceptcode_new
-		   class3ex_num = class3ex
-		   subnbhd = sub_nbhd
-		   acceptcode_old = acceptcode
-		   asrname=asr_name
-		   assessment= assess_val
-		   CITYSTZIP = address3
+        /* Fix capasscur and capasspro */
+        capasscur = input( capcurr, best32. );
+        capasspro = input( capprop, best32. );
+
+
+        %ui_proptype
+
+        format ownerpt_extractdat saledate mmddyy10.;
+
+        length class_type_3d mix1class_3d mix2class_3d $ 3;
+
+        class_type_3d = put(classtype,z3.);
+        mix1class_3d = put(mix1class,z3.);
+        mix2class_3d = put(mix2class,z3.);
+
+
+        /* ITS files don't have X/Y coords, but need these variables for parcel_base and parcel_geo */
+        x_coord = .;
+        y_coord = .;
+
+
+
+        /* Final renames to make consistent with old ownerpt*/
+        rename appraised_value_prior_land = old_land
+                   appraised_value_prior_impr = old_impr
+                   appraised_value_prior_total = old_total
+                   appraised_value_current_land = new_land
+                   appraised_value_current_impr = new_impr
+                   appraised_value_current_total = new_total
+                   hstdcode = hstd_code
+                   taxrate = tax_rate
+                   owner_occupied_coop_units = no_ownocct
+                   annualtax = amttax
+                   reasoncd = reasoncode
+                   acceptcode = acceptcode_new
+                   class3ex_num = class3ex
+                   subnbhd = sub_nbhd
+                   acceptcode_old = acceptcode
+                   asrname=asr_name
+                   assessment= assess_val
+                   CITYSTZIP = address3
 ;
 
 
-	drop appraised_value_baseyear_bldg appraised_value_baseyear_land
-	 	 assessor_name careof_name deeddate delcode
-	 	 land_use_c land_use_d landarea_num last_sale_date lastmodifieddate
-		 newimpr newland newtotal oldimpr oldland oldtotal objectid_1
-		 ownocct phasebuild_num phaseland_num 
-		 coopunits capcurr capprop classtype mixed_use
+        drop appraised_value_baseyear_bldg appraised_value_baseyear_land
+                 assessor_name careof_name deeddate delcode
+                 land_use_c land_use_d landarea_num last_sale_date lastmodifieddate
+                 newimpr newland newtotal oldimpr oldland oldtotal objectid_1
+                 ownocct phasebuild_num phaseland_num
+                 coopunits capcurr capprop classtype mixed_use
 ;
 
 
-	format &format ;
+        format &format ;
 
 
 run;
 
 
 data ownerpt_&ownerptdt.;
-	set itspe_all
-	(drop = mixeduse saletype);
+        set itspe_all
+        (drop = mixeduse saletype);
 
-	rename nmixeduse=mixeduse;
-	saletype = saletype_old;
+        rename nmixeduse=mixeduse;
+        saletype = saletype_old;
 
-	format saletype $SALETYP.;
+        format saletype $SALETYP.;
 
-	
-	/* Label ownerpt */
-	%include "&_dcdata_r_path\RealProp\Prog\Updates\Label_ownerpt.sas";
+
+        /* Label ownerpt */
+        %include "&_dcdata_default_path\RealProp\Prog\Updates\Label_ownerpt.sas";
 
 run;
-
 
 
 %Dup_check(
@@ -330,7 +335,7 @@ run;
   count=dup_check_count
 )
 
-%Finalize_data_set( 
+%Finalize_data_set(
   /** Finalize data set parameters **/
   data=ownerpt_&ownerptdt.,
   out=ownerpt_&ownerptdt.,
@@ -342,7 +347,7 @@ run;
   revisions=%str(New Ownerpt as of &ownerptdt.),
   /** File info parameters **/
   printobs=5,
-  freqvars=acceptcode acceptcode_new class3 class3ex del_code hstd_code 
+  freqvars=acceptcode acceptcode_new del_code hstd_code
            ownerpt_extractdat mix1class_3d mix2class_3d mix1txtype mix2txtype
            nbhd part_part pchildcode proptype qdrntname saletype_new sub_nbhd usecode vaclnduse
            ui_proptype

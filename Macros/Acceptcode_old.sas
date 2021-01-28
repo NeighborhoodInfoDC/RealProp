@@ -15,13 +15,45 @@
 
 /** Macro Acceptcode_old - Start Definition **/
 
-%macro Acceptcode_old( var=acceptcode, newvar=acceptcode_old );
+%macro Acceptcode_old( var=acceptcode, newvar=acceptcode_old, datayear= );
 
     ** Recode ACCEPTCODE **;
     
     length &newvar $ 2;
+
+	%if &datayear >= 2021 %then %do;
     
     select ( &var );
+      when ( 'BUYER = SELLER' ) &newvar = '03';
+      when ( 'FORECLOSURE' ) &newvar = '05';
+      when ( 'GOVERNMENT PURCHASE' ) &newvar = '06';
+      when ( 'LAND SALE' ) &newvar = '09';
+      when ( 'MULTI-MARKET SALE' ) &newvar = '98';
+      when ( 'MULTI-UNASSESSED' ) &newvar = '02';
+      when ( 'MULTI-BUYER = SELLER' ) &newvar = '03';
+      when ( 'MULTI-UNUSUAL' ) &newvar = '04';
+      when ( 'MULTI-FORECLOSURE' ) &newvar = '05';
+      when ( 'MULTI-GOVT PURCHASE' ) &newvar = '06';
+      when ( 'MULTI-SPECULATIVE' ) &newvar = '07';
+      when ( 'MULTI-MISC' ) &newvar = '08';
+      when ( 'MULTI-LAND SALE' ) &newvar = '09';
+      when ( 'MARKET SALE' ) &newvar = '01';
+      when ( 'MISCELLANEOUS' ) &newvar = '08';
+      when ( 'SPECULATIVE' ) &newvar = '07';
+      when ( 'TAX DEED' ) &newvar = '98';
+      when ( 'UNASSESSED' ) &newvar = '02';
+      when ( 'UNUSUAL' ) &newvar = '04';
+      when ( '' ) &newvar = '';
+      otherwise do;
+        %warn_put( msg="&var value unknown: " _n_= ssl= &var= )
+      end;
+    end;
+
+	%end;
+
+	%else %do;
+
+	select ( &var );
       when ( 'BUYER=SELLER' ) &newvar = '03';
       when ( 'FORECLOSURE' ) &newvar = '05';
       when ( 'GOVT PURCHASE' ) &newvar = '06';
@@ -46,6 +78,8 @@
         %warn_put( msg="&var value unknown: " _n_= ssl= &var= )
       end;
     end;
+
+	%end;
 
 %mend Acceptcode_old;
 
