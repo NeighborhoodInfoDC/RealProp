@@ -55,7 +55,7 @@ data ITS_Public_Extract;
         informat AMTDUE2        best32.;
         informat AMTDUE3        best32.;
         informat ANNUALTAX      best32.;
-        informat ARN $1.;
+        informat ARN $100.;
         informat ASRNAME $1.;
         informat ASSESSMENT     best32.;
         informat BIDBALANCE     best32.;
