@@ -18,7 +18,8 @@
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
-%DCData_lib( RealProp, local=n )
+%DCData_lib( RealProp )
+%DCData_lib( MAR )
 
-%Update_sales( year=2021, month=01, finalize=N )
+%Update_sales( year=2021, month=01, finalize=Y )
 
