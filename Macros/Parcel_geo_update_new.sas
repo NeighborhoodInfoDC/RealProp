@@ -78,7 +78,8 @@ data PB_&update_file._needgeo;
 		set mergegeo (where=(inpg^=1));
 		
 		/** Recode address to get rid of unit numbers **/
-		newadd = LOWNUMBER || " " || ustreetname || " " || QDRNTNAME;
+		/*newadd = LOWNUMBER || " " || ustreetname || " " || QDRNTNAME;*/
+		newadd = PREMISEADD;
 run;
 
 /** Use MAR geocoder to obtain missing geographies **/
