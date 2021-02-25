@@ -29,17 +29,18 @@
   09/27/18 WO Updated for 2018-Q3
   10/29/19 EN Updated for 2019-
   05/29/20 AH updated for 2020-Q2
+  02/25/21 AH updated for 2021-Q1
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 /**rsubmit;**/
 
-%let end_yr = 2020;
-%let end_qtr = 2;
+%let end_yr = 2021;
+%let end_qtr = 1;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
