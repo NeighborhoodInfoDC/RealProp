@@ -95,7 +95,7 @@ data ITS_Public_Extract;
         informat DUEDATE3       best32.;
         informat c_EXTRACTDAT       $32.;
         informat HSTDCODE $1.;
-        informat INST_NO       best32.;
+        informat INST_NO       $8.;
         informat INTERNALID       best32.;
         informat LANDAREA best32.;
         informat LASTPAYDT $10.;
@@ -116,7 +116,7 @@ data ITS_Public_Extract;
         informat MIX2RATE best32.;
         informat MIX2TXTYPE $2.;
         informat MIXEDUSE $1.;
-        informat MORTGAGECO best32.;
+        informat MORTGAGECO $3.;
         informat NBHD $3.;
         informat NBHDNAME $30.;
         informat NEWIMPR $9.;
@@ -315,7 +315,7 @@ data ITS_Public_Extract;
         DUEDATE3       
         c_EXTRACTDAT     $
         HSTDCODE $
-        INST_NO       
+        INST_NO       $
         INTERNALID       
         LANDAREA 
         LASTPAYDT $
@@ -336,7 +336,7 @@ data ITS_Public_Extract;
         MIX2RATE 
         MIX2TXTYPE $
         MIXEDUSE $
-        MORTGAGECO 
+        MORTGAGECO $
         NBHD $
         NBHDNAME $
         NEWIMPR $
