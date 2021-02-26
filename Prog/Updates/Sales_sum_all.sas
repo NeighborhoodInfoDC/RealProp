@@ -30,16 +30,17 @@
   09/27/18 WO Updated for 2018-Q3
   10/29/2019 EN Updated for 2019-Q3
   05/29/20 AH updated for 2020-Q2
+  02/26/21 AH updated for 2020-Q4
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 /** Update with latest full year and quarter of sales data available **/
 %let end_yr = 2020;
-%let end_qtr = 1;
+%let end_qtr = 4;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
