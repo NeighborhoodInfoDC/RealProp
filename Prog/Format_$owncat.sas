@@ -35,17 +35,24 @@ proc format library=RealProp;
     '115' = 'Taxable corporations, partnerships, associations'
     '120' = 'Government-Sponsored Enterprise'
     '130' = 'Banks, Lending, Mortgage and Servicing Companies'
-    '140' = 'State of Maryland'
-    '141' = 'Montgomery County, MD'
-    '142' = "Prince George's County, MD"
-    '145' = 'Gaithersburg city, MD'
-    '146' = 'Rockville city, MD'
-    '147' = 'Takoma Park city, MD'
-    '151' = 'Arlington County, VA'
-    '152' = 'Fairfax County, VA'
-    '154' = 'Fairfax city, VA'
-    '155' = 'Falls Church city'
-    '156' = 'Park Authority Northern VA'
+    '140' = "State of Maryland"
+    '141' = "Montgomery County"
+    '142' = "Prince George's County"
+    '143' = "Charles County"
+    '144' = "Frederick County"
+    '145' = "City of Gaithersburg"
+    '146' = "City of Rockville"
+    '147' = "City of Takoma Park"
+    '150' = "Commonwealth of Virginia"
+    '151' = "Arlington County"
+    '152' = "Fairfax County"
+    '153' = "City of Alexandria"
+    '154' = "City of Fairfax"
+    '155' = "City of Falls Church"
+    '156' = "Loudoun County"
+    '157' = "Prince William County"
+    '158' = "City of Manassas"
+    '159' = "City of Manassas Park"
   ;
 	
 run;
