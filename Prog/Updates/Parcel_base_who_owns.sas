@@ -17,7 +17,7 @@
   10/7/16 RP Update for Sept-2016 parcel base
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCdata\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -28,6 +28,6 @@
 
 %Parcel_base_who_owns(
   RegExpFile=&_dcdata_default_path\RealProp\Prog\Updates\Owner type codes reg expr.txt,
-  Revisions=Revise regular expressions.  
+  Revisions=  
   )
 
