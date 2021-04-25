@@ -13,7 +13,7 @@
  Modifications:
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCdata\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp, local=n )
@@ -22,7 +22,7 @@
 
 %let address_file = Address_points_view;
 
-%let revisions = Update with &address_file..;
+%let revisions = Update with latest parcel and address data.;
 
 
 proc sql noprint;

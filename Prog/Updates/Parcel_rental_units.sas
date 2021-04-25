@@ -14,7 +14,7 @@
   10/04/14 PAT Removed restriction in_last_ownerpt=1.
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCdata\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp, local=n )
