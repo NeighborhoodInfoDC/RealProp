@@ -29,15 +29,15 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2021-01;
+%let revisions = Updated through 2022-06;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2022-01\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2022-06\;
 
 %let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
-%let SalesFile = Integrated_Tax_System_Public_Extract_Property_Sales.csv;
+%let SalesFile = Tax_System_Property_Sales_(CAMA).csv;
 
 /** Read ITS Public Extract File **/
 
@@ -633,91 +633,43 @@ run;
 );
 
 
-/** Read ITSPE Sales File **/
+/** Read Cama Sales File **/
 
 filename fimport "&filepath.&Salesfile." lrecl=2000;
 
-data Itspe_property_sales;
+data Cama_property_sales;
 
   infile FIMPORT delimiter = ',' MISSOVER DSD lrecl=32767 firstobs=2 ;
 
-        informat OBJECTID best32. ;
-        informat SSL $17. ;
-        informat LAND_USE_C best32.;
-        informat LAND_USE_D $39.;
-        informat LANDAREA best32.;
-        informat PROPERTY_A $39.;
-        informat OWNER_NAME $30.;
-		informat APPRAISED_VALUE_PRIOR_LAND best32.;
-		informat APPRAISED_VALUE_PRIOR_IMPR best32.;
-		informat APPRAISED_VALUE_PRIOR_TOTAL best32.;
-		informat APPRAISED_VALUE_CURRENT_LAND best32.;
-		informat APPRAISED_VALUE_CURRENT_TOTAL best32.;
-        informat VACANT_USE $3.;
-        informat HOMESTEAD_ best32.;
-		informat HOMESTEAD1 $16.;
-        informat TAX_TYPE_D $50.;
-        informat TAXRATE best32.;
-        informat MIXED_USE $1.;
-        informat OWNER_OCCU best32.;
-        informat LAST_SALE_ best32.;
-        informat c_LAST_SALE1 $32.;
-        informat c_DEED_DATE $32.;
-        informat CURRENT_AS best32.;
-        informat PROPOSED_A best32.;
-        informat OWNER_NA_1 $30.;
-        informat ADDRESS_ID $358.;
-        informat c_LASTMODIFI $32.;
-		informat APPRAISED_VALUE_PROPOSED_LAND best32.;
-		informat APPRAISED_VALUE_PROPOSED_IMPR best32.;
-		informat APPRAISED_VALUE_PROPOSED_TOTAL best32.;
-		informat APPRAISED_VALUE_CURRENT_BLDG best32.;
+		informat OBJECTID best32.;
+		informat ROW_NUMBER best32.;
+		informat SSL $17.;
+		informat c_SALE_DATE $32.;
+		informat SALE_PRICE best32.;
+		informat QUALIFIED $1.;
+		informat SALE_CODE $2.;
+		informat SALE_CURR_OWNER best32.;
+		informat c_GIS_LAST_MOD_DTTM $32.;
 
+		input
+		OBJECTID
+		ROW_NUMBER
+		SSL $
+		c_SALE_DATE $
+		SALE_PRICE
+		QUALIFIED $
+		SALE_CODE $
+		SALE_CURR_OWNER
+		c_GIS_LAST_MOD_DTTM $
+		;
 
-        input
-        OBJECTID 
-        SSL $
-        LAND_USE_C 
-        LAND_USE_D $
-        LANDAREA 
-        PROPERTY_A $
-        OWNER_NAME $
-		APPRAISED_VALUE_PRIOR_LAND 
-		APPRAISED_VALUE_PRIOR_IMPR 
-		APPRAISED_VALUE_PRIOR_TOTAL 
-		APPRAISED_VALUE_CURRENT_LAND 
-		APPRAISED_VALUE_CURRENT_TOTAL 
-        VACANT_USE $
-		HOMESTEAD_ 
-        HOMESTEAD1 $
-        TAX_TYPE_D $
-        TAXRATE 
-        MIXED_USE $
-        OWNER_OCCU 
-        LAST_SALE_ 
-        c_LAST_SALE1 $
-        c_DEED_DATE $
-        CURRENT_AS 
-        PROPOSED_A 
-        OWNER_NA_1 $
-        ADDRESS_ID $
-        c_LASTMODIFI $
-		APPRAISED_VALUE_PROPOSED_LAND 
-		APPRAISED_VALUE_PROPOSED_IMPR 
-		APPRAISED_VALUE_PROPOSED_TOTAL 
-		APPRAISED_VALUE_CURRENT_BLDG 
-;
+		SALE_DATE = input( substr( c_SALE_DATE, 1, 10 ), yymmdd10. );
+		GIS_LAST_MOD_DTTM = input( substr( c_GIS_LAST_MOD_DTTM, 1, 10 ), yymmdd10. );
 
-        LAST_SALE1 = input( substr( c_LAST_SALE1, 1, 10 ), yymmdd10. );
-        DEED_DATE = input( substr( c_DEED_DATE, 1, 10 ), yymmdd10. );
-        LASTMODIFI = input( substr( c_LASTMODIFI, 1, 10 ), yymmdd10. );
+  format SALE_DATE mmddyy10.;
+        format   GIS_LAST_MOD_DTTM mmddyy10.;
 
-  format LAST_SALE1 mmddyy10.;
-        format   DEED_DATE mmddyy10.;
-        format   LASTMODIFI mmddyy10.;
-
-drop c_LAST_SALE1 c_DEED_DATE c_LASTMODIFI
-         objectid landarea taxrate vacant_use mixed_use address_id deed_date;
+drop c_SALE_DATE GIS_LAST_MOD_DTTM;
 
 run;
 
