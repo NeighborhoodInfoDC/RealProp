@@ -248,7 +248,7 @@ data ITS_Public_Extract;
 		informat OWNNAME2 $99.;
 		informat INST_NO $10.;
 		informat MORTGAGECO $99.;
-		informat NBHDNAME $50.;
+		informat NBHDNAME $30.;
 		informat PRMS_WARD best32.;
 		informat PRESSL $17.;
 		informat PIPARENTLOT $17.;
