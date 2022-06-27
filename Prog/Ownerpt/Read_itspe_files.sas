@@ -111,11 +111,11 @@ data ITS_Public_Extract;
 		informat c_DEEDDATE $32.;
 		informat ASSESSMENT best32.;
 		informat ANNUALTAX best32.;
-		informat DUEDATE1 best32.;
+		informat c_DUEDATE1 $10.;
 		informat AMTDUE1 best32.;
-		informat DUEDATE2 best32.;
+		informat c_DUEDATE2 $10.;
 		informat AMTDUE2 best32.;
-		informat DUEDATE3 best32.;
+		informat c_DUEDATE3 $10.;
 		informat AMTDUE3 best32.;
 		informat TOTDUEAMT best32.;
 		informat TOTCOLAMT best32.; 
@@ -331,11 +331,11 @@ data ITS_Public_Extract;
 		c_DEEDDATE $
 		ASSESSMENT 
 		ANNUALTAX 
-		DUEDATE1 
+		c_DUEDATE1 $
 		AMTDUE1 
-		DUEDATE2 
+		c_DUEDATE2 $
 		AMTDUE2 
-		DUEDATE3 
+		c_DUEDATE3 $
 		AMTDUE3 
 		TOTDUEAMT 
 		TOTCOLAMT  
@@ -493,11 +493,14 @@ data ITS_Public_Extract;
         DEEDDATE = input( substr( c_DEEDDATE, 1, 10 ), yymmdd10. );
         EXTRACTDAT = input( substr( c_EXTRACTDAT, 1, 10 ), yymmdd10. );
 		LASTPAYDT = input( substr( c_LASTPAYDT, 1, 10 ), yymmdd10. );
-		format SALEDATE yymmdd10. DEEDDATE yymmdd10. EXTRACTDAT yymmdd10. LASTPAYDT yymmdd10.;
+		DUEDATE1 = input ( (catx("/", substr(c_DUEDATE1,5,4), substr(c_DUEDATE1,1,2), substr(c_DUEDATE1,3,2))), yymmdd10. );
+		DUEDATE2 = input ( (catx("/", substr(c_DUEDATE2,5,4), substr(c_DUEDATE2,1,2), substr(c_DUEDATE2,3,2))), yymmdd10. );
+		DUEDATE3 = input ( (catx("/", substr(c_DUEDATE3,5,4), substr(c_DUEDATE3,1,2), substr(c_DUEDATE3,3,2))), yymmdd10. );
+		format SALEDATE DEEDDATE EXTRACTDAT LASTPAYDT DUEDATE1 DUEDATE2 DUEDATE3 yymmdd10.;
 
         usecode = put(in_usecode,z3.);
 
-		drop OBJECTID c_SALEDATE c_DEEDDATE c_EXTRACTDAT c_LASTPAYDT in_usecode;
+		drop OBJECTID c_SALEDATE c_DEEDDATE c_EXTRACTDAT c_LASTPAYDT c_DUEDATE1 c_DUEDATE2 c_DUEDATE3 in_usecode;
 
 run;
 
