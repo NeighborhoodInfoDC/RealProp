@@ -496,7 +496,7 @@ data ITS_Public_Extract;
 		DUEDATE1 = input ( (catx("/", substr(c_DUEDATE1,5,4), substr(c_DUEDATE1,1,2), substr(c_DUEDATE1,3,2))), yymmdd10. );
 		DUEDATE2 = input ( (catx("/", substr(c_DUEDATE2,5,4), substr(c_DUEDATE2,1,2), substr(c_DUEDATE2,3,2))), yymmdd10. );
 		DUEDATE3 = input ( (catx("/", substr(c_DUEDATE3,5,4), substr(c_DUEDATE3,1,2), substr(c_DUEDATE3,3,2))), yymmdd10. );
-		format SALEDATE DEEDDATE EXTRACTDAT LASTPAYDT DUEDATE1 DUEDATE2 DUEDATE3 yymmdd10.;
+		format SALEDATE DEEDDATE EXTRACTDAT LASTPAYDT DUEDATE1 DUEDATE2 DUEDATE3 mmddyy10.;
 
         usecode = put(in_usecode,z3.);
 
@@ -609,7 +609,7 @@ data ITSPE_Facts;
         LAST_SALE_DATE = input( substr( c_LAST_SALE_DATE, 1, 10 ), yymmdd10. );
         DEED_DATE = input( substr( c_DEED_DATE, 1, 10 ), yymmdd10. );
         LASTMODIFIEDDATE = input( substr( c_LASTMODIFIEDDATE, 1, 10 ), yymmdd10. );
-  		format LAST_SALE_DATE yymmdd10. DEED_DATE yymmdd10. LASTMODIFIEDDATE yymmdd10.;
+  		format LAST_SALE_DATE DEED_DATE LASTMODIFIEDDATE mmddyy10.;
 
         drop OBJECTID c_LAST_SALE_DATE c_DEED_DATE c_LASTMODIFIEDDATE landarea taxrate;
 
@@ -663,7 +663,7 @@ data Cama_property_sales;
 		SALE_DATE = input( substr( c_SALE_DATE, 1, 10 ), yymmdd10. );
 		GIS_LAST_MOD_DTTM = input( substr( c_GIS_LAST_MOD_DTTM, 1, 10 ), yymmdd10. );
 
-  	format SALE_DATE mmddyy10. GIS_LAST_MOD_DTTM mmddyy10.;
+  	format SALE_DATE GIS_LAST_MOD_DTTM mmddyy10.;
 
 	drop OBJECTID c_SALE_DATE c_GIS_LAST_MOD_DTTM;
 
