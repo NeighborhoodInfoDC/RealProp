@@ -20,7 +20,11 @@
                 5-25-18 Update with Q2-2018 data -WO
                 5-11-2020 Update with new data - EN
                 1-7-2021 update with new data -AH
-				6-23-2022 replaced ITSPE property sales (no longer published) with Tax System Property Sales (CAMA)
+				6-23-2022 In 2022 DC Open Data replaced the replaced ITSPE property sales file 
+						with Tax System Property Sales (CAMA). New new CAMA sales file is different
+						because it does not include information about the owner or the property
+						itself. It is also different because it is a historic file with multiple 
+						sales per property (and therefore duplicate SSLs). 
 
 **************************************************************************/
 
