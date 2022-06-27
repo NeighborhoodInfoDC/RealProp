@@ -2,7 +2,7 @@
  Program:  Create_new_ownerpt.sas
  Library:  RealProp
  Project:  NeighborhoodInfo DC
- Author:   Eleanor Noble
+ Author:   Rob Pitingolo
  Created:  5/11/2020
  Version:  SAS 9.4
  Environment:  Local Windows session (desktop)
@@ -10,11 +10,11 @@
  Description:  Combine ITS Public Extract files from opendata.dc.gov:
                                 1) Its_public_extract
                                 2) itspe_facts
-                            3) itspe_property_sales
+                            3) Cama_property_sales
 
- Modifications:
+ Modifications: 06/24/22 - Reworked the program to use new CAMA sales file. 
  Output dataset: ownerpt_yyyy_mm
-        AH updated with new data in 1-2021
+		
 **************************************************************************/
 
 %include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
@@ -24,30 +24,43 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2021_01;
+%let ownerptdt = 2022_06;
 
 
 
 /* Sort input datasets */
-proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
+/*proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
 proc sort data = realprop.Itspe_facts out = Itspe_facts_in ; by ssl; run;
-proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;
+proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;*/
+
+/* Setup CAMA sales file to keep the most recent sale per SSL */
+proc sort data = Cama_property_sales; by ssl sale_date; run;
+
+data Cama_property_sales_nd; 
+	set Cama_property_sales; 
+	by ssl sale_date; 
+	if last.ssl;
+run;
+
+/* Sort ITS files for merge */
+proc sort data = work.Its_public_extract out = Its_public_extract_in; by ssl; run;
+proc sort data = work.Itspe_facts out = Itspe_facts_in ; by ssl; run;
 
 
-/* Merge ITS files */
+/* Merge ITS and CAMA files */
 data itspe_all;
-        merge Its_public_extract_in Itspe_facts_in Itspe_property_sales_in;
-        by ssl;
+	merge Its_public_extract_in Itspe_facts_in Cama_property_sales_nd;
+    by ssl;
 
-        %let filedate = extractdat;
+    %let filedate = extractdat;
 
-		saletype = upcase(saletype);
-		acceptcode = upcase(acceptcode);
+	saletype = upcase(saletype);
+	acceptcode = upcase(acceptcode);
 
-		%let dyr = %substr(&ownerptdt,1,4);
-        %Acceptcode_old(datayear=&dyr.)
+	%let dyr = %substr(&ownerptdt,1,4);
+    %Acceptcode_old(datayear=&dyr.)
 
-        %let format=
+    %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
       Proptype $proptyp.
       Usecode $Usecode.
@@ -61,12 +74,10 @@ data itspe_all;
       nbhd $nbhd.;
 
     ** UI Record number **;
-
-        RecordNo = _n_;
+	RecordNo = _n_;
     label RecordNo = 'Record number (UI created)';
 
     ** Date missing values **;
-
     if saledate <= '01jan1900'd or saledate > &filedate then do;
       if saleprice in ( 0, . ) then do;
         saledate = .n;
@@ -129,7 +140,6 @@ data itspe_all;
 
     if qdrntname = "__" then qdrntname = "";
 
-
     ** Recode MIXEDUSE **;
 
     select ( upcase( mixeduse ) );
@@ -178,7 +188,7 @@ data itspe_all;
 
     length saletype_old $ 2 saletype_new $ 1;
 
-    select ( saletype );
+    select ( upcase(saletype) );
       when ( 'IMPROVED' )
         saletype_new = 'I';
       when ( 'VACANT' )
@@ -211,7 +221,7 @@ data itspe_all;
 
     length acceptcode_old $ 2;
 
-    select ( acceptcode );
+    select (  upcase(acceptcode) );
       when ( 'BUYER = SELLER' ) acceptcode_old = '03';
       when ( 'FORECLOSURE' ) acceptcode_old = '05';
       when ( 'GOVERNMENT PURCHASE' ) acceptcode_old = '06';
@@ -241,7 +251,6 @@ data itspe_all;
       ** NBHDNAME **;
 
       length Nbhdname $ 30;
-
       Nbhdname = put( nbhd, $nbhd. );
 
 
@@ -278,7 +287,7 @@ data itspe_all;
                    appraised_value_prior_impr = old_impr
                    appraised_value_prior_total = old_total
                    appraised_value_current_land = new_land
-                   appraised_value_current_impr = new_impr
+                   appraised_value_current_bldg = new_impr
                    appraised_value_current_total = new_total
                    hstdcode = hstd_code
                    taxrate = tax_rate
@@ -286,7 +295,6 @@ data itspe_all;
                    annualtax = amttax
                    reasoncd = reasoncode
                    acceptcode = acceptcode_new
-                   class3ex_num = class3ex
                    subnbhd = sub_nbhd
                    acceptcode_old = acceptcode
                    asrname=asr_name
@@ -295,11 +303,9 @@ data itspe_all;
 ;
 
 
-        drop appraised_value_baseyear_bldg appraised_value_baseyear_land
-                 assessor_name careof_name deeddate delcode
-                 land_use_c land_use_d landarea_num last_sale_date lastmodifieddate
-                 newimpr newland newtotal oldimpr oldland oldtotal objectid_1
-                 ownocct phasebuild_num phaseland_num
+        drop assessor_name careof_name deeddate delcode
+                 last_sale_date lastmodifieddate
+                 newimpr newland newtotal oldimpr oldland oldtotal ownocct
                  coopunits capcurr capprop classtype mixed_use
 ;
 
@@ -310,6 +316,7 @@ data itspe_all;
 run;
 
 
+/* Create final dated ownerpt file */
 data ownerpt_&ownerptdt.;
         set itspe_all
         (drop = mixeduse saletype);
@@ -318,7 +325,6 @@ data ownerpt_&ownerptdt.;
         saletype = saletype_old;
 
         format saletype $SALETYP.;
-
 
         /* Label ownerpt */
         %include "&_dcdata_default_path\RealProp\Prog\Updates\Label_ownerpt.sas";
@@ -340,7 +346,7 @@ run;
   data=ownerpt_&ownerptdt.,
   out=ownerpt_&ownerptdt.,
   outlib=realprop,
-  label="Recreated Ownerpt File from ITS Data",
+  label="Recreated Ownerpt File from ITS and CAMA Data",
   sortby=ssl,
   /** Metadata parameters **/
   restrictions=None,
