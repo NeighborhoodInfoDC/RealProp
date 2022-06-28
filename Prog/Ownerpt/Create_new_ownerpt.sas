@@ -31,14 +31,13 @@
 %let ownerptdt = 2022_06;
 
 
-
 /* Sort input ITSPE datasets */
 proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
 proc sort data = realprop.Itspe_facts out = Itspe_facts_in ; by ssl; run;
 
 
 /* Setup CAMA sales file to keep the most recent sale per SSL */
-proc sort data = realprop.Cama_property_sales; by ssl sale_date; run;
+proc sort data = realprop.Cama_property_sales out = Cama_property_sales; by ssl sale_date; run;
 
 data Cama_property_sales_nd; 
 	set Cama_property_sales; 
