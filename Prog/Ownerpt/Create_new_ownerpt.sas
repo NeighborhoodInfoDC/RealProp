@@ -12,7 +12,11 @@
                                 2) itspe_facts
                             3) Cama_property_sales
 
- Modifications: 06/24/22 - Reworked the program to use new CAMA sales file. 
+ Modifications: 06/24/22 - In 2022 DC Open Data replaced the replaced ITSPE property sales file 
+						with Tax System Property Sales (CAMA). New new CAMA sales file is different
+						because it does not include information about the owner or the property
+						itself. It is also different because it is a historic file with multiple 
+						sales per property (and therefore duplicate SSLs). 
  Output dataset: ownerpt_yyyy_mm
 		
 **************************************************************************/
@@ -27,24 +31,19 @@
 %let ownerptdt = 2022_06;
 
 
-
-/* Sort input datasets */
-/*proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
+/* Sort input ITSPE datasets */
+proc sort data = realprop.Its_public_extract out = Its_public_extract_in; by ssl; run;
 proc sort data = realprop.Itspe_facts out = Itspe_facts_in ; by ssl; run;
-proc sort data = realprop.Itspe_property_sales out = Itspe_property_sales_in; by ssl; run;*/
+
 
 /* Setup CAMA sales file to keep the most recent sale per SSL */
-proc sort data = Cama_property_sales; by ssl sale_date; run;
+proc sort data = realprop.Cama_property_sales out = Cama_property_sales; by ssl sale_date; run;
 
 data Cama_property_sales_nd; 
 	set Cama_property_sales; 
 	by ssl sale_date; 
 	if last.ssl;
 run;
-
-/* Sort ITS files for merge */
-proc sort data = work.Its_public_extract out = Its_public_extract_in; by ssl; run;
-proc sort data = work.Itspe_facts out = Itspe_facts_in ; by ssl; run;
 
 
 /* Merge ITS and CAMA files */
