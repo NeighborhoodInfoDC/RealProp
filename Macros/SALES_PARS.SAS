@@ -48,9 +48,10 @@
 %let geo_vars_cat = 
   anc2002 casey_nbr2003 casey_ta2003 city cluster2000 cluster2017
   cluster_tr2000 eor geo2000 psa2004 ward2002 zip
-  geo2010 psa2012 ward2012 anc2012 voterpre2012 bridgepk stantoncommons;
+  geo2010 psa2012 ward2012 anc2012 voterpre2012 bridgepk stantoncommons
+  geo2020 ward2022;
 
-%let geo_vars_xy = x_coord y_coord geoblk2000 geoblk2010;
+%let geo_vars_xy = x_coord y_coord geoblk2000 geoblk2010 geoblk2020;
 
 %let geo_vars = &geo_vars_cat &geo_vars_xy;
 
