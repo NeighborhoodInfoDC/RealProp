@@ -81,6 +81,16 @@ run;
 data parcels_togeocode parcels_noaddress;
 	set parcels_nomarmatch;
 
+	length premzip $5.;
+
+	finddc=substr(have,find(PREMISEADD,"DC")+1);
+	if finddc = "" then do;
+	premzip=substr(strip(scan(PREMISEADD,-1,"DC")),1,5);
+	end;
+
+	if premzip in ("000","0000","00000","2","20","200","2000","20000","2001","2003","2005","76310","UT AV")
+		then premzip = "";
+
 	if lownumber ^= "" and streetname ^= "" and qdrntname ^= "" then do;
 	newaddress = lownumber || " " || streetname || " " || qdrntname;
 	output parcels_togeocode;
