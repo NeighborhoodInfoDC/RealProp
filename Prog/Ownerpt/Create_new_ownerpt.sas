@@ -246,6 +246,34 @@ data itspe_all;
       end;
     end;
 
+	** Recode ACCEPTCODE_NEW **;
+
+	select (  upcase(acceptcode) );
+      when ( 'BUYER = SELLER' ) acceptcode = 'BUYER=SELLER';
+      when ( 'FORECLOSURE' ) acceptcode = 'FORECLOSURE';
+      when ( 'GOVERNMENT PURCHASE' ) acceptcode = 'GOVT PURCHASE';
+      when ( 'LAND SALE' ) acceptcode = 'LANDSALE';
+      when ( 'MULTI-MARKET SALE' ) acceptcode = 'M1 MULTI-VERIFIED SALE';
+      when ( 'MULTI-UNASSESSED' ) acceptcode = 'M2 MULTI-UNASSESSED';
+      when ( 'MULTI-BUYER = SELLER' ) acceptcode = 'M3 MULTI-BUYER-SELLER';
+      when ( 'MULTI-UNUSUAL' ) acceptcode = 'M4 MULTI-UNUSUAL';
+      when ( 'MULTI-FORECLOSURE' ) acceptcode = 'M5 MULTI-FORECLOSURE';
+      when ( 'MULTI-GOVT PURCHASE' ) acceptcode = 'M6 MULTI-GOVT PURCHASE';
+      when ( 'MULTI-SPECULATIVE' ) acceptcode = 'M7 MULTI-SPECULATIVE';
+      when ( 'MULTI-MISC' ) acceptcode = 'M8 MULTI-MISC';
+      when ( 'MULTI-LAND SALE' ) acceptcode = 'M9 MULTI-LAND SALE';
+      when ( 'MARKET SALE' ) acceptcode = 'MARKET';
+      when ( 'MISCELLANEOUS' ) acceptcode = 'MISC';
+      when ( 'SPECULATIVE' ) acceptcode = 'SPECULATIVE';
+      when ( 'TAX DEED' ) acceptcode = 'TAX DEED';
+      when ( 'UNASSESSED' ) acceptcode = 'UNASSESSED';
+      when ( 'UNUSUAL' ) acceptcode = 'UNUSUAL';
+      when ( '' ) acceptcode = '';
+      otherwise do;
+        %warn_put( msg='ACCEPTCODE value unknown: ' recordno= ssl= acceptcode= )
+      end;
+    end;
+
 
       ** NBHDNAME **;
 
