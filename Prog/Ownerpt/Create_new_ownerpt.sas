@@ -216,6 +216,9 @@ data itspe_all;
       end;
     end;
 
+	** Fix usecode **;
+	if usecode in ("  ."," .",".") then usecode = "";
+
     ** Recode ACCEPTCODE **;
 
     length acceptcode_old $ 2;
