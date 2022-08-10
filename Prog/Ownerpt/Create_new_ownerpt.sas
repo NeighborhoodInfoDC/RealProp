@@ -219,6 +219,9 @@ data itspe_all;
 	** Fix usecode **;
 	if usecode in ("  ."," .",".") then usecode = "";
 
+	** Fix QDRNTNAME **;
+	if QDRNTNAME in ("0") then QDRNTNAME = "";
+
     ** Recode ACCEPTCODE **;
 
     length acceptcode_old $ 2;
