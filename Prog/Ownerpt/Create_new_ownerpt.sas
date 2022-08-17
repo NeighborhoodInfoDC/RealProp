@@ -56,12 +56,16 @@ data itspe_all;
 	saletype = upcase(saletype);
 	acceptcode = upcase(acceptcode);
 
+	** Re-code acceptcode **;
 	%let dyr = %substr(&ownerptdt,1,4);
     %Acceptcode_old(datayear=&dyr.)
 
+	** Re-code proptype **;
+	%Proptype_old;
+
     %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
-      Proptype $proptyp.
+      Proptype Proptype_old $proptyp.
       Usecode $Usecode.
       Hstdcode $homestd.
       MIXEDUSE del_code part_part yesno.
@@ -216,6 +220,12 @@ data itspe_all;
       end;
     end;
 
+	** Fix usecode **;
+	if usecode in ("  ."," .",".") then usecode = "";
+
+	** Fix QDRNTNAME **;
+	if QDRNTNAME in ("0") then QDRNTNAME = "";
+
     ** Recode ACCEPTCODE **;
 
     length acceptcode_old $ 2;
@@ -241,6 +251,34 @@ data itspe_all;
       when ( 'UNASSESSED' ) acceptcode_old = '02';
       when ( 'UNUSUAL' ) acceptcode_old = '04';
       when ( '' ) acceptcode_old = '';
+      otherwise do;
+        %warn_put( msg='ACCEPTCODE value unknown: ' recordno= ssl= acceptcode= )
+      end;
+    end;
+
+	** Recode ACCEPTCODE_NEW **;
+
+	select (  upcase(acceptcode) );
+      when ( 'BUYER = SELLER' ) acceptcode = 'BUYER=SELLER';
+      when ( 'FORECLOSURE' ) acceptcode = 'FORECLOSURE';
+      when ( 'GOVERNMENT PURCHASE' ) acceptcode = 'GOVT PURCHASE';
+      when ( 'LAND SALE' ) acceptcode = 'LANDSALE';
+      when ( 'MULTI-MARKET SALE' ) acceptcode = 'M1 MULTI-VERIFIED SALE';
+      when ( 'MULTI-UNASSESSED' ) acceptcode = 'M2 MULTI-UNASSESSED';
+      when ( 'MULTI-BUYER = SELLER' ) acceptcode = 'M3 MULTI-BUYER-SELLER';
+      when ( 'MULTI-UNUSUAL' ) acceptcode = 'M4 MULTI-UNUSUAL';
+      when ( 'MULTI-FORECLOSURE' ) acceptcode = 'M5 MULTI-FORECLOSURE';
+      when ( 'MULTI-GOVT PURCHASE' ) acceptcode = 'M6 MULTI-GOVT PURCHASE';
+      when ( 'MULTI-SPECULATIVE' ) acceptcode = 'M7 MULTI-SPECULATIVE';
+      when ( 'MULTI-MISC' ) acceptcode = 'M8 MULTI-MISC';
+      when ( 'MULTI-LAND SALE' ) acceptcode = 'M9 MULTI-LAND SALE';
+      when ( 'MARKET SALE' ) acceptcode = 'MARKET';
+      when ( 'MISCELLANEOUS' ) acceptcode = 'MISC';
+      when ( 'SPECULATIVE' ) acceptcode = 'SPECULATIVE';
+      when ( 'TAX DEED' ) acceptcode = 'TAX DEED';
+      when ( 'UNASSESSED' ) acceptcode = 'UNASSESSED';
+      when ( 'UNUSUAL' ) acceptcode = 'UNUSUAL';
+      when ( '' ) acceptcode = '';
       otherwise do;
         %warn_put( msg='ACCEPTCODE value unknown: ' recordno= ssl= acceptcode= )
       end;
@@ -299,13 +337,14 @@ data itspe_all;
                    asrname=asr_name
                    assessment= assess_val
                    CITYSTZIP = address3
+				   Proptype_old = Proptype
 ;
 
 
         drop assessor_name careof_name deeddate delcode
                  last_sale_date lastmodifieddate
                  newimpr newland newtotal oldimpr oldland oldtotal ownocct
-                 coopunits capcurr capprop classtype mixed_use
+                 coopunits capcurr capprop classtype mixed_use proptype
 ;
 
 
