@@ -64,7 +64,7 @@ data ITS_Public_Extract;
 		informat in_usecode best32.;
 		informat LANDAREA best32.;
 		informat PREMISEADD $50.;
-		informat NBHD $2.;
+		informat NBHD $3.;
 		informat SUBNBHD $1.;
 		informat UNITNUMBER $6. ;
 		informat OWNERNAME $70.;
