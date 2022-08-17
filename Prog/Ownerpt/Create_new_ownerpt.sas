@@ -56,8 +56,12 @@ data itspe_all;
 	saletype = upcase(saletype);
 	acceptcode = upcase(acceptcode);
 
+	** Re-code acceptcode **;
 	%let dyr = %substr(&ownerptdt,1,4);
     %Acceptcode_old(datayear=&dyr.)
+
+	** Re-code proptype **;
+	%Proptype_old;
 
     %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
@@ -333,13 +337,14 @@ data itspe_all;
                    asrname=asr_name
                    assessment= assess_val
                    CITYSTZIP = address3
+				   Proptype_old = Proptype
 ;
 
 
         drop assessor_name careof_name deeddate delcode
                  last_sale_date lastmodifieddate
                  newimpr newland newtotal oldimpr oldland oldtotal ownocct
-                 coopunits capcurr capprop classtype mixed_use
+                 coopunits capcurr capprop classtype mixed_use proptype
 ;
 
 
