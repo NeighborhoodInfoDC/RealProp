@@ -65,7 +65,7 @@ data itspe_all;
 
     %let format=
       deed_date ownerpt_extractdat saledate mmddyy10.
-      Proptype $proptyp.
+      Proptype Proptype_old $proptyp.
       Usecode $Usecode.
       Hstdcode $homestd.
       MIXEDUSE del_code part_part yesno.
