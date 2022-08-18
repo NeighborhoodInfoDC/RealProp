@@ -53,7 +53,7 @@
 %let end_date = %sysfunc( intnx( QTR, "01jan&end_yr"d, %eval( &end_qtr - 1 ), END ) );
 %put end_date = %sysfunc( putn( &end_date, mmddyy10. ) );
 
-%let lib  = RealProp;
+%let lib  = RealPr_r;
 %let data = Parcel_base;
 
 proc sql noprint;
@@ -80,7 +80,7 @@ data Num_units_raw (compress=no);
       (keep=ssl ownerpt_extractdat_first ownerpt_extractdat_last ui_proptype no_units
        where=(ui_proptype in ( '10', '11', '12' ))
        in=in1)
-    RealProp.Parcel_geo
+    RealPr_r.Parcel_geo
       (drop=x_coord y_coord);
   by ssl;
   
