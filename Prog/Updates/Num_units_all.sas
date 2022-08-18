@@ -80,7 +80,7 @@ data Num_units_raw (compress=no);
       (keep=ssl ownerpt_extractdat_first ownerpt_extractdat_last ui_proptype no_units
        where=(ui_proptype in ( '10', '11', '12' ))
        in=in1)
-    RealPr_r.Parcel_geo
+    &lib..Parcel_geo
       (drop=x_coord y_coord);
   by ssl;
   
