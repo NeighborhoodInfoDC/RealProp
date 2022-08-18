@@ -30,6 +30,7 @@
   10/29/19 EN Updated for 2019-
   05/29/20 AH updated for 2020-Q2
   02/25/21 AH updated for 2021-Q1
+  08/18/22 RP updated for 2022-Q2
 **************************************************************************/
 
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
@@ -39,8 +40,8 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2020;
-%let end_qtr = 4;
+%let end_yr = 2022;
+%let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -80,7 +81,7 @@ data Num_units_raw (compress=no);
        where=(ui_proptype in ( '10', '11', '12' ))
        in=in1)
     RealProp.Parcel_geo
-      (drop=cjrtractbl x_coord y_coord);
+      (drop=x_coord y_coord);
   by ssl;
   
   if in1;
@@ -143,7 +144,7 @@ run;
 
 ** For tract file, keep only DC tracts **;
 
-%if &level. = GEO2000 or &level. = GEO2010 %then %do;
+%if &level. = GEO2000 or &level. = GEO2010 or &level. = GEO2020 %then %do;
 data Num_units&filesuf;
 	set Num_units&filesuf;
 	state = substr(&level.,1,2);
@@ -213,8 +214,6 @@ run;
 %Summarize( level=geo2000 )
 %Summarize( level=cluster_tr2000 )
 %Summarize( level=ward2002 )
-%Summarize( level=casey_nbr2003 )
-%Summarize( level=casey_ta2003 )
 %Summarize( level=zip )
 %Summarize( level=anc2012 )
 %Summarize( level=psa2012 )
@@ -224,6 +223,8 @@ run;
 %Summarize( level=bridgepk )
 %Summarize( level=Cluster2017 )
 %Summarize( level=stantoncommons )
+%Summarize( level=geo2020 )
+%Summarize( level=ward2022 )
 
 run;
 
