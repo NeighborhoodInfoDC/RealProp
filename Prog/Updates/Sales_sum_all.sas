@@ -31,6 +31,7 @@
   10/29/2019 EN Updated for 2019-Q3
   05/29/20 AH updated for 2020-Q2
   02/26/21 AH updated for 2020-Q4
+  08/18/22 RP updated for 2022-Q1
 **************************************************************************/
 
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
@@ -39,8 +40,8 @@
 %DCData_lib( RealProp )
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2020;
-%let end_qtr = 4;
+%let end_yr = 2022;
+%let end_qtr = 1;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
@@ -56,7 +57,7 @@
 %let end_date = %sysfunc( intnx( QTR, "01jan&end_yr"d, %eval( &end_qtr - 1 ), END ) );
 %put end_date = %sysfunc( putn( &end_date, mmddyy10. ) );
 
-%let lib  = RealProp;
+%let lib  = RealPr_r;
 %let data = Sales_res_clean;
 
 proc sql noprint;
@@ -162,7 +163,7 @@ run;
 
 ** For tract file, keep only DC tracts **;
 
-%if &level. = GEO2000 or &level. = GEO2010 %then %do;
+%if &level. = GEO2000 or &level. = GEO2010 or &level. = GEO2020 %then %do;
 data Sales&filesuf;
 	set Sales&filesuf;
 	state = substr(&level.,1,2);
@@ -252,6 +253,8 @@ run;
 %Summarize( level=bridgepk )
 %Summarize( level=Cluster2017 )
 %Summarize( level=stantoncommons )
+%Summarize( level=geo2020 )
+%Summarize( level=ward2022 )
 
 run;
 
