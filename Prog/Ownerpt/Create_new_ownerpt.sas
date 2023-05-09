@@ -8,9 +8,9 @@
  Environment:  Local Windows session (desktop)
 
  Description:  Combine ITS Public Extract files from opendata.dc.gov:
-                                1) Its_public_extract
-                                2) itspe_facts
-                            3) Cama_property_sales
+                1) Its_public_extract
+                2) itspe_facts
+                3) Cama_property_sales
 
  Modifications: 06/24/22 - In 2022 DC Open Data replaced the replaced ITSPE property sales file 
 						with Tax System Property Sales (CAMA). New new CAMA sales file is different
@@ -28,7 +28,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2022_06;
+%let ownerptdt = 2023_05;
 
 
 /* Sort input ITSPE datasets */
