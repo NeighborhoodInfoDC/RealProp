@@ -133,9 +133,14 @@ data Parcel_geo_update;
 		Parcels_geocoded (in=b)
 		Parcels_noaddress (in=c);
 
+	/* Add city variable to all records */
 	length City $ 1;
     city = "1";
     label city = "Washington, D.C.";
+
+	/* Clean up ZIP variable */
+	ZIP = input(put(ZIP, $ZIPV.), 5.);
+	if ZIP  = "    ." then ZIP = "";
 
 	** Flag for data matched to MAR **;
 	if a then mar_matched = 1;
@@ -173,6 +178,11 @@ data Parcel_geo_update;
 
 	** Stanton Commons **;
 	%Block20_to_stantoncommons ();
+
+	** Zip codes **;
+	if ZIP ^= " " then do;
+	%Block20_to_zip ();
+	end;
 
 	format geo2000 $geo00a. anc2002 $anc02a. psa2004 $psa04a. ward2002 $ward02a.
      	   geo2010 $geo10a. anc2012 $anc12a. psa2012 $psa12a. ward2012 $ward12a.
