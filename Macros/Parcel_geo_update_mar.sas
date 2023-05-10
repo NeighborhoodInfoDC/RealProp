@@ -180,7 +180,7 @@ data Parcel_geo_update;
 	%Block20_to_stantoncommons ();
 
 	** Zip codes **;
-	if ZIP ^= " " then do;
+	if ZIP = "" then do;
 	%Block20_to_zip ();
 	end;
 
