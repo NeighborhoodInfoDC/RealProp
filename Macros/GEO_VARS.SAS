@@ -12,6 +12,7 @@
 
  Modifications:
   12/31/13 PAT  Updated for new SAS1 server.
+  5/11/23 RP Changed Realprop to Realpr_r
 **************************************************************************/
 
 %macro Geo_vars( inds=, outds= );
@@ -22,8 +23,8 @@ data &outds;
 
   merge 
     &inds (in=in1 drop=&update_fixed_vars)
-    RealProp.Parcel_base (keep=ssl &update_fixed_vars)
-    RealProp.Parcel_geo;
+    Realpr_r.Parcel_base (keep=ssl &update_fixed_vars)
+    Realpr_r.Parcel_geo;
   by ssl;
 
   if in1;
