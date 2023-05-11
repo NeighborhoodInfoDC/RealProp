@@ -7,8 +7,8 @@
  Version:  SAS 9.4
  Environment: SAS on Windows 10
  
- Description:  Update Sales_master and Sales_res_clean data sets on
- Alpha with latest Ownerpt file.
+ Description:  Update Sales_master and Sales_res_clean data sets
+ with latest Ownerpt file.
 
  Modifications:
 **************************************************************************/
