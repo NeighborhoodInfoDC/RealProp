@@ -78,24 +78,39 @@ data parcels_marmatch parcels_nomarmatch;
 	end;
 run;
 
+
 /* Split out records with full addresses and those without */
 data parcels_togeocode parcels_noaddress;
 	set parcels_nomarmatch;
 
+	/* Define regular expression pattern for 5 or 9 digit zip code */
+    re = prxparse('/\b\d{5}(?:-\d{4})?\b/i');
+
+    /* Search for zip code in PREMISEADD */
+    if prxmatch(re, PREMISEADD) then
+        ZIP9 = prxposn(re, 0, PREMISEADD);
+
+    /* Set ZIP9 to missing if it does not match pattern */
+    else ZIP9 = .;
+
+    /* Remove any non-digit characters from ZIP9 */
+    ZIP9 = compress(ZIP9,,'kd');
+    
+    /* Set ZIP9 to missing if it is not exactly 5 or 9 digits */
+    if not (length(ZIP9) in (5, 9)) then ZIP9 = .;
+
+	/* Create a final 5-digit consistent zipcode variable */
 	length premzip $5.;
+	premzip = substr(ZIP9, 1, 5);
+	format premzip $zipv.;
 
-	finddc=substr(have,find(PREMISEADD,"DC")+1);
-	if finddc = "" then do;
-	premzip=substr(strip(scan(PREMISEADD,-1,"DC")),1,5);
-	end;
-
-	if premzip in ("000","0000","00000","2","20","200","2000","20000","2001","2003","2005","76310","UT AV")
-		then premzip = "";
-
+	/* Create and output a clean address variable excluding city, state and zip */
 	if lownumber ^= "" and streetname ^= "" and qdrntname ^= "" then do;
-	newaddress = lownumber || " " || streetname || " " || qdrntname;
-	output parcels_togeocode;
+		newaddress = compbl(lownumber || " " || streetname || " " || qdrntname);
+		output parcels_togeocode;
 	end;
+
+	/* Output a dataset for records with no clean address data */
 	else do;
 		output parcels_noaddress;
 	end;
@@ -118,9 +133,14 @@ data Parcel_geo_update;
 		Parcels_geocoded (in=b)
 		Parcels_noaddress (in=c);
 
+	/* Add city variable to all records */
 	length City $ 1;
     city = "1";
     label city = "Washington, D.C.";
+
+	/* Clean up ZIP variable */
+	ZIP = input(put(ZIP, $ZIPV.), 5.);
+	if ZIP  = "    ." then ZIP = "";
 
 	** Flag for data matched to MAR **;
 	if a then mar_matched = 1;
@@ -158,6 +178,11 @@ data Parcel_geo_update;
 
 	** Stanton Commons **;
 	%Block20_to_stantoncommons ();
+
+	** Zip codes **;
+	if ZIP = "" then do;
+	%Block20_to_zip ();
+	end;
 
 	format geo2000 $geo00a. anc2002 $anc02a. psa2004 $psa04a. ward2002 $ward02a.
      	   geo2010 $geo10a. anc2012 $anc12a. psa2012 $psa12a. ward2012 $ward12a.
