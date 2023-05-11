@@ -31,6 +31,7 @@
   05/29/20 AH updated for 2020-Q2
   02/25/21 AH updated for 2021-Q1
   08/18/22 RP updated for 2022-Q2
+  05/11/23 RP updated for 2023-Q2
 **************************************************************************/
 
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
@@ -40,7 +41,7 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2022;
+%let end_yr = 2023;
 %let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
