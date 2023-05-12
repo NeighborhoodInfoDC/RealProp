@@ -1,9 +1,9 @@
 /**************************************************************************
- Program:  Read_cama.sas
+ Program:  Read_cama_2023.sas
  Library:  RealProp
  Project:  Urban-Greater DC
- Author:   Leah Hendey
- Created:  05/17/18
+ Author:   Peter Tatian
+ Created:  05/12/23
  Version:  SAS 9.4
  Environment:  Local Windows session (desktop)
  
@@ -15,7 +15,7 @@
 		there is no way to associate BLDG_NUM > 2 records with any particular structure on the lot.
 
  Modifications: 
-  5/12/23 PT Updated for new 2023 file formats. 
+  5/12/23 PT Updated from Macros\Read_cama.sas for new 2023 file formats. 
 
 **************************************************************************/
 
