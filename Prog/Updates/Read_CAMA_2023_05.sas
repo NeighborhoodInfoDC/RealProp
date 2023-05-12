@@ -1,5 +1,5 @@
 /**************************************************************************
- Program:  Read_CAMA_2018_12.sas
+ Program:  Read_CAMA_2023_05.sas
  Library:  RealProp
  Project:  Urban-Greater DC
  Author:   P. Tatian
@@ -16,6 +16,7 @@
 			   the same cama file source do not need to be coded separately.
 
  Modifications: 1/12/2019 LH Removed Delete old metadata code. Update Condo file that was updated in 12-2018.
+   5/12/23 PT Updated macro for new file formats (no Objectid).
  
 **************************************************************************/
 
