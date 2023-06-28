@@ -156,6 +156,7 @@ Code,Regular expression,,
 110,/^EMBASSY TRUST (&|\+) WILLIAM D.*/,exception,
 110,/^EMBASSY REAL ESTATE HOLDINGS.*/,exception,
 110,/^EMBASSY HOLDINGS.*/,exception,
+110,/^EMBASSY TOWER .*/,exception,
 100,/^EMBASSY CHURCH/,exception
 60,/^GOV(ERNMENT|) [A-Z]/,,
 60,/^(THE |).*REPUBLIC (OF|DU) .*/,,

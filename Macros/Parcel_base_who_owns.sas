@@ -16,11 +16,14 @@
   RegExpFile=, 
   MaxExp=3000,  /** NOTE: This number should be larger than the number of rows in the above file **/
   Diagnostic_file=&_dcdata_default_path\RealProp\Prog\Updates\Parcel_base_who_owns_diagnostic.xls,
-  inlib=RealProp,
-  data=Parcel_base,
-  outlib=RealProp,
-  Finalize=Y, 
-  Revisions= 
+  inlib=RealProp, /* Library for input data */
+  data=Parcel_base, /* Input data set */
+  outlib=RealProp, /* Library for final output data */
+  out=Parcel_base_who_owns, /* Output data set */
+  Finalize=Y, /* Finalize data set? */
+  Cleanup=Y, /* Clean up temporary data sets? */
+  Ownername_full_provided=N, /* Is Ownername_full var included in input data set? */
+  Revisions=  /* Metadata revisions */
   );
 
   %local parcel_base_file_dtmf dtm dtmf;
@@ -62,7 +65,7 @@
 
   ** Add owner-occupied sale flag to Parcel records **;
 
-  %create_own_occ( inlib=&inlib, inds=&data, outds=parcel_base_ownocc );
+  %create_own_occ( inlib=&inlib, inds=&data, outds=parcel_base_ownocc, cleanup=&cleanup );
 
   ** Match regular expressions against owner data file **;
 
@@ -70,7 +73,10 @@
 
      set parcel_base_ownOcc;
               
-     %ownername_full()
+     ** If ownername_full var not provided, create it **; 
+     %if %mparam_is_no( &ownername_full_provided ) %then %do;
+       %ownername_full()
+	 %end;
 
      length Ownercat OwnerCat1-OwnerCat&MaxExp $ 3;
      retain OwnerCat1-OwnerCat&MaxExp re1-re&MaxExp num_rexp;
@@ -146,10 +152,6 @@
     
     format OwnerCat $owncat.;
     
-    keep ssl premiseadd premiseadd_std premiseadd_m hstd_code OwnerCat 
-         Ownername_full owneraddress owneraddress_std owneraddress_m address3 
-         ui_proptype in_last_ownerpt Owner_occ_sale mix1txtype mix2txtype;
-
   run;
 
 
@@ -178,7 +180,7 @@
     %Finalize_data_set( 
     /** Finalize data set parameters **/
     data=Parcel_base_who_owns,
-    out=Parcel_base_who_owns,
+    out=&out,
     outlib=&outlib,
     label="DC real property parcels - property owner types",
     sortby=ssl,
@@ -190,6 +192,13 @@
     freqvars=OwnerCat Owner_occ_sale
     );
     
+  %end;
+  %else %do;
+
+    data &out;
+      set Parcel_base_who_owns;
+    run;
+
   %end;
 
   %Exit_macro:
