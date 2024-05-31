@@ -24,8 +24,9 @@
 						with Tax System Property Sales (CAMA). New new CAMA sales file is different
 						because it does not include information about the owner or the property
 						itself. It is also different because it is a historic file with multiple 
-						sales per property (and therefore duplicate SSLs). 
-
+						sales per property (and therefore duplicate SSLs).
+				 
+				5-29-2024 update with new data - RG
 **************************************************************************/
 
 %include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
@@ -34,11 +35,11 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2023-05;
+%let revisions = Updated through 2024-05;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2023-05\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2024-05\;
 
 %let PEfile = ITSPE_view_2098036548347357834.csv;
 %let FactsFile = ITSPE_FACTS_view_6464931457214209052.csv;
