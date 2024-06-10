@@ -33,6 +33,7 @@
   02/26/21 AH updated for 2020-Q4
   08/18/22 RP updated for 2022-Q1
   05/12/23 RP updated for 2023-Q1
+  06/10/24 RG updated for 2024-Q1
 **************************************************************************/
 
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
@@ -41,7 +42,7 @@
 %DCData_lib( RealProp )
 
 /** Update with latest full year and quarter of sales data available **/
-%let end_yr = 2023;
+%let end_yr = 2024;
 %let end_qtr = 1;
 
 /** Leave this macro var blank unless doing a special update **/
