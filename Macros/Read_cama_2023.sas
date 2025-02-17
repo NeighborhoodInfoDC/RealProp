@@ -140,7 +140,12 @@
 		end;
 	end;
   
-  	format SALEDATE yymmdd10. EXTRACTDAT yymmdd10. usecode $USECODE. ; 
+ 	** Set invalid AYB and EYB values to .U **;
+	
+	if ayb < 1750 or ayb > year( date() ) then ayb = .U;
+	if eyb < 1750 or eyb > year( date() ) then eyb = .U;
+  
+ 	format SALEDATE yymmdd10. EXTRACTDAT yymmdd10. usecode $USECODE. ; 
 
 	drop  c_SALEDATE c_GIS_LAST_MOD_DTTM c_usecode _i_;
 
@@ -288,7 +293,12 @@
 		if c_extwall="0" then extwall=0; *assigning "typical" to "default";
 		if c_extwall="WS" then extwall=6; 
 	  
-       format EXTRACTDAT SALEDATE yymmdd10. usecode $USECODE. ;
+  	** Set invalid AYB and EYB values to .U **;
+	
+	if ayb < 1750 or ayb > year( date() ) then ayb = .U;
+	if eyb < 1750 or eyb > year( date() ) then eyb = .U;
+  
+      format EXTRACTDAT SALEDATE yymmdd10. usecode $USECODE. ;
 
        drop  c_SALEDATE c_GIS_LAST_MOD_DTTM c_usecode _i_ c_extwall;
 
@@ -404,6 +414,11 @@
            end;
        end;
 
+ 	** Set invalid AYB and EYB values to .U **;
+	
+	if ayb < 1750 or ayb > year( date() ) then ayb = .U;
+	if eyb < 1750 or eyb > year( date() ) then eyb = .U;
+  
        format EXTRACTDAT SALEDATE yymmdd10.  usecode $USECODE. ;
 
        drop  c_SALEDATE c_GIS_LAST_MOD_DTTM c_usecode _j_;
