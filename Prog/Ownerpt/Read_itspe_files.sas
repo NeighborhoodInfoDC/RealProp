@@ -27,6 +27,7 @@
 						sales per property (and therefore duplicate SSLs).
 				 
 				5-29-2024 update with new data - RG
+				6-02-2025 update with new data - RG
 **************************************************************************/
 
 %include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
@@ -35,14 +36,14 @@
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2024-05;
+%let revisions = Updated through 2025-06;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2024-05\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2025-06\;
 
-%let PEfile = ITSPE_view_2098036548347357834.csv;
-%let FactsFile = ITSPE_FACTS_view_6464931457214209052.csv;
+%let PEfile = ITSPE_View_05022025_6763517825838124791.csv;
+%let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
 %let SalesFile = Tax_System_Property_Sales_(CAMA).csv;
 
 /** Read ITS Public Extract File **/
