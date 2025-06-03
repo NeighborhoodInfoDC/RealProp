@@ -28,7 +28,7 @@
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2024_05;
+%let ownerptdt = 2025_06;
 
 
 /* Sort input ITSPE datasets */
