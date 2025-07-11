@@ -28,7 +28,7 @@
 
 %Parcel_geo_update_mar(update_date = &update_date.,
 	geo_vars = ssl x_coord y_coord
-    Address_id anc2002 anc2012 city cluster2000 cluster2017
+    Address_id anc2002 anc2012 anc2023 city cluster2000 cluster2017
 	cluster_tr2000 eor geo2000 geo2010 geo2020 geobg2020 geoblk2020
 	psa2004 psa2012 psa2019 voterpre2012 ward2002 ward2012 ward2022 zip
 	stantoncommons bridgepk,
