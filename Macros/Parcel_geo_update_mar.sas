@@ -219,7 +219,7 @@ run;
 	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
-	  freqvars=anc2002 anc2012 city eor geo2000 geo2010 geo2020
+	  freqvars=anc2002 anc2012 anc2023 city eor geo2000 geo2010 geo2020
 	  psa2012 voterpre2012 ward2002 ward2012 ward2022 zip mar_matched mar_geocoded GeoRec
 	  );
 
@@ -235,7 +235,7 @@ run;
 	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
-	  freqvars=anc2002 anc2012 city eor geo2000 geo2010 geo2020
+	  freqvars=anc2002 anc2012 anc2023 city eor geo2000 geo2010 geo2020
 	  psa2012 voterpre2012 ward2002 ward2012 ward2022 zip mar_matched mar_geocoded GeoRec
 	  );
 
