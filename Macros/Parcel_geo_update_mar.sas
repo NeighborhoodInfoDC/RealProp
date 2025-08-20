@@ -20,7 +20,7 @@
   update_file=Ownerpt_&update_date.,
   base_file=RealPr_r.Parcel_base_ownerpt_&update_date.,
   geo_vars =ssl x_coord y_coord
-    Address_id anc2002 anc2012 city cluster2000 cluster2017
+    Address_id anc2002 anc2012 anc2023 city cluster2000 cluster2017
 	cluster_tr2000 eor geo2000 geo2010 geo2020 geobg2020 geoblk2020
 	psa2004 psa2012 psa2019 voterpre2012 ward2002 ward2012 ward2022 zip
 	stantoncommons bridgepk,
@@ -117,13 +117,23 @@ data parcels_togeocode parcels_noaddress;
 
 run;
 
+/* Use the original geo_vars list but remove vars that can't go into the geocoder */
+%let geocode_vars = %sysfunc(tranwrd(&geo_vars, ssl,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, eor,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, city,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, x_coord,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, y_coord,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, cluster2000,));
+%let geocode_vars = %sysfunc(tranwrd(&geocode_vars, zip,));
+%let geocode_vars = %sysfunc(compbl(&geocode_vars)); 
+
+
 /* Geocode records with full addresses */
 %DC_mar_geocode(
   data = parcels_togeocode,
   staddr = newaddress,
   /* Do NOT output SSL from the geocode macro or it will overwrite existing SSL and create false duplicates*/
-  keep_geo = Address_id Anc2002 Anc2012 Cluster_tr2000 Geo2000 Geo2010 Geo2020
-  			 GeoBg2020 GeoBlk2020 Psa2004 Psa2012 VoterPre2012 Ward2002 Ward2012 Ward2022,
+  keep_geo = &geocode_vars.,
   out = parcels_geocoded
 );
 
@@ -209,7 +219,7 @@ run;
 	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
-	  freqvars=anc2002 anc2012 city eor geo2000 geo2010 geo2020
+	  freqvars=anc2002 anc2012 anc2023 city eor geo2000 geo2010 geo2020
 	  psa2012 voterpre2012 ward2002 ward2012 ward2022 zip mar_matched mar_geocoded GeoRec
 	  );
 
@@ -225,7 +235,7 @@ run;
 	  revisions=%str(&revisions.),
 	  /** File info parameters **/
 	  printobs=5,
-	  freqvars=anc2002 anc2012 city eor geo2000 geo2010 geo2020
+	  freqvars=anc2002 anc2012 anc2023 city eor geo2000 geo2010 geo2020
 	  psa2012 voterpre2012 ward2002 ward2012 ward2022 zip mar_matched mar_geocoded GeoRec
 	  );
 
