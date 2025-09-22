@@ -33,6 +33,7 @@
   08/18/22 RP updated for 2022-Q2
   05/11/23 RP updated for 2023-Q2
   06/07/24 RG updated for 2024-Q2
+  08/28/25 RG updated for 2025-Q2
 **************************************************************************/
 
 %include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
@@ -42,7 +43,7 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2024;
+%let end_yr = 2025;
 %let end_qtr = 2;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
@@ -227,6 +228,7 @@ run;
 %Summarize( level=stantoncommons )
 %Summarize( level=geo2020 )
 %Summarize( level=ward2022 )
+%Summarize( level=anc2023 )
 
 run;
 
