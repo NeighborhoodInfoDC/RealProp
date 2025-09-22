@@ -228,6 +228,7 @@ run;
 %Summarize( level=stantoncommons )
 %Summarize( level=geo2020 )
 %Summarize( level=ward2022 )
+%Summarize( level=anc2023 )
 
 run;
 
