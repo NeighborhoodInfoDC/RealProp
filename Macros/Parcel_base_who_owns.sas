@@ -138,9 +138,10 @@
     end;
 
     ** Separate corporate (110) into for profit & nonprofit by tax status **;
+    ** (10/15/25) Assume properties with missing tax status are taxable **;
     
     if OwnerCat = '110' then do;
-      if mix1txtype = 'TX' then OwnerCat = '115';
+      if mix1txtype in ( 'TX', '  ' ) then OwnerCat = '115';
       else OwnerCat = '111';
     end;
     
