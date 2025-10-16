@@ -61,14 +61,17 @@ proc sort data = &base_file. out = Parcel_base ; by ssl; run;
 
 /* Merge parcel base with SSL geos, output non-matches */
 data parcels_marmatch parcels_nomarmatch;
-	merge Parcel_base (in=a) ssl_addresses_nodup (in=b);
+	merge Parcel_base (in=a drop=x_coord y_coord)
+          ssl_addresses_nodup (in=b);
 	by ssl;
 	if a;
 	if a and b then marmatch = 1;
 
 	drop address_id;
 	address_id_fix=(scan(address_id,1,','))+0;
-	rename address_id_fix = address_id;
+	rename address_id_fix = address_id
+			x = x_coord
+			y= y_coord;
 
 	if marmatch = 1 then do;
 		output parcels_marmatch;
@@ -147,6 +150,12 @@ data Parcel_geo_update;
 	length City $ 1;
     city = "1";
     label city = "Washington, D.C.";
+
+	/* Fix x/y on geocoded records */
+	if b then do;
+		x_coord = x;
+		y_coord = y;
+	end;
 
 	/* Clean up ZIP variable */
 	ZIP = input(put(ZIP, $ZIPV.), 5.);
