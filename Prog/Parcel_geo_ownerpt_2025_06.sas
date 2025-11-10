@@ -22,7 +22,7 @@
 /** Update two parameters below **/
 
 %let update_date = 2025_06;
-%let revisions = Updated through 2025-06;
+%let revisions = Add missing x/y coordinates;
 
 /** Don't need to edit this code **/
 
