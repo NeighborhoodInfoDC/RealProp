@@ -118,6 +118,9 @@ data parcels_togeocode parcels_noaddress;
 		output parcels_noaddress;
 	end;
 
+	drop x y x_coord y_coord
+		latitude longitude;
+
 run;
 
 /* Use the original geo_vars list but remove vars that can't go into the geocoder */
@@ -145,6 +148,12 @@ data Parcel_geo_update;
   	set Parcels_marmatch (in=a)
 		Parcels_geocoded (in=b)
 		Parcels_noaddress (in=c);
+
+	/* Remove x/y coods on city only matches */
+	if _status_ = "City/State Match" then do;
+		x = .;
+		y = .;
+	end;
 
 	/* Add city variable to all records */
 	length City $ 1;
