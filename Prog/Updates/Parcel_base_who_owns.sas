@@ -28,6 +28,6 @@
 
 %Parcel_base_who_owns(
   RegExpFile=&_dcdata_default_path\RealProp\Prog\Updates\Owner type codes reg expr.txt,
-  Revisions=%str(Fix problem with missing property tax status.)  
+  Revisions=%str(Fix issue with new Premiseadd values.)  
   )
 
