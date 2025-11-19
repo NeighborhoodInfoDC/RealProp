@@ -51,17 +51,24 @@
     %goto exit;
   %end;
   
+  %let premiseadd_lbl = Full property address;
   %let owneraddress_lbl = Property owner tax billing address;
   
 	** Add unique ID for remerging data **;
 
 	data 
 	  _&inds
-   	  _sales_owner_dc (keep=_create_own_occ_id /*ssl saledate sale_num*/ ui_proptype premiseadd owneraddress);
+   	  _sales_owner_dc (keep=_create_own_occ_id /*ssl saledate sale_num*/ ui_proptype premiseadd_str owneraddress);
 
 	  set &inlib..&inds;
 
 	  _create_own_occ_id = _n_;
+	  
+	  ** Create Premiseadd_str by removing "WASHINGTON DC ..." from PREMISEADD **;
+	  
+	  length Premiseadd_str $ 80;
+	  
+	  Premiseadd_str = prxchange( 's/washington dc.*//i', 1, premiseadd );
 
 	  length owneraddress $ 40;
 
@@ -78,13 +85,18 @@
                 not( hstd_code in ( &HSTD_OWN_OCC_CODES ) ) then output _sales_owner_dc;
 
 	  output _&inds;
+	  
+	  label
+	    Premiseadd = "&premiseadd_lbl"
+	    Premiseadd_str = "Property street address";
 
 	run;
+	
 
 	%DC_mar_geocode(
 	  data=_sales_owner_dc,
 	  out=_premise_geo,
-	  staddr=premiseadd,
+	  staddr=Premiseadd_str,
 	  id=_create_own_occ_id ,
 	  ds_label=,
 	  keep_geo=,
@@ -116,8 +128,8 @@
 	  merge
 	    _&inds
 	    _premise_geo 
-	      (keep=_create_own_occ_id premiseadd_std m_addr _matched_
-	       rename=(m_addr=premiseadd_m _matched_=_matched_premiseadd))
+	      (keep=_create_own_occ_id Premiseadd_str_std m_addr _matched_
+	       rename=(m_addr=premiseadd_str_m _matched_=_matched_premiseadd_str))
 	    _owneraddress_geo 
 	      (keep=_create_own_occ_id owneraddress_std m_addr _matched_ in=inDC
 	       rename=(m_addr=owneraddress_m _matched_=_matched_owneraddress));
@@ -131,22 +143,22 @@
 	      owner_occ_sale = 1; /** Own-occ.: homestead deduction **/
 	    end;
           else do;
-	      if premiseadd ~= "" and owneraddress ~= "" then do;
+	      if Premiseadd_str ~= "" and owneraddress ~= "" then do;
               if inDC then do;
-	          if premiseadd_std ~= "" and owneraddress_std ~= "" then do;
-	            if ( indexw( upcase( premiseadd_std ), &UNIT_LBL ) and indexw( upcase( owneraddress_std ), &UNIT_LBL ) )
-	               or indexw( upcase( premiseadd_std ), '1/2' ) or indexw( upcase( owneraddress_std ), '1/2' )
-	               or upcase( _matched_premiseadd ) ~= 'STREET' or upcase( _matched_owneraddress ) ~= 'STREET' then do;
+	          if Premiseadd_str_std ~= "" and owneraddress_std ~= "" then do;
+	            if ( indexw( upcase( Premiseadd_str_std ), &UNIT_LBL ) and indexw( upcase( owneraddress_std ), &UNIT_LBL ) )
+	               or indexw( upcase( Premiseadd_str_std ), '1/2' ) or indexw( upcase( owneraddress_std ), '1/2' )
+	               or upcase( _matched_Premiseadd_str ) ~= 'STREET' or upcase( _matched_owneraddress ) ~= 'STREET' then do;
 	              /** If both addresses contain apartment numbers, either address contains 1/2, 
 	                  or both geo matched addresses not to street, use _std addresses **/
-                    if premiseadd_std = owneraddress_std then 
+                    if Premiseadd_str_std = owneraddress_std then 
   	                owner_occ_sale = 1; /** Own-occ.: addresses match **/
   	              else
   	                owner_occ_sale = 0; /** In DC, but different address **/
   	            end;
   	            else do;
   	              /** Otherwise, use geo matched addresses **/
-  	              if premiseadd_m = owneraddress_m then 
+  	              if Premiseadd_str_m = owneraddress_m then 
   	                owner_occ_sale = 1; /** Own-occ.: addresses match **/
   	              else 
   	                owner_occ_sale = 0; /** In DC, but different address **/
@@ -168,7 +180,7 @@
 
 	  label
 	    owner_occ_sale = 'Owner-occupied sale'
-	    premiseadd_m = "&premiseadd_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    Premiseadd_str_m = "Property street address (geo matched by %nrstr(%DC_mar_geocode))"
 	    owneraddress_m = "&owneraddress_lbl (geo matched by %nrstr(%DC_mar_geocode))"
 	    ;
 
