@@ -28,21 +28,22 @@
 				 
 				5-29-2024 update with new data - RG
 				6-02-2025 update with new data - RG
+				2-05-2026 update with new data - VL
 **************************************************************************/
 
-%include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCData\SAS\Inc\StdWorking.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp );
 
 ** Note revisions **;
-%let revisions = Updated through 2025-06;
+%let revisions = Updated through 2026-02;
 
 /* Path to raw data csv files and names */
 
-%let filepath = &_dcdata_r_path\RealProp\Raw\2025-06\;
+%let filepath = &_dcdata_r_path\RealProp\Raw\2026-02\;
 
-%let PEfile = ITSPE_View_05022025_6763517825838124791.csv;
+%let PEfile = Integrated_Tax_System_Public_Extract.csv;
 %let FactsFile = Integrated_Tax_System_Public_Extract_Facts.csv;
 %let SalesFile = Tax_System_Property_Sales_(CAMA).csv;
 
