@@ -38,6 +38,7 @@
 
 ** Note revisions **;
 %let revisions = Updated through 2026-02;
+%let finalize=Y;
 
 /* Path to raw data csv files and names */
 
