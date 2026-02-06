@@ -21,14 +21,14 @@
 		
 **************************************************************************/
 
-%include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCData\SAS\Inc\StdWorking.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 ** Date for ownerpt **;
 
-%let ownerptdt = 2025_06;
+%let ownerptdt = 2026_02;
 
 
 /* Sort input ITSPE datasets */
