@@ -31,7 +31,7 @@
 				2-05-2026 update with new data - VL
 **************************************************************************/
 
-%include "\\sas1\DCData\SAS\Inc\StdWorking.sas";
+%include "\\sas1\DCData\SAS\Inc\StdRemote_test.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp );
