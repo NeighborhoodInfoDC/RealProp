@@ -515,6 +515,7 @@ run;
 
 %Finalize_data_set(
   /** Finalize data set parameters **/
+  finalize=&finalize,
   data=ITS_Public_Extract,
   out=ITS_Public_Extract,
   outlib=realprop,
@@ -626,6 +627,7 @@ run;
 
 %Finalize_data_set(
   /** Finalize data set parameters **/
+  finalize=&finalize,
   data=ITSPE_Facts,
   out=ITSPE_Facts,
   outlib=realprop,
@@ -680,6 +682,7 @@ run;
 
 %Finalize_data_set(
   /** Finalize data set parameters **/
+  finalize=&finalize,
   data=Cama_property_sales,
   out=Cama_property_sales,
   outlib=realprop,
