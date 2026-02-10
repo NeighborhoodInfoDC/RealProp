@@ -513,6 +513,31 @@ data ITS_Public_Extract;
 run;
 
 
+/* QC: Check for missingness on date variables */
+data _null_;
+  set ITS_Public_Extract end=eof;
+  retain anySALEDATE anyDEEDDATE anyEXTRACTDAT anyLASTPAYDT anyDUEDATE1 anyDUEDATE2 anyDUEDATE3 0;
+
+  if not missing(SALEDATE) then anySALEDATE   = 1;
+  if not missing(DEEDDATE) then anyDEEDDATE   = 1;
+  if not missing(EXTRACTDAT) then anyEXTRACTDAT = 1;
+  if not missing(LASTPAYDT) then anyLASTPAYDT  = 1;
+  if not missing(DUEDATE1) then anyDUEDATE1   = 1;
+  if not missing(DUEDATE2) then anyDUEDATE2   = 1;
+  if not missing(DUEDATE3) then anyDUEDATE3   = 1;
+
+  if eof then do;
+    if not anySALEDATE then putlog "WARNING: SALEDATE is missing for ALL rows in ITS_Public_Extract.";
+    if not anyDEEDDATE then putlog "WARNING: DEEDDATE is missing for ALL rows in ITS_Public_Extract.";
+    if not anyEXTRACTDAT then putlog "WARNING: EXTRACTDAT is missing for ALL rows in ITS_Public_Extract.";
+    if not anyLASTPAYDT then putlog "WARNING: LASTPAYDT is missing for ALL rows in ITS_Public_Extract.";
+    if not anyDUEDATE1 then putlog "WARNING: DUEDATE1 is missing for ALL rows in ITS_Public_Extract.";
+    if not anyDUEDATE2 then putlog "WARNING: DUEDATE2 is missing for ALL rows in ITS_Public_Extract.";
+    if not anyDUEDATE3 then putlog "WARNING: DUEDATE3 is missing for ALL rows in ITS_Public_Extract.";
+  end;
+run;
+
+
 %Finalize_data_set(
   /** Finalize data set parameters **/
   finalize=&finalize,
@@ -625,6 +650,23 @@ data ITSPE_Facts;
 
 run;
 
+/* QC: Check for missingness on date variables */
+data _null_;
+  set ITSPE_Facts end=eof;
+  retain anyLAST_SALE_DATE anyDEED_DATE anyLASTMODIFIEDDATE 0;
+
+  if not missing(LAST_SALE_DATE) then anyLAST_SALE_DATE   = 1;
+  if not missing(DEED_DATE) then anyDEED_DATE        = 1;
+  if not missing(LASTMODIFIEDDATE) then anyLASTMODIFIEDDATE = 1;
+
+  if eof then do;
+    if not anyLAST_SALE_DATE then putlog "WARNING: LAST_SALE_DATE is missing for ALL rows in ITSPE_Facts.";
+    if not anyDEED_DATE then putlog "WARNING: DEED_DATE is missing for ALL rows in ITSPE_Facts.";
+    if not anyLASTMODIFIEDDATE then putlog "WARNING: LASTMODIFIEDDATE is missing for ALL rows in ITSPE_Facts.";
+  end;
+run;
+
+
 %Finalize_data_set(
   /** Finalize data set parameters **/
   finalize=&finalize,
@@ -680,6 +722,21 @@ data Cama_property_sales;
 
 run;
 
+/* QC: Check for missingness on date variables */
+data _null_;
+  set Cama_property_sales end=eof;
+  retain anySALE_DATE anyGIS_LAST_MOD_DTTM 0;
+
+  if not missing(SALE_DATE) then anySALE_DATE         = 1;
+  if not missing(GIS_LAST_MOD_DTTM) then anyGIS_LAST_MOD_DTTM = 1;
+
+  if eof then do;
+    if not anySALE_DATE then putlog "WARNING: SALE_DATE is missing for ALL rows in Cama_property_sales.";
+    if not anyGIS_LAST_MOD_DTTM then putlog "WARNING: GIS_LAST_MOD_DTTM is missing for ALL rows in Cama_property_sales.";
+  end;
+run;
+
+
 %Finalize_data_set(
   /** Finalize data set parameters **/
   finalize=&finalize,
@@ -694,7 +751,6 @@ run;
   /** File info parameters **/
   printobs=5
 );
-
 
 
 
