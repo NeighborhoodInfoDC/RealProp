@@ -497,10 +497,10 @@ data ITS_Public_Extract;
 	;
 
 	/* Format dates */
-	SALEDATE = input(scan(c_SALEDATE,1,' '),mmddyy10.);
-	DEEDDATE = input(scan(c_DEEDDATE,1,' '),mmddyy10.);
-	EXTRACTDAT = input(scan(c_EXTRACTDAT,1,' '),mmddyy10.);
-	LASTPAYDT = input(scan(c_LASTPAYDT,1,' '),mmddyy10.);
+	SALEDATE = input(scan(c_SALEDATE,1,' '),yymmdd10.);
+	DEEDDATE = input(scan(c_DEEDDATE,1,' '),yymmdd10.);
+	EXTRACTDAT = input(scan(c_EXTRACTDAT,1,' '),yymmdd10.);
+	LASTPAYDT = input(c_LASTPAYDT, yymmdd10.);
 	DUEDATE1 = input ( (catx("/", substr(c_DUEDATE1,5,4), substr(c_DUEDATE1,1,2), substr(c_DUEDATE1,3,2))), yymmdd10. );
 	DUEDATE2 = input ( (catx("/", substr(c_DUEDATE2,5,4), substr(c_DUEDATE2,1,2), substr(c_DUEDATE2,3,2))), yymmdd10. );
 	DUEDATE3 = input ( (catx("/", substr(c_DUEDATE3,5,4), substr(c_DUEDATE3,1,2), substr(c_DUEDATE3,3,2))), yymmdd10. );
@@ -616,9 +616,9 @@ data ITSPE_Facts;
 	;
 
 	/* Format dates */
-	LAST_SALE_DATE = input(scan(c_LAST_SALE_DATE,1,' '),mmddyy10.);
-	DEED_DATE = input(scan(c_DEED_DATE,1,' '),mmddyy10.);
-	LASTMODIFIEDDATE = input(scan(c_LASTMODIFIEDDATE,1,' '),mmddyy10.);
+	LAST_SALE_DATE = input(scan(c_LAST_SALE_DATE,1,' '),yymmdd10.);
+	DEED_DATE = input(scan(c_DEED_DATE,1,' '),yymmdd10.);
+	LASTMODIFIEDDATE = input(scan(c_LASTMODIFIEDDATE,1,' '),yymmdd10.);
   	format LAST_SALE_DATE DEED_DATE LASTMODIFIEDDATE mmddyy10.;
 
     drop OBJECTID c_LAST_SALE_DATE c_DEED_DATE c_LASTMODIFIEDDATE landarea taxrate;
