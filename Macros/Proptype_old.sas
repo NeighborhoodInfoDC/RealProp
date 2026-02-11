@@ -68,9 +68,11 @@
 	  when ( 'RESIDENTIAL-CONVERSION (5 UNIT' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-CONVERSION (LESS T' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-CONVERSION (MORE T' ) &newvar = '3';
+	  when ( 'RESIDENTIAL-CONVERSION (3 TO 5' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-COOPERATIVE (HORIZ' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-COOPERATIVE (VERTI' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-FLATS (LESS THAN 5' ) &newvar = '3';
+	  when ( 'RESIDENTIAL-FLATS (LESS THAN 2' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-MIXED USE' ) &newvar = '3';
 	  when ( 'RESIDENTIAL-MULTIFAMILY (MISCE' ) &newvar = '3';
 	  when ( 'HOTEL (LARGE)' ) &newvar = '5';
