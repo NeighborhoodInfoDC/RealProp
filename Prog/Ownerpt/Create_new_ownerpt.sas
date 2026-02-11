@@ -26,6 +26,8 @@
 ** Define libraries **;
 %DCData_lib( RealProp )
 
+%let finalize=Y;
+
 ** Date for ownerpt **;
 
 %let ownerptdt = 2026_02;
@@ -381,6 +383,7 @@ run;
 
 %Finalize_data_set(
   /** Finalize data set parameters **/
+  finalize=&finalize,
   data=ownerpt_&ownerptdt.,
   out=ownerpt_&ownerptdt.,
   outlib=realprop,
