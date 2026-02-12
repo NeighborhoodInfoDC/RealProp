@@ -21,14 +21,16 @@
 		
 **************************************************************************/
 
-%include "\\sas1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\sas1\DCData\SAS\Inc\StdRemote.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
+%let finalize=Y;
+
 ** Date for ownerpt **;
 
-%let ownerptdt = 2025_06;
+%let ownerptdt = 2026_02;
 
 
 /* Sort input ITSPE datasets */
@@ -381,6 +383,7 @@ run;
 
 %Finalize_data_set(
   /** Finalize data set parameters **/
+  finalize=&finalize,
   data=ownerpt_&ownerptdt.,
   out=ownerpt_&ownerptdt.,
   outlib=realprop,
