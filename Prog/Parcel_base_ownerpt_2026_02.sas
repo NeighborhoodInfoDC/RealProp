@@ -14,7 +14,7 @@
 
 **************************************************************************/
 
-%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
