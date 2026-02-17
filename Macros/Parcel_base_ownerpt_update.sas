@@ -208,8 +208,8 @@
          Pb_nogeo_&update_file._noxy (drop=x_coord y_coord compress=no);
 
       merge 
-        &out_file (keep=ssl premiseadd x_coord y_coord)
-        &geo_file (keep=ssl in=in_geo);
+        &out_file (where=(not missing(ssl)) keep=ssl premiseadd x_coord y_coord)
+        &geo_file (where=(not missing(ssl)) keep=ssl in=in_geo);
       by ssl;
 
       if not in_geo;
@@ -290,6 +290,7 @@
 
 	  %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+	  finalize=&finalize,
 	  data=&out_file.,
 	  out=parcel_base,
 	  outlib=realprop,
@@ -307,6 +308,7 @@
 
 	  %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+	  finalize=&finalize,
 	  data=&out_file.,
 	  out=Parcel_base_&update_file,
 	  outlib=realprop,
