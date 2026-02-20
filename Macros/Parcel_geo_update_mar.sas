@@ -227,6 +227,7 @@ run;
 
 %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+	  finalize=&finalize,
 	  data=Parcel_geo_update,
 	  out=Parcel_geo,
 	  outlib=realprop,
@@ -243,6 +244,7 @@ run;
 
 %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+	  finalize=&finalize,
 	  data=Parcel_geo_update,
 	  out=Parcel_geo_&update_date.,
 	  outlib=realprop,

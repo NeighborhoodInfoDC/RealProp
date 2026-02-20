@@ -20,10 +20,11 @@
 %DCData_lib( RealProp )
 %DCData_lib( MAR );
 
-/** Update two parameters below **/
+/** Update parameters below **/
 
 %let update_date = 2026_02;
-%let revisions = Fix wrongly formatted x/y coordinates;
+%let revisions = Updated with 2026_02 parcel_base;
+%let finalize = Y;
 
 /** Don't need to edit this code **/
 
