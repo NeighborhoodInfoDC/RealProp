@@ -13,7 +13,7 @@
  Modifications: Update for 2026 data
 **************************************************************************/
 
-%include "L:\SAS\Inc\StdRemote.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
