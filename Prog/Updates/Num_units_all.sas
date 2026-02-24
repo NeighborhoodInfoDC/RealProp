@@ -44,8 +44,10 @@
 
 /**rsubmit;**/
 
-%let end_yr = 2026;
-%let end_qtr = 1;
+%let end_yr = 2025;
+%let end_qtr = 4;
+
+%let finalize = N;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -191,6 +193,7 @@ run;
 
   %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+  	  finalize=&finalize,
 	  data=Num_units&filesuf._final,
 	  out=Num_units&filesuf,
 	  outlib=realprop,
