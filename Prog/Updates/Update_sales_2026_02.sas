@@ -19,9 +19,9 @@
 %DCData_lib( RealProp )
 %DCData_lib( MAR )
 
+%let finalize=Y;
 
-%Update_sales( year=2026, month=02 )
-
+%Update_sales( year=2026, month=02, finalize=&finalize )
 
 run;
 
