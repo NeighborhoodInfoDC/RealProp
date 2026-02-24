@@ -268,6 +268,7 @@ Include Parameter file for all DCSALES programs
 	run;
 
 	%Finalize_data_set( 
+	  finalize=&finalize,
 	  data=&master_dataset,
 	  out=&master_dataset,
 	  outlib=realprop,
@@ -291,6 +292,7 @@ Include Parameter file for all DCSALES programs
 	run;
 
 	%Finalize_data_set( 
+	  finalize=&finalize,
 	  data=&sales_dataset,
 	  out=&sales_dataset,
 	  outlib=realprop,
