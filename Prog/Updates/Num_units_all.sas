@@ -47,7 +47,7 @@
 %let end_yr = 2025;
 %let end_qtr = 4;
 
-%let finalize = N;
+%let finalize = Y;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
