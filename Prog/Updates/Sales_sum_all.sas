@@ -35,16 +35,17 @@
   05/12/23 RP updated for 2023-Q1
   06/10/24 RG updated for 2024-Q1
   09/23/25 LH updated for 2025-Q2 add ANC 2023
+  02/25/26 VL updated for 2025-Q4
 **************************************************************************/
 
-%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 
 /** Update with latest full year and quarter of sales data available **/
 %let end_yr = 2025;
-%let end_qtr = 1;
+%let end_qtr = 4;
 
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
