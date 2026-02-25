@@ -47,6 +47,9 @@
 %let end_yr = 2025;
 %let end_qtr = 4;
 
+/** Finalize */
+%let finalize = Y;
+
 /** Leave this macro var blank unless doing a special update **/
 %let revisions_sales_sum = ;
 
@@ -222,6 +225,7 @@ run;
 
   %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+  	  finalize=&finalize,
 	  data=Sales_sum&filesuf._final,
 	  out=Sales_sum&filesuf,
 	  outlib=realprop,
