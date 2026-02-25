@@ -34,9 +34,10 @@
   05/11/23 RP updated for 2023-Q2
   06/07/24 RG updated for 2024-Q2
   08/28/25 RG updated for 2025-Q2
+  0/2/24/25 VL updated for 2026-02
 **************************************************************************/
 
-%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -44,7 +45,9 @@
 /**rsubmit;**/
 
 %let end_yr = 2025;
-%let end_qtr = 2;
+%let end_qtr = 4;
+
+%let finalize = Y;
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
 
@@ -190,6 +193,7 @@ run;
 
   %Finalize_data_set( 
 	  /** Finalize data set parameters **/
+  	  finalize=&finalize,
 	  data=Num_units&filesuf._final,
 	  out=Num_units&filesuf,
 	  outlib=realprop,
