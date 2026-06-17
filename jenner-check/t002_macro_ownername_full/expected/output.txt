@@ -1,0 +1,21 @@
+Combined owner names built with RealProp 
+
+  
+
+  
+  
+
+  length Ownername_full $ 150;
+
+  if ownname2 = '' then Ownername_full = left( compbl( upcase( translate( ownername, '&', '+' ) ) ) );
+    else Ownername_full = trim( left( compbl( upcase( translate( ownername, '&', '+' ) ) ) ) ) || ' + ' || left( compbl( upcase( translate( ownname2, '&', '+' ) ) ) );
+
+  label Ownername_full = 
+
+      ssl              ownername       ownname2           Name(s) of property owners
+0001-0001  smith  john            smith  mary    SMITH JOHN + SMITH MARY
+0002-0014  dc government                         DC GOVERNMENT
+0010-0100  lee  david + lin  ann                 LEE DAVID & LIN ANN
+0044-0007  columbia heights llc   jones  robert  COLUMBIA HEIGHTS LLC + JONES ROBERT
+0055-0033  nguyen  thanh                         NGUYEN THANH
+

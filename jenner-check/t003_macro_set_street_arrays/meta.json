@@ -1,0 +1,8 @@
+{
+  "bundle": "t003_macro_set_street_arrays",
+  "source_file": "Macros/Set_street_arrays.sas",
+  "source_blob_sha": "9c19996510048ee3f074098121d8945a3dcd3018",
+  "source_commit": "d940e23437e9176222a740ef321828b57a223235",
+  "tier": "macro_caller",
+  "notes": "Inlines the %set_street_arrays() autocall macro (orig_type/new_type/old_dir/new_dir _TEMPORARY_ arrays); caller standardizes street-type abbreviations on a 6-row mock DC address extract by scanning orig_type for a match. Mock addresses substitute for the geocoder's parsed input."
+}

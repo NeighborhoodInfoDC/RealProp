@@ -1,0 +1,23 @@
+Maximum affordable home price by income (RealProp 
+
+  
+
+  
+
+  
+
+  
+
+  ( (( (28) / 100 ) * ( () / 12 )) / ( ( (( (()/100/12) * ( ( 1 + (()/100/12) )**(360) ) ) /
+                      ( ( ( 1 + (()/100/12) )**(360) ) - 1 )) * (1 + ((25)/100) ) +
+                     ( (0.7)/100/12) ) *
+                   ( 1 - ( (10)/100 ) ) ) )
+
+)
+
+        Scenario  Annual income  Interest rate (%)  Max affordable price
+Example (header)         201010               4.62              $743,808
+Median household          90000                6.5              $275,022
+Lower income              55000                6.5              $168,069
+Higher income            150000               5.75              $493,639
+

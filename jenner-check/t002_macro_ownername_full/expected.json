@@ -1,0 +1,18 @@
+{
+  "_captured_at": "2026-06-17T09:02:34.974185Z",
+  "_captured_run_id": "r_019ed4cc9728794198cbfd75c985bfb4",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote ownerpt_named (5 rows, 4 columns).",
+    "PROC PRINT completed: 5 observations printed, 4 variables"
+  ],
+  "log_does_not_contain": [
+    "ERROR:",
+    "[JENNER-ERROR"
+  ],
+  "diagnostics": {
+    "parse_warnings": [],
+    "runtime_warnings": []
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "bundle": "t001_macro_max_afford_price",
+  "source_file": "Macros/Max_afford_price.sas",
+  "source_blob_sha": "8f231332d9f691945de547129416bd8c745d92b6",
+  "source_commit": "d940e23437e9176222a740ef321828b57a223235",
+  "tier": "macro_caller",
+  "notes": "Inlines the %max_afford_price() autocall macro function verbatim; caller computes max affordable purchase price across 4 income/rate scenarios (first matches the macro header's worked example). No external libnames or data."
+}

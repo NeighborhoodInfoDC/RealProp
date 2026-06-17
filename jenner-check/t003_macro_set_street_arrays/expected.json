@@ -1,0 +1,18 @@
+{
+  "_captured_at": "2026-06-17T09:02:34.994727Z",
+  "_captured_run_id": "r_019ed4cfe50e7092902fffa4186de0c8",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote std_addr (6 rows, 3 columns).",
+    "PROC PRINT completed: 6 observations printed, 3 variables"
+  ],
+  "log_does_not_contain": [
+    "ERROR:",
+    "[JENNER-ERROR"
+  ],
+  "diagnostics": {
+    "parse_warnings": [],
+    "runtime_warnings": []
+  }
+}

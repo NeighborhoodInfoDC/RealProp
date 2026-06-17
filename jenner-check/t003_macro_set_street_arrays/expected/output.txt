@@ -1,0 +1,14 @@
+            DC street types standardized with RealProp 
+
+	array orig_type[69] $ _temporary_;
+
+	orig_type[1]=            
+
+       Street name  Raw type  Standardized type
+14TH                ST        STREET
+PENNSYLVANIA        AVE       AVENUE
+MARTIN LUTHER KING  AV        AVENUE
+RHODE ISLAND        PKWY      PARKWAY
+GOOD HOPE           RD        ROAD
+NEBRASKA            CIR       CIRCLE
+

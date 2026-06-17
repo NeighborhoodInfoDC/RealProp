@@ -1,0 +1,8 @@
+{
+  "bundle": "t002_macro_ownername_full",
+  "source_file": "Macros/Ownername_full.sas",
+  "source_blob_sha": "7567edddbfcf2fc8af551bc69d30afd164868d9b",
+  "source_commit": "d940e23437e9176222a740ef321828b57a223235",
+  "tier": "macro_caller",
+  "notes": "Inlines the %Ownername_full() autocall macro verbatim; caller runs it over a 5-row mock ownerpt extract exercising single-owner, two-owner, and '+'-in-name branches. Pipe-delimited mock data substitutes for the proprietary DC ownerpt file."
+}
