@@ -47,10 +47,9 @@
 
 %let geo_vars_cat = 
   anc2002 anc2012 anc2023
-  bridgepk city cluster2000 cluster2017 cluster_tr2000
+  city cluster2000 cluster2017 cluster_tr2000
   eor geo2000 geo2010 geo2020
-  psa2004 psa2012
-  stantoncommons
+  psa2004 psa2012 psa2019
   voterpre2012
   ward2002 ward2012 ward2022
   zip;

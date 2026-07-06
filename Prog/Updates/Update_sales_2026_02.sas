@@ -13,15 +13,14 @@
  Modifications: Update for 2026 data
 **************************************************************************/
 
-%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
 %DCData_lib( MAR )
 
-%let finalize=Y;
 
-%Update_sales( year=2026, month=02, finalize=&finalize )
+%Update_sales( year=2026, month=02, finalize=Y, revisions=%str(Add PSA2019.) )
 
 run;
 

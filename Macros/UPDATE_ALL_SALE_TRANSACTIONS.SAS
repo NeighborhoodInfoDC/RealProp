@@ -29,6 +29,9 @@ data
   _Update_refresh_date (keep=&id_vars &update_date_vars)
   _Update_refresh_other (keep=&id_vars &update_other_vars);
 
+  ** Fix inconsistent variable lengths **;
+  length mortgageco $ 120;
+  
   set 
     &prev_sale (in=Exist rename=(ownerpt_extractdat_last=ownerpt_extractdat))
     &update_file

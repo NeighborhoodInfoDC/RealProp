@@ -19,7 +19,7 @@
   02/03/14 PAT Corrected reference to RealProp library to RealPr_r.
 **************************************************************************/
 
-%macro Update_sales( year=, month=, finalize=N, debug=N );
+%macro Update_sales( year=, month=, finalize=N, debug=N, revisions= );
 
 *********************************************************************
 Include timer functions to measure program performance
@@ -28,6 +28,7 @@ Include timer functions to measure program performance
 
 *********************************************************************
 Include Parameter file for all DCSALES programs
+Initializes global macro variables, including GEO_VARS
 *********************************************************************;
 %Sales_pars()
 
@@ -266,6 +267,8 @@ Include Parameter file for all DCSALES programs
 	  informat _all_ ;
 
 	run;
+	
+	%if %length( &revisions ) = 0 %then %let revisions = %str(Updated with %MCapitalize(&new_extract).);
 
 	%Finalize_data_set( 
 	  finalize=&finalize,
@@ -276,7 +279,7 @@ Include Parameter file for all DCSALES programs
 	  sortby=ssl sale_num,
 	  /** Metadata parameters **/
 	  restrictions=None,
-	  revisions=%str(Updated with %MCapitalize(&new_extract).),
+	  revisions=&revisions,
 	  /** File info parameters **/
 	  printobs=5,
 	  freqvars=ui_proptype
@@ -300,7 +303,7 @@ Include Parameter file for all DCSALES programs
 	  sortby=ssl sale_num,
 	  /** Metadata parameters **/
 	  restrictions=None,
-	  revisions=%str(Updated with %MCapitalize(&new_extract).),
+	  revisions=&revisions,
 	  /** File info parameters **/
 	  printobs=5,
 	  freqvars=ui_proptype
