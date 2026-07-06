@@ -38,7 +38,7 @@
   02/25/26 VL updated for 2025-Q4
 **************************************************************************/
 
-%include "\\SAS1\DCData\SAS\Inc\StdRemote.sas";
+%include "\\SAS1\DCData\SAS\Inc\StdLocal.sas";
 
 ** Define libraries **;
 %DCData_lib( RealProp )
@@ -51,7 +51,7 @@
 %let finalize = Y;
 
 /** Leave this macro var blank unless doing a special update **/
-%let revisions_sales_sum = ;
+%let revisions_sales_sum = Add PSA2019 summary data set.;
 
 
 %************  DO NOT CHANGE BELOW THIS LINE  ************;
@@ -246,24 +246,29 @@ run;
 /** End Macro Definition **/
 
 %Summarize( level=city )
+
 %Summarize( level=anc2002 )
 %Summarize( level=anc2012 )
+%Summarize( level=anc2023 )
+
 %Summarize( level=psa2004 )
 %Summarize( level=psa2012 )
-%Summarize( level=eor )
+%Summarize( level=psa2019 )
+
 %Summarize( level=geo2000 )
 %Summarize( level=geo2010 )
+%Summarize( level=geo2020 )
+
 %Summarize( level=cluster_tr2000 )
+%Summarize( level=Cluster2017 )
+
 %Summarize( level=ward2002 )
 %Summarize( level=ward2012 )
+%Summarize( level=ward2022 )
+
+%Summarize( level=eor )
 %Summarize( level=zip )
 %Summarize( level=voterpre2012 )
-%Summarize( level=bridgepk )
-%Summarize( level=Cluster2017 )
-%Summarize( level=stantoncommons )
-%Summarize( level=geo2020 )
-%Summarize( level=ward2022 )
-%Summarize( level=anc2023 )
 
 run;
 
