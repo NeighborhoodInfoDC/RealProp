@@ -22,6 +22,7 @@
   04/26/10 PAT Added QUIET= option to suppress warning messages from 
                %DC_geocode.
   12/31/13 PAT  Updated for new SAS1 server.
+  10/15/26 PAT Add MAR IDs to output data.
 **************************************************************************/
 
 %macro create_own_occ(
@@ -99,20 +100,20 @@
 	  staddr=Premiseadd_str,
 	  id=_create_own_occ_id ,
 	  ds_label=,
-	  keep_geo=,
+	  keep_geo=address_id,
 	  geo_match=Y,
 	  block_match=N,
 	  listunmatched=N,
           quiet=&quiet
 	)
-
+	
 	%DC_mar_geocode(
 	  data=_sales_owner_dc,
 	  out=_owneraddress_geo,
 	  staddr=owneraddress,
 	  id=_create_own_occ_id ,
 	  ds_label=,
-	  keep_geo=,
+	  keep_geo=address_id,
 	  geo_match=Y,
 	  block_match=N,
 	  listunmatched=N,
@@ -128,11 +129,14 @@
 	  merge
 	    _&inds
 	    _premise_geo 
-	      (keep=_create_own_occ_id Premiseadd_str_std m_addr _matched_
-	       rename=(m_addr=premiseadd_str_m _matched_=_matched_premiseadd_str))
+	      (keep=_create_own_occ_id Premiseadd_str_std m_addr _matched_ address_id
+	       rename=(m_addr=premiseadd_str_m _matched_=_matched_premiseadd_str
+	               address_id=premiseadd_mar_id))
 	    _owneraddress_geo 
-	      (keep=_create_own_occ_id owneraddress_std m_addr _matched_ in=inDC
-	       rename=(m_addr=owneraddress_m _matched_=_matched_owneraddress));
+	      (keep=_create_own_occ_id owneraddress_std m_addr _matched_ address_id
+	       rename=(m_addr=owneraddress_m _matched_=_matched_owneraddress
+	               address_id=owneraddress_mar_id)
+	       in=inDC);
 	  by  _create_own_occ_id;
 
 	  length Owner_occ_sale 3;
@@ -182,6 +186,8 @@
 	    owner_occ_sale = 'Owner-occupied sale'
 	    Premiseadd_str_m = "Property street address (geo matched by %nrstr(%DC_mar_geocode))"
 	    owneraddress_m = "&owneraddress_lbl (geo matched by %nrstr(%DC_mar_geocode))"
+	    Premiseadd_mar_id = "Property street address MAR ID"
+	    owneraddress_mar_id = "&owneraddress_lbl MAR ID"
 	    ;
 
 	  drop _create_own_occ_id;

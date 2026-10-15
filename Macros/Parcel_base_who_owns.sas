@@ -152,6 +152,7 @@
     label OwnerCat = 'Property owner type';
     
     format OwnerCat $owncat.;
+    informat _all_ ;
     
   run;
 
@@ -189,7 +190,7 @@
     restrictions=None,
     revisions=%str(&revisions),
     /** File info parameters **/
-    printobs=5,
+    printobs=0,
     freqvars=OwnerCat Owner_occ_sale
     );
     

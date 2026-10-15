@@ -9,7 +9,7 @@
  
  Description:  Create ownership categories for real property parcels.
  
- Runtime: Approximately 5 minutes.
+ Runtime: Approximately 10 minutes.
 
  Modifications:
   10/12/14 PAT Updated for SAS1 server.
@@ -28,6 +28,6 @@
 
 %Parcel_base_who_owns(
   RegExpFile=&_dcdata_default_path\RealProp\Prog\Updates\Owner type codes reg expr.txt,
-  Revisions=%str(Fix issue with new Premiseadd values.)  
+  Revisions=%str(Add MAR IDs.)  
   )
 
